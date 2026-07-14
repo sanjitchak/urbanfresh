@@ -1,2 +1,11 @@
 .DS_Store
 Skill design/
+.env
+.env.local
+__pycache__/
+*.pyc
+seo/input/current.csv
+seo/input/previous.csv
+seo/input/*.private.csv
+seo/scheduler.log
+seo/scheduler-error.log

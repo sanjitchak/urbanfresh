@@ -1,53 +1,98 @@
-# UrbanFresh SEO improvement loop
+# UrbanFresh free local SEO improver
 
-This is a local, no-cost version of the useful idea behind Atom Eve's SEO Improver: measure rankings, make one high-confidence improvement, then check whether it worked.
+UrbanFresh has a complete local, no-subscription SEO improvement loop inspired by Atom Eve's SEO Improver. It measures first-party Google Search Console performance, compares the latest complete 28 days with the preceding 28 days, identifies a small number of evidence-backed opportunities and checks whether earlier movement was positive or negative.
 
-## What is already implemented
+It does not use DataForSEO, paid AI models, Vercel or Google-result scraping.
+
+## What is implemented
 
 - One primary search intent per page in `keyword-map.csv`
 - Unique titles, descriptions, H1 headings and canonical URLs
 - Organisation, product, service and page-level structured data
 - Search-friendly static HTML with internal links
 - `robots.txt` and `sitemap.xml`
-- Quote calls-to-action on every commercial page
-- A structured WhatsApp quote form so organic traffic can become a qualified enquiry
-- Local technical audit at `scripts/seo_audit.py`
+- Quote calls-to-action and structured WhatsApp enquiry flow
+- Technical audit at `scripts/seo_audit.py`
+- Weekly ranking and opportunity report at `scripts/seo_improver.py`
+- Free Search Console API access using a read-only service account
+- Search Console CSV fallback when credentials are not configured
+- Local macOS scheduling through `launchd`
+- Stable recommendation IDs for striking distance, weak CTR, cannibalization and decay
 
-## Run the local audit
+## Run it now
 
-From the `urbanfresh` folder:
+From the repository root:
 
 ```bash
-python3 scripts/seo_audit.py
+python3 scripts/seo_improver.py
 ```
 
-Run it after every website change. It checks titles, descriptions, canonical URLs, H1 count, JSON-LD, image alt text and broken local links.
+Without Search Console credentials, this still produces a technical baseline and clearly records that ranking data is waiting for setup.
 
-## Monthly improvement loop
+Reports are written to:
 
-1. Open Google Search Console after the site is live and exported data is available.
-2. Compare the last 28 days with the previous 28 days.
-3. Record each important query and page in `monthly-log.csv`.
-4. Pick only one high-leverage opportunity:
-   - a query ranking roughly positions 8–20 with useful impressions;
-   - a page with impressions but weak click-through rate;
-   - two pages competing for the same query;
-   - a page whose clicks or position are declining.
-5. Make one focused change: sharpen title, answer the missing buyer question, improve internal links, add genuine proof, or strengthen the quote path.
-6. Record the change and wait four weeks before judging it.
-7. Keep improvements that increase qualified traffic or quote leads. Revert or rewrite changes that do not.
+```text
+reports/seo-improver/YYYY-MM-DD/
+├── rankings.csv
+└── report.md
+```
 
-## Free-first data stack
+## Ranking-data options
 
-- Google Search Console: actual queries, clicks, impressions and average position.
-- This local audit: technical checks and broken links.
-- The quote form/WhatsApp conversation: manually count qualified leads in `monthly-log.csv`.
+### Option A — automatic API access
 
-DataForSEO is optional later. It adds competitor rankings and keyword-gap data, but it is not required to launch or to learn from the first sale. Start with Search Console once UrbanFresh is live and indexed.
+Copy `.env.local.example` to `.env.local`, put the complete Google service-account key JSON into `GSC_CREDENTIALS_JSON`, add the service-account email as a restricted Search Console user, then run:
 
-## Human review rules
+```bash
+python3 scripts/seo_improver.py --verify-only
+python3 scripts/seo_improver.py
+```
+
+The script uses only Python's standard library and the macOS OpenSSL binary.
+
+### Option B — CSV exports
+
+Export the current and previous Search Console comparison periods and save them as `seo/input/current.csv` and `seo/input/previous.csv`. Then run:
+
+```bash
+python3 scripts/seo_improver.py \
+  --current-csv seo/input/current.csv \
+  --previous-csv seo/input/previous.csv
+```
+
+See `seo/input/README.md` for accepted columns.
+
+## Install the free weekly schedule on macOS
+
+```bash
+chmod +x scripts/run_weekly_seo.sh scripts/install_local_seo_schedule.sh
+scripts/install_local_seo_schedule.sh
+```
+
+It runs every Monday at 09:00 local time. Run it immediately with:
+
+```bash
+launchctl kickstart -k gui/$UID/com.urbanfresh.seo-improver
+```
+
+Logs are written to `seo/scheduler.log` and `seo/scheduler-error.log`; both are gitignored.
+
+## Decision rules
+
+The report considers:
+
+- **Striking distance:** average position 4–20 with at least five impressions.
+- **Weak CTR:** at least ten impressions and CTR below a conservative position-band benchmark.
+- **Cannibalization:** the same query receiving impressions through at least two different pages.
+- **Decay:** average position worsened by at least two places, or clicks fell by at least 30% from a meaningful prior level.
+
+Only the five highest-scoring opportunities are reported, and the executive summary names one priority. The script never edits the live pages automatically.
+
+## Publishing safeguards
 
 - Never publish invented certifications, capacity, test results, export registrations, customer logos or testimonials.
-- Do not create many near-duplicate city or country pages.
-- Update one intent page at a time and measure the result.
-- Treat quote leads—not traffic alone—as the business outcome.
+- Never create templated city or country pages without real market-specific evidence.
+- Make only one evidence-backed content change at a time.
+- Run `python3 scripts/seo_audit.py` before committing any SEO page change.
+- Wait for the next comparable Search Console period before deciding whether a change worked.
+- Treat qualified quote leads—not traffic alone—as the business outcome, and update `monthly-log.csv` during the monthly review.
