@@ -17,6 +17,7 @@ CSS_VERSION = "20260714-11"
 JS_VERSION = "20260714-2"
 WA_TEXT = "Hello UrbanFresh, I would like a bulk rice quote."
 WA_URL = f"https://wa.me/919433569217?text={WA_TEXT.replace(' ', '%20').replace(',', '%2C')}"
+GUIDE_SLUG = "1121-vs-1509-vs-1401-basmati-rice.html"
 
 
 PRODUCTS = [
@@ -253,7 +254,7 @@ def footer(contact_page: bool = False) -> str:
       <footer class="site-footer"><div class="container footer-grid">
         <div class="footer-brand"><a class="brand" href="index.html"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt=""><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><p>A family-operated rice mill established in 1978, serving bulk buyers from Village Daha Madanpur, Karnal.</p></div>
         <div><h2 class="footer-title">Mill</h2><div class="footer-links"><a href="about.html">About UrbanFresh</a><a href="infrastructure.html">Infrastructure</a><a href="quality.html">Quality Control</a><a href="certifications.html">Certifications</a><a href="private-label.html">Private Label</a></div></div>
-        <div><h2 class="footer-title">Rice range</h2><div class="footer-links"><a href="products.html">All Rice Products</a><a href="1121-basmati-rice.html">1121 Basmati</a><a href="pusa-basmati-rice.html">Pusa Basmati</a><a href="sugandha-rice.html">Sugandha Rice</a><a href="pr-11-rice.html">PR 11 Rice</a></div></div>
+        <div><h2 class="footer-title">Rice range</h2><div class="footer-links"><a href="products.html">All Rice Products</a><a href="{GUIDE_SLUG}">1121 vs 1509 vs 1401 Guide</a><a href="1121-basmati-rice.html">1121 Basmati</a><a href="pusa-basmati-rice.html">Pusa Basmati</a><a href="sugandha-rice.html">Sugandha Rice</a><a href="pr-11-rice.html">PR 11 Rice</a></div></div>
         <div><h2 class="footer-title">Contact</h2><div class="footer-links"><span>119/6, Highway, Village Daha, Madanpur</span><span>Karnal 132001, Haryana, India</span><a href="tel:{PHONE_LINK}">{PHONE}</a><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp UrbanFresh</a><a href="{quote_href}">Quote form</a></div></div>
       </div><div class="container footer-bottom"><span>© <span data-year></span> UrbanFresh Rice Mills.</span><span>Availability, specifications, certificates and terms are confirmed per enquiry.</span></div></footer>
       <a class="whatsapp-float" href="{WA_URL}" target="_blank" rel="noopener" aria-label="Chat with UrbanFresh on WhatsApp">Quote on WhatsApp</a>
@@ -316,6 +317,11 @@ def render_product_page(product: dict) -> None:
         ("Can UrbanFresh pack rice for my brand?", "Private-label and buyer-specified packaging enquiries are welcome. Share pack sizes, material, artwork status and destination-market labelling needs."),
     ]
     faq_html = "".join(f'<details class="faq"><summary>{escape(q)}</summary><p>{escape(a)}</p></details>' for q, a in faq)
+    guide_link = ""
+    if product["name"] in {"1121 Basmati Rice", "1509 Basmati Rice", "1401 Basmati Rice"}:
+        guide_link = dedent(f"""
+          <section class="section-sm guide-callout"><div class="container guide-callout-grid"><div><p class="section-label">Buyer guide</p><h2>Comparing 1121, 1509 and 1401?</h2><p>Learn what grain appearance can show, why processing style matters and how to verify a bulk sample before buying.</p></div><a class="button button-arrow" href="{GUIDE_SLUG}">Read the Comparison</a></div></section>
+        """)
     schema = {
         "@context": "https://schema.org",
         "@graph": [
@@ -335,6 +341,7 @@ def render_product_page(product: dict) -> None:
     }
     body = page_hero(product["tag"], product["name"], product["summary"], product["image"], [("Home", "index.html"), ("Rice Products", "products.html"), (product["name"], None)]) + dedent(f"""
       <section class="section"><div class="container content-grid"><article class="prose"><p class="section-label">Milled in Karnal</p><h2>Buy {escape(product['name'])} against a real requirement</h2><p>{escape(product['detail'])}</p><div class="availability-note">{escape(controlled_note)}</div><h2>What to include in your enquiry</h2><p>Tell UrbanFresh the processing style, approximate metric tons, required pack, delivery city or destination port and buying timeline. Add important quality parameters or request guidance if your customer has not fixed them yet.</p><h2>Mill and supply context</h2><p>Your enquiry is handled from our rice mill at {ADDRESS}. The mill was established in 1978 and is equipped for cleaning, parboiling, drying, milling, sorting and packaging. Commercial feasibility is confirmed for each order.</p></article><aside class="info-panel"><h2>Quote {escape(product['name'])}</h2><p>Send a mill-ready buying brief.</p><div class="spec-list"><div class="spec-row"><span>Product</span><strong>{escape(product['name'])}</strong></div><div class="spec-row"><span>Processes</span><strong>{len(product['variants'])} listed options</strong></div><div class="spec-row"><span>Quantity</span><strong>Required</strong></div><div class="spec-row"><span>Packaging</span><strong>Buyer specified</strong></div><div class="spec-row"><span>Mill</span><strong>Daha Madanpur, Karnal</strong></div></div><a class="button button-arrow" href="contact.html#quote">Get Product Quote</a></aside></div></section>
+      {guide_link}
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Processing options</p><h2 class="section-title">See the rice formats in the mill catalogue.</h2></div><p class="section-lede">These are real product photographs from the manufacturing mill. Appearance can vary by crop and lot, so final samples and specifications should be approved commercially.</p></div><div class="variant-grid">{variants}</div></div></section>
       <section class="section"><div class="container"><p class="section-label">Buying questions</p><h2 class="section-title">Before you request {escape(product['name'])}.</h2><div class="faq-list">{faq_html}</div></div></section>
       <section class="section surface"><div class="container"><p class="section-label">Related rice</p><h2 class="section-title">Compare other mill products.</h2><div class="benefit-grid">{related}</div></div></section>
@@ -383,6 +390,7 @@ def render_home() -> None:
       <section class="fact-strip"><div class="container fact-grid"><div><strong>1978</strong><span>Mill established</span></div><div><strong>230 MT</strong><span>Stated daily production capacity</span></div><div><strong>3</strong><span>Production units</span></div><div><strong>30+</strong><span>Countries reached</span></div></div></section>
       <section class="section"><div class="container intro-grid"><div class="photo-stack"><img src="{image_path('mill-about-1.webp')}" alt="White rice in an open jute sack" width="900" height="700"><img src="{image_path('mill-about-2.webp')}" alt="Rice grains presented for trade" loading="lazy" width="700" height="700"></div><div><p class="section-label">UrbanFresh Rice Mills</p><h2 class="section-title">From paddy procurement to packed rice.</h2><p class="section-lede">The mill handles paddy selection, drying, parboiling, cleaning, milling, sorting and packaging. Modern pre-cleaners, de-huskers, polishers, sortex equipment, bins and magnets support the production flow.</p><ul class="check-list"><li>Family-operated rice manufacturing base in Karnal.</li><li>Basmati, non-basmati and residue-controlled rice ranges.</li><li>Bulk trade, export and buyer-brand packaging conversations.</li></ul><p><a class="button button-outline button-arrow" href="infrastructure.html">See the Mill Infrastructure</a></p></div></div></section>
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Basmati rice range</p><h2 class="section-title">Six basmati varieties, shown with real mill photographs.</h2></div><p class="section-lede">Each product page includes the processing formats listed by the mill. Final crop, specification and availability are confirmed against your enquiry.</p></div><div class="catalog-grid">{featured}</div><p class="section-action"><a class="button button-arrow" href="products.html">Explore Complete Catalogue</a></p></div></section>
+      <section class="section"><div class="container guide-feature"><div class="guide-feature-images"><img src="{image_path('category-1121.webp')}" alt="1121 Basmati rice grains" loading="lazy" width="700" height="520"><img src="{image_path('category-1509.webp')}" alt="1509 Basmati rice grains" loading="lazy" width="700" height="520"><img src="{image_path('category-1401.webp')}" alt="1401 Basmati rice grains" loading="lazy" width="700" height="520"></div><div><p class="section-label">Buyer guide</p><h2 class="section-title">1121, 1509 or 1401: what can the grain actually tell you?</h2><p class="section-lede">Compare like-for-like processing, inspect uniformity and chalkiness, then cook a controlled sample. Grain appearance is useful, but it should support a written specification rather than replace one.</p><a class="button button-outline button-arrow" href="{GUIDE_SLUG}">Read the Comparison Guide</a></div></div></section>
       <section class="section surface-dark"><div class="container split"><div><p class="section-label">Plant and process</p><h2 class="section-title">Built for cleaning, parboiling, drying and milling.</h2><p class="section-lede">The parboiling process uses treated soft water and sensor-controlled soaking. Mechanised drying is designed for uniform drying, while milling equipment supports cleaning, sorting, polishing and contamination control.</p><p><a class="button button-ghost button-arrow" href="infrastructure.html">Tour the Infrastructure</a></p></div><div class="dark-photo"><img src="{image_path('mill-plant.webp')}" alt="Rice processing plant at the Karnal mill" loading="lazy" width="900" height="720"></div></div></section>
       <section class="section"><div class="container content-grid"><article class="prose"><p class="section-label">Quality and registrations</p><h2>Checks begin before paddy enters the plant.</h2><p>Field procurement, drying, storage, pre-cleaning, de-stoning, grading, paddy separation, metal detection and trained supervision all form part of the mill's stated quality process.</p><p>Available mill documents include ISO 22000:2018, FSSAI, APEDA, U.S. FDA registration, Importer Exporter Code and rice-mill registrations. Buyers should request current copies and verify their scope for the intended order.</p><p><a class="button button-outline" href="quality.html">Quality Process</a> <a class="button button-outline" href="certifications.html">View Certificates</a></p></article><aside class="address-panel"><p class="section-label">Mill location</p><h2>119/6, Highway</h2><p>Village Daha, Madanpur<br>Karnal 132001, Haryana, India</p><a class="button button-arrow" href="contact.html#quote">Send Your Requirement</a></aside></div></section>
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Buyer questions</p><h2 class="section-title">Start with the facts that affect the order.</h2></div></div><div class="faq-list"><details class="faq"><summary>Which rice varieties does UrbanFresh manufacture?</summary><p>The catalogue covers six basmati ranges, five non-basmati ranges and four residue-controlled processing categories.</p></details><details class="faq"><summary>Where is the UrbanFresh rice mill?</summary><p>The manufacturing address is {ADDRESS}.</p></details><details class="faq"><summary>Can I request private-label packing?</summary><p>Yes. Send the rice, pack sizes, material, artwork status, volume and destination market for review.</p></details><details class="faq"><summary>Can overseas buyers and merchant exporters enquire?</summary><p>Yes. Include the destination country or port, product, volume, packaging and documentation expectations.</p></details></div></div></section>
@@ -483,9 +491,122 @@ def render_landing_pages() -> None:
         render_page(filename, title, meta, body, "", schema, image_path(image))
 
 
+def render_buyer_guide() -> None:
+    faq = [
+        ("Can I identify 1121, 1509 and 1401 Basmati only by looking at the grain?", "You can use grain appearance for an initial comparison, but sight alone is not reliable authentication. Compare the same processing style, measure a representative sample, cook it under controlled conditions and confirm the written product specification."),
+        ("Why should Steam rice be compared with Steam rice?", "Raw, Steam, Sella and Golden Sella are processing styles that change colour, surface appearance and cooking behaviour. Comparing different processing styles can hide the differences you are trying to evaluate between varieties."),
+        ("Which Basmati variety is chosen for extra-long cooked presentation?", "1121 Basmati is widely shortlisted when extra-long grain presentation and elongation are priorities. The offered lot still needs to be checked because crop, ageing, milling and sorting affect the final result."),
+        ("What should a bulk buyer request before placing an order?", "Request a representative sample, processing style, crop and ageing details, average grain measurement, broken tolerance, moisture, cooking expectations, packaging, current documents and a written commercial specification."),
+    ]
+    schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            organization_schema(),
+            {
+                "@type": "Article",
+                "headline": "1121 vs 1509 vs 1401 Basmati Rice: How Buyers Can Tell the Difference",
+                "description": "A practical grain and cooking comparison of 1121, 1509 and 1401 Basmati rice for wholesale and export buyers.",
+                "url": f"https://urbanfresh.in/{GUIDE_SLUG}",
+                "datePublished": "2026-07-14",
+                "dateModified": "2026-07-14",
+                "author": {"@type": "Organization", "name": "UrbanFresh Rice Mills"},
+                "publisher": {"@type": "Organization", "name": "UrbanFresh Rice Mills", "logo": {"@type": "ImageObject", "url": "https://urbanfresh.in/assets/images/urbanfresh-logo.webp"}},
+                "image": [
+                    f"https://urbanfresh.in/{image_path('category-1121.webp')}",
+                    f"https://urbanfresh.in/{image_path('category-1509.webp')}",
+                    f"https://urbanfresh.in/{image_path('category-1401.webp')}",
+                ],
+                "about": ["1121 Basmati Rice", "1509 Basmati Rice", "1401 Basmati Rice", "Basmati rice grain identification"],
+            },
+            {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": question, "acceptedAnswer": {"@type": "Answer", "text": answer}} for question, answer in faq]},
+        ],
+    }
+    faq_html = "".join(f'<details class="faq"><summary>{escape(question)}</summary><p>{escape(answer)}</p></details>' for question, answer in faq)
+    body = page_hero(
+        "Basmati buyer guide",
+        "1121 vs 1509 vs 1401 Basmati Rice: how can a buyer tell the difference?",
+        "A practical way to compare grain appearance, processing style and cooked performance before you approve a bulk rice specification.",
+        "category-1121.webp",
+        [("Home", "index.html"), ("Rice Products", "products.html"), ("1121 vs 1509 vs 1401", None)],
+    ) + dedent(f"""
+      <section class="section"><div class="container article-layout"><article class="buyer-article">
+        <div class="article-meta"><span>Buyer education</span><time datetime="2026-07-14">14 July 2026</time><span>UrbanFresh Rice Mills, Karnal</span></div>
+        <p class="article-lead">1121, 1509 and 1401 are three important numbered Basmati varieties. A common buyer question is simple: if three samples are all Steam rice, how do you tell them apart by looking at the grains?</p>
+        <div class="quick-answer"><strong>Short answer:</strong> compare like with like, inspect a representative grain sample and then run the same cooking test on every sample. Appearance can help you screen rice, but it cannot replace the supplier's written variety, crop and quality specification.</div>
+
+        <h2 id="processing-first">First, compare the same processing style</h2>
+        <p>Before comparing varieties, check whether every sample has been processed in the same way. Raw or White, Steam, Sella and Golden Sella are processing styles. They can change the grain's colour, surface and cooking behaviour.</p>
+        <p>That means 1121 Steam should be compared with 1509 Steam and 1401 Steam. Comparing 1121 Steam with 1401 Golden Sella may tell you more about processing than variety.</p>
+
+        <div class="comparison-visuals" aria-label="Basmati rice grain comparison photographs">
+          <figure><img src="{image_path('1121-steam.webp')}" alt="1121 Steam Basmati rice grains" loading="lazy" width="900" height="650"><figcaption><strong>1121 Steam</strong><span>Extra-long grain presentation</span></figcaption></figure>
+          <figure><img src="{image_path('1509-steam.webp')}" alt="1509 Steam Basmati rice grains" loading="lazy" width="900" height="650"><figcaption><strong>1509 Steam</strong><span>Commercial long-grain option</span></figcaption></figure>
+          <figure><img src="{image_path('1401-steam.webp')}" alt="1401 Steam Basmati rice grains" loading="lazy" width="900" height="650"><figcaption><strong>1401 Steam</strong><span>Aromatic numbered Basmati</span></figcaption></figure>
+        </div>
+        <p class="image-note">The photographs are reference examples from the mill catalogue. Crop, ageing, polishing, sorting, lighting and the offered lot can change appearance.</p>
+
+        <h2 id="at-a-glance">1121 vs 1509 vs 1401 at a glance</h2>
+        <div class="table-scroll" role="region" aria-label="1121, 1509 and 1401 Basmati rice comparison" tabindex="0"><table class="comparison-table">
+          <caption>Practical screening points for bulk buyers</caption>
+          <thead><tr><th scope="col">Buyer question</th><th scope="col">1121 Basmati</th><th scope="col">1509 Basmati</th><th scope="col">1401 Basmati</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Common buying position</th><td>Often shortlisted for premium extra-long presentation.</td><td>Often discussed as a practical commercial Basmati option.</td><td>Often considered when aroma and cooked-kernel uniformity matter.</td></tr>
+            <tr><th scope="row">What to inspect dry</th><td>Average kernel length, slenderness, uniformity, taper, chalkiness and broken percentage.</td><td>The same measurements, with close attention to lot uniformity because similar processing can resemble 1121.</td><td>Uniformity, shape, chalkiness, broken percentage and consistency across the sample.</td></tr>
+            <tr><th scope="row">What to inspect cooked</th><td>Elongation, separation, shape retention, aroma and mouthfeel.</td><td>Elongation, cooking yield, separation, texture and consistency.</td><td>Uniform cooked shape, aroma, separation and texture.</td></tr>
+            <tr><th scope="row">Do not approve from</th><td colspan="3">One photograph, a few hand-picked grains or a product name without a written lot specification.</td></tr>
+          </tbody>
+        </table></div>
+
+        <h2 id="visual-check">A six-step grain check for buyers</h2>
+        <ol class="numbered-checks">
+          <li><strong>Label every sample.</strong><span>Record the claimed variety, processing style, crop, ageing and supplier before opening the sample.</span></li>
+          <li><strong>Compare a representative quantity.</strong><span>Do not judge the lot from four or five attractive grains selected by hand.</span></li>
+          <li><strong>Use the same surface and light.</strong><span>Spread each sample separately on a clean, dark, matte surface under neutral light.</span></li>
+          <li><strong>Measure, do not guess.</strong><span>Check a random set of kernels for average length and width. Record broken, chalky, damaged and discoloured grains.</span></li>
+          <li><strong>Cook equal samples the same way.</strong><span>Use equal rice weight, soaking time, water, vessel and cooking time. Compare elongation, separation, aroma, shape and texture.</span></li>
+          <li><strong>Match the result to the contract.</strong><span>Keep a sealed approval sample and make sure the agreed variety and quality limits appear in the written commercial specification.</span></li>
+        </ol>
+
+        <h2 id="variety-not-grade">Variety is not the same as grade</h2>
+        <p>A rice sample can be genuine 1121, 1509 or 1401 and still fail a buyer's quality target. Variety names do not tell you the broken percentage, moisture, foreign matter, polish, crop, ageing, residue position, cooking result or packaging quality.</p>
+        <p>This is why a useful purchase enquiry combines the variety with the processing style and measurable acceptance points. For example: “1121 Steam Basmati, current or aged crop as agreed, buyer-approved grain and cooking specification, 25 kg bags, delivery to the stated destination.”</p>
+
+        <h2 id="choosing">Which variety should you choose?</h2>
+        <div class="choice-grid">
+          <article><h3>Choose 1121 for</h3><p>Buyers prioritising extra-long visual presentation and strong cooked elongation, subject to sample and specification approval.</p><a class="text-link" href="1121-basmati-rice.html">View 1121 options</a></article>
+          <article><h3>Choose 1509 for</h3><p>Commercial buying programmes balancing long-grain presentation, cooking performance, availability and target price.</p><a class="text-link" href="1509-basmati-rice.html">View 1509 options</a></article>
+          <article><h3>Choose 1401 for</h3><p>Buyers comparing aroma, cooked-kernel uniformity and an alternative numbered Basmati position.</p><a class="text-link" href="1401-basmati-rice.html">View 1401 options</a></article>
+        </div>
+
+        <h2 id="quote-brief">What to send the mill for an accurate quote</h2>
+        <p>Send the variety, processing style, approximate metric tons, pack size and material, destination, buying timeline and any fixed quality limits. If you have not finalised the variety, send your target cooked result and market position so the mill can discuss an appropriate sample.</p>
+        <div class="availability-note"><strong>Practical rule:</strong> photographs help start the conversation. A representative sample, controlled cooking test and accepted written specification should finish it.</div>
+
+        <h2 id="questions">Buyer questions about 1121, 1509 and 1401</h2>
+        <div class="faq-list">{faq_html}</div>
+
+        <div class="article-sources"><h2>Technical references</h2><p>This guide combines the buyer question in the supplied transcript with mill product photographs and established variety information.</p><ul><li><a href="https://icar.gov.in/en/crop-science/basmati-rice-varieties" target="_blank" rel="noopener">ICAR: Basmati rice varieties</a></li><li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5890003/" target="_blank" rel="noopener">Pusa Basmati 1121 and related improved varieties</a></li><li><a href="https://www.apeda.gov.in/sites/default/files/product/NEWLY_RELEASED_BASMATI_VARIETIES.pdf" target="_blank" rel="noopener">APEDA: newly released Basmati varieties</a></li></ul></div>
+      </article>
+      <aside class="article-aside"><div><p class="section-label">In this guide</p><nav aria-label="Article contents"><a href="#processing-first">Compare processing first</a><a href="#at-a-glance">Difference at a glance</a><a href="#visual-check">Six-step grain check</a><a href="#variety-not-grade">Variety vs grade</a><a href="#choosing">Which variety to choose</a><a href="#quote-brief">Build a quote brief</a></nav></div><div class="article-quote"><h2>Compare a real sample</h2><p>Send your rice, process, quantity, pack and destination.</p><a class="button button-arrow" href="contact.html#quote">Request a Mill Quote</a></div></aside>
+      </div></section>
+      <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Need help choosing the right Basmati?</h2><p>Tell UrbanFresh what your buyer wants to see after cooking, then request comparable mill samples.</p></div><a class="button button-arrow" href="contact.html#quote">Send Your Requirement</a></div></section>
+    """)
+    render_page(
+        GUIDE_SLUG,
+        "1121 vs 1509 vs 1401 Basmati Rice: Buyer Guide | UrbanFresh",
+        "Compare 1121, 1509 and 1401 Basmati rice by grain appearance, processing style and cooked performance. A practical guide for bulk rice buyers.",
+        body,
+        "",
+        schema,
+        image_path("category-1121.webp"),
+        "buyer-guide-page",
+    )
+
+
 def render_sitemap() -> None:
     pages = [
         ("", "weekly", "1.0"), ("products.html", "monthly", "0.9"), ("about.html", "monthly", "0.8"), ("infrastructure.html", "monthly", "0.8"), ("quality.html", "monthly", "0.8"), ("certifications.html", "monthly", "0.7"), ("contact.html", "monthly", "0.9"),
+        (GUIDE_SLUG, "monthly", "0.9"),
         ("basmati-rice-manufacturer-india.html", "monthly", "0.9"), ("basmati-rice-exporter-india.html", "monthly", "0.9"), ("rice-manufacturer-for-merchant-exporters.html", "monthly", "0.8"), ("private-label.html", "monthly", "0.8"),
     ] + [(item["slug"], "monthly", "0.9") for item in PRODUCTS]
     urls = "\n".join(f'  <url><loc>https://urbanfresh.in/{slug}</loc><changefreq>{freq}</changefreq><priority>{priority}</priority></url>' for slug, freq, priority in pages)
@@ -503,6 +624,7 @@ def main() -> None:
     render_certifications()
     render_contact()
     render_landing_pages()
+    render_buyer_guide()
     render_sitemap()
     print(f"Rebuilt UrbanFresh with {len(PRODUCTS)} product pages.")
 

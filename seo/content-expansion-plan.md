@@ -32,3 +32,12 @@ Country pages can attract high-intent importers, but they need real destination-
 Use Search Console queries and repeated sales questions to choose articles. Good candidates are comparisons and procurement questions, such as Steam versus Golden Sella, information required for a rice quotation, and how merchant exporters should prepare a mill brief.
 
 Publish one useful guide at a time, link it to the relevant product and commercial page, then measure impressions, clicks and qualified WhatsApp leads for four weeks.
+
+### Implemented buyer guide
+
+- 1121 vs 1509 vs 1401 Basmati rice: grain screening, controlled cooking comparison and specification checks — `1121-vs-1509-vs-1401-basmati-rice.html`
+- Source: repeated buyer question supplied as a short video transcript.
+- Primary search intent: `1121 vs 1509 vs 1401 basmati rice difference`.
+- Supporting intent: `how to identify basmati rice varieties`.
+- Conversion path: comparison guide → relevant product page → sample or quote request.
+- Measurement rule: use the weekly Search Console report for four comparable weeks before changing the title, scope or internal links.
