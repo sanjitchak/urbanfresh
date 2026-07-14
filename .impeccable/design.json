@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-14T00:00:00Z",
+  "title": "Design System: UrbanFresh Rice Mills",
+  "extensions": {
+    "colorMeta": {
+      "mill-green": {"role": "primary", "displayName": "Mill Green", "description": "Core brand green for headings and dark surfaces."},
+      "rice-gold": {"role": "accent", "displayName": "Rice Gold", "description": "Primary action color used sparingly."},
+      "husk-paper": {"role": "neutral", "displayName": "Husk Paper", "description": "Warm page surface inspired by rice husk and trade paper."},
+      "ink": {"role": "neutral", "displayName": "Ink", "description": "Green-tinted primary text."}
+    },
+    "breakpoints": ["720px", "980px"]
+  },
+  "components": [
+    {"name": "Primary quote button", "kind": "button", "refersTo": "button-primary", "description": "Compact gold action with visible interaction states."},
+    {"name": "Quote field", "kind": "input", "refersTo": "field", "description": "Clearly labelled trade enquiry field with strong focus and error states."},
+    {"name": "Product ledger", "kind": "card", "description": "Image-led numbered rice entry with restrained borders and no resting shadow."}
+  ],
+  "narrative": {
+    "northStar": "The Mill Sample Book",
+    "overview": "A sturdy, specific trade website where rice varieties and a complete quote brief do the work.",
+    "keyCharacteristics": ["Product first", "Plain trade language", "Warm paper surfaces", "Modest corners", "Flat at rest", "Accessible forms"],
+    "rules": [
+      {"name": "The Trade Voice Rule", "section": "typography", "body": "Write as an experienced mill representative. Use concrete buyer details and direct sentences."},
+      {"name": "The Product First Rule", "section": "components", "body": "Numbered rice and its buying context appear before decorative brand material."},
+      {"name": "The Flat Ledger Rule", "section": "elevation", "body": "Use rules and spacing for structure. Reserve shadows for state and necessary elevation."}
+    ],
+    "dos": ["Use OKLCH tokens", "Meet WCAG AA", "Keep body copy within 75 characters", "Respect reduced motion"],
+    "donts": ["No em dashes", "No copied competitor imagery", "No repetitive AI card grids", "No unsupported trade claims", "No side-stripe accents"]
+  }
+}
