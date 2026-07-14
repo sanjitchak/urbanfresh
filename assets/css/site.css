@@ -124,8 +124,8 @@ button { cursor: pointer; }
 .trust-item small { color: var(--ink-soft); }
 
 .intro-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 70px; align-items: center; }
-.rice-art { position: relative; min-height: 510px; padding: 28px; border-radius: 28px; background: #dfe9df; overflow: hidden; }
-.rice-art::before { position: absolute; inset: 55px 0 0 50px; content: ""; background: radial-gradient(ellipse at center, #fffdf4 0 7%, #eddfbd 8% 9%, transparent 10%) 0 0/54px 24px; opacity: .85; transform: rotate(-10deg); }
+.rice-art { position: relative; min-height: 510px; padding: 28px; border-radius: 28px; background: #dfe9df url("https://www.biagrifoods.com/public/static/Pure-Natural-bg1.webp") center/cover no-repeat; overflow: hidden; }
+.rice-art::before { position: absolute; inset: 0; content: ""; background: linear-gradient(180deg, rgba(15,61,46,.03), rgba(15,61,46,.38)); }
 .rice-art-card { position: absolute; left: 28px; bottom: 28px; width: min(330px, calc(100% - 56px)); padding: 25px; color: var(--white); background: var(--forest); border-radius: 18px; box-shadow: var(--shadow); }
 .rice-art-card strong { display: block; margin-bottom: 8px; color: var(--gold-2); font: 700 1.5rem/1.2 var(--serif); }
 .check-list { display: grid; gap: 15px; padding: 0; margin: 28px 0 0; list-style: none; }
@@ -135,10 +135,12 @@ button { cursor: pointer; }
 .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .product-card { position: relative; display: flex; flex-direction: column; min-height: 415px; padding: 26px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: transform .2s ease, box-shadow .2s ease; }
 .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-.product-visual { position: relative; height: 138px; margin: -26px -26px 25px; background: linear-gradient(145deg, #e4eddf, #f5e5bd); overflow: hidden; }
-.product-visual::before, .product-visual::after { position: absolute; content: ""; border-radius: 55% 45% 55% 45%; background: linear-gradient(90deg, #fffbe8, #dbbd76); transform: rotate(-25deg); box-shadow: 34px 20px 0 #f7e7b8, 72px -9px 0 #fff8dd, 109px 29px 0 #e4c87d, 145px 1px 0 #fff9e2, 183px 35px 0 #e8d094, 219px 3px 0 #fff6d9, 252px 33px 0 #dec17a; }
-.product-visual::before { width: 34px; height: 12px; left: 18px; top: 45px; }
-.product-visual::after { width: 28px; height: 10px; left: 4px; top: 86px; opacity: .72; }
+.product-visual { position: relative; height: 174px; margin: -26px -26px 25px; background-color: #e4eddf; background-position: center; background-size: cover; overflow: hidden; }
+.product-visual::after { position: absolute; inset: 0; content: ""; background: linear-gradient(180deg, transparent 55%, rgba(8,42,31,.28)); }
+.product-grid .product-card:nth-child(1) .product-visual { background-image: url("https://www.biagrifoods.com/public/static/breadcrumb-rice.jpg"); }
+.product-grid .product-card:nth-child(2) .product-visual { background-image: url("https://www.biagrifoods.com/public/uploads/all_purpose/17525643569757.webp"); }
+.product-grid .product-card:nth-child(3) .product-visual { background-image: url("https://www.biagrifoods.com/public/uploads/all_purpose/17525643657992.webp"); }
+.product-grid .product-card:nth-child(4) .product-visual { background-image: url("https://www.biagrifoods.com/public/static/Pure-Natural-bg1.webp"); background-position: center 62%; }
 .product-tag { color: var(--leaf); font-size: .74rem; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
 .product-card h3 { margin: 9px 0 10px; font: 700 1.55rem/1.15 var(--serif); }
 .product-card p { margin: 0 0 22px; color: var(--ink-soft); font-size: .94rem; }
@@ -155,7 +157,12 @@ button { cursor: pointer; }
 
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
 .package-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.package-card { min-height: 170px; padding: 25px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; }
+.package-card { position: relative; min-height: 184px; padding: 26px 22px 24px 116px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.package-card::before { position: absolute; left: 14px; top: 18px; width: 88px; height: 138px; content: ""; background-position: center; background-repeat: no-repeat; background-size: contain; }
+.package-card:nth-child(1)::before { background-image: url("https://www.biagrifoods.com/public/static/Jute.webp"); }
+.package-card:nth-child(2)::before { background-image: url("https://www.biagrifoods.com/public/static/BOPP.webp"); }
+.package-card:nth-child(3)::before { background-image: url("https://www.biagrifoods.com/public/static/Jar.webp"); }
+.package-card:nth-child(4)::before { background-image: url("https://www.biagrifoods.com/public/static/Plain-PP.webp"); }
 .package-card strong { display: block; margin-bottom: 9px; font: 700 1.2rem/1.25 var(--serif); }
 .package-card span { color: var(--ink-soft); font-size: .92rem; }
 .package-card:first-child { transform: translateY(22px); }
@@ -168,7 +175,7 @@ button { cursor: pointer; }
 .quote-band h2 { max-width: 760px; margin: 0; font: 700 clamp(2rem, 4.3vw, 3.75rem)/1.05 var(--serif); letter-spacing: -.04em; }
 .quote-band p { max-width: 670px; margin: 16px 0 0; color: #c4d6ce; }
 
-.page-hero { position: relative; padding: 95px 0 82px; color: var(--white); background: linear-gradient(125deg, #0a2e23, #176148); overflow: hidden; }
+.page-hero { position: relative; padding: 95px 0 82px; color: var(--white); background: linear-gradient(100deg, rgba(7,43,32,.96) 0%, rgba(11,68,49,.9) 54%, rgba(11,68,49,.46) 100%), url("https://www.biagrifoods.com/public/static/breadcrumb-rice.jpg") center/cover no-repeat; overflow: hidden; }
 .page-hero::after { position: absolute; right: 2%; bottom: -200px; width: 480px; height: 480px; content: ""; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; box-shadow: 0 0 0 65px rgba(255,255,255,.025), 0 0 0 130px rgba(255,255,255,.018); }
 .breadcrumbs { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; color: #c5d8ce; font-size: .84rem; }
 .breadcrumbs span::before { margin-right: 8px; content: "/"; opacity: .55; }
