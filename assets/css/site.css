@@ -346,7 +346,7 @@ h1, h2, h3 { text-wrap: balance; }
   .footer-links a { min-height: 44px; display: flex; align-items: center; }
   .footer-bottom { padding-bottom: 84px; flex-direction: column; font-size: .9rem; }
   .whatsapp-float { display: none; }
-  .mobile-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: grid; grid-template-columns: 1fr; padding: 9px; background: oklch(98% 0.01 88 / .98); border-top: 1px solid var(--line); }
+  .mobile-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 9px; background: oklch(98% 0.01 88 / .98); border-top: 1px solid var(--line); }
   .mobile-cta .button { min-height: 48px; padding-inline: 10px; font-size: 1rem; }
 }
 
