@@ -16,11 +16,12 @@ The BI Agri Foods site demonstrates a broad search architecture: company pages, 
 - 1121 Basmati
 - 1718 Basmati
 - 1509 Basmati
+- 1401 Basmati
 - Traditional Basmati
 
 ## Level 3: processing-variant pages — wait for product confirmation
 
-Potential pages include 1121 Steam, 1121 Sella, 1121 Golden Sella and equivalent 1718/1509 pages. Create them only after the mill confirms that the variant is genuinely supplied and provides buyer-approved specifications. Each page must contain distinct product information, not a swapped keyword.
+Potential pages include 1121 Steam, 1121 Sella, 1121 Golden Sella and equivalent 1718/1509/1401 pages. Create them only after the mill confirms that the variant is genuinely supplied and provides buyer-approved specifications. Each page must contain distinct product information, not a swapped keyword.
 
 ## Level 4: destination-market pages — wait for export evidence
 
