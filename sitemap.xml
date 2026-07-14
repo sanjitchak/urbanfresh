@@ -2,16 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://urbanfresh.in/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://urbanfresh.in/products.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://urbanfresh.in/infrastructure.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://urbanfresh.in/quality.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://urbanfresh.in/certifications.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://urbanfresh.in/contact.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://urbanfresh.in/basmati-rice-manufacturer-india.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://urbanfresh.in/rice-manufacturer-for-merchant-exporters.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://urbanfresh.in/1121-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://urbanfresh.in/1718-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://urbanfresh.in/1509-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://urbanfresh.in/1401-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://urbanfresh.in/traditional-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://urbanfresh.in/basmati-rice-exporter-india.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/rice-manufacturer-for-merchant-exporters.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://urbanfresh.in/private-label.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://urbanfresh.in/quality.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://urbanfresh.in/about.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://urbanfresh.in/contact.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://urbanfresh.in/1121-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/1509-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/traditional-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/1401-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/pusa-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/1718-basmati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/sugandha-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/sharbati-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/pr-11-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/parmal-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/sona-masoori-raw-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/pesticide-residue-free-raw-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/pesticide-residue-free-steam-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/pesticide-residue-free-sella-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://urbanfresh.in/pesticide-residue-free-golden-sella-rice.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
 </urlset>
