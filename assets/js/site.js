@@ -30,6 +30,22 @@
   const year = document.querySelector('[data-year]');
   if (year) year.textContent = new Date().getFullYear();
 
+  const whatsappFollowUp = document.querySelector('[data-whatsapp-follow-up]');
+  if (whatsappFollowUp) {
+    const genericMessage = 'Hello UrbanFresh, I have submitted a bulk rice quote request and would like to continue on WhatsApp.';
+    let followUpUrl = `https://wa.me/${phone}?text=${encodeURIComponent(genericMessage)}`;
+
+    try {
+      const savedUrl = window.sessionStorage.getItem('urbanfresh_quote_whatsapp_url');
+      if (savedUrl && savedUrl.startsWith(`https://wa.me/${phone}`)) followUpUrl = savedUrl;
+      window.sessionStorage.removeItem('urbanfresh_quote_whatsapp_url');
+    } catch (error) {
+      // The generic WhatsApp message still works if browser storage is unavailable.
+    }
+
+    whatsappFollowUp.href = followUpUrl;
+  }
+
   const form = document.querySelector('[data-quote-form]');
   if (!form) return;
 
@@ -99,6 +115,7 @@
 
     data.set('lead_id', makeLeadId());
     data.set('source_page', window.location.href);
+    const followUpUrl = whatsappUrl(data);
     submitButton.disabled = true;
     submitButton.textContent = 'Saving your request...';
     form.setAttribute('aria-busy', 'true');
@@ -110,15 +127,13 @@
         body: new URLSearchParams(data)
       });
 
-      form.reset();
-      showStatus('Your quote request has been saved. For the quickest follow-up, send the same details to UrbanFresh on WhatsApp.', 'success');
-      const followUp = document.createElement('a');
-      followUp.href = whatsappUrl(data);
-      followUp.target = '_blank';
-      followUp.rel = 'noopener';
-      followUp.className = 'button button-small status-action';
-      followUp.textContent = 'Continue on WhatsApp';
-      status.append(document.createElement('br'), followUp);
+      try {
+        window.sessionStorage.setItem('urbanfresh_quote_whatsapp_url', followUpUrl);
+      } catch (error) {
+        // The thank-you page supplies a generic WhatsApp message as a fallback.
+      }
+
+      window.location.assign('thank-you.html');
     } catch (error) {
       showStatus('We could not save the request. Check your connection or send the details on WhatsApp.', 'error');
       const fallback = document.createElement('a');
