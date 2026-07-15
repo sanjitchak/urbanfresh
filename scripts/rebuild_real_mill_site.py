@@ -13,11 +13,70 @@ ROOT = Path(__file__).resolve().parents[1]
 PHONE = "+91 94335 69217"
 PHONE_LINK = "+919433569217"
 ADDRESS = "119/6, Highway, Village Daha, Madanpur, Karnal 132001, Haryana, India"
-CSS_VERSION = "20260714-11"
+CSS_VERSION = "20260715-1"
 JS_VERSION = "20260714-2"
 WA_TEXT = "Hello UrbanFresh, I would like a bulk rice quote."
 WA_URL = f"https://wa.me/919433569217?text={WA_TEXT.replace(' ', '%20').replace(',', '%2C')}"
 GUIDE_SLUG = "1121-vs-1509-vs-1401-basmati-rice.html"
+PRICE_SLUG = "rice-price-india.html"
+PRICE_DATE_ISO = "2026-07-06"
+PRICE_DATE_LABEL = "6 July 2026"
+
+
+PRICE_ROWS = [
+    ("basmati", "Basmati", "Raw", "2024-25", "7.30 mm", 114000, 1283),
+    ("basmati", "Basmati", "White", "2024-25", "7.30 mm", 95000, 1083),
+    ("1121", "1121", "Raw", "2025-26", "8.35 mm", 103000, 1167),
+    ("1121", "1121", "Steam", "2025-26", "8.35 mm", 100000, 1136),
+    ("1121", "1121", "White", "2025-26", "8.35 mm", 94000, 1073),
+    ("1121", "1121", "Golden", "2025-26", "8.30 mm", 98000, 1115),
+    ("1718", "1718", "Steam", "2025-26", "8.35 mm", 95000, 1083),
+    ("1718", "1718", "White", "2025-26", "8.35 mm", 91000, 1041),
+    ("1718", "1718", "Golden", "2025-26", "8.30 mm", 94000, 1073),
+    ("1509", "1509", "Steam", "2025-26", "8.40 mm", 92000, 1052),
+    ("1509", "1509", "White", "2025-26", "8.40 mm", 85000, 978),
+    ("1509", "1509", "Golden", "2025-26", "8.35 mm", 88000, 1009),
+    ("taj", "Taj", "Steam", "2025-26", "8.10 mm", 75000, 873),
+    ("taj", "Taj", "White", "2025-26", "8.10 mm", 72000, 841),
+    ("taj", "Taj", "Golden", "2025-26", "8.10 mm", 75000, 873),
+    ("sugandha", "Sugandha", "Steam", "2025-26", "7.80 mm", 82000, 946),
+    ("sugandha", "Sugandha", "White", "2025-26", "7.80 mm", 73000, 852),
+    ("sugandha", "Sugandha", "Golden", "2025-26", "7.75 mm", 77000, 894),
+    ("1401", "1401", "Steam", "2025-26", "7.80 mm", 98000, 1115),
+    ("1401", "1401", "White", "2025-26", "7.80 mm", 97000, 1104),
+    ("pusa", "Pusa", "Raw", "2025-26", "7.50 mm", None, None),
+    ("pusa", "Pusa", "Steam", "2025-26", "7.50 mm", None, None),
+    ("pusa", "Pusa", "White", "2025-26", "7.50 mm", None, None),
+    ("pusa", "Pusa", "Golden", "2025-26", "7.50 mm", None, None),
+    ("rh-10", "RH-10", "Steam", "2025-26", "7.50 mm", 72000, 841),
+    ("rh-10", "RH-10", "White", "2025-26", "7.50 mm", 65000, 767),
+    ("sharbati", "Sharbati", "Steam", "2025-26", "7.00 mm", 72000, 841),
+    ("sharbati", "Sharbati", "White", "2025-26", "7.00 mm", 66000, 778),
+    ("pr-14", "PR-14", "Steam", "2025-26", "6.80 mm", 46000, 567),
+    ("pr-14", "PR-14", "White", "2025-26", "6.80 mm", 45500, 562),
+]
+
+
+PRICE_PRODUCT_ANCHORS = {
+    "1121 Basmati Rice": "1121",
+    "1718 Basmati Rice": "1718",
+    "1509 Basmati Rice": "1509",
+    "1401 Basmati Rice": "1401",
+    "Pusa Basmati Rice": "pusa",
+    "Sugandha Rice": "sugandha",
+    "Sharbati Rice": "sharbati",
+}
+
+
+PRICE_VARIETY_LINKS = {
+    "1121": "1121-basmati-rice.html",
+    "1718": "1718-basmati-rice.html",
+    "1509": "1509-basmati-rice.html",
+    "Sugandha": "sugandha-rice.html",
+    "1401": "1401-basmati-rice.html",
+    "Pusa": "pusa-basmati-rice.html",
+    "Sharbati": "sharbati-rice.html",
+}
 
 
 PRODUCTS = [
@@ -254,7 +313,7 @@ def footer(contact_page: bool = False) -> str:
       <footer class="site-footer"><div class="container footer-grid">
         <div class="footer-brand"><a class="brand" href="index.html"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt=""><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><p>A family-operated rice mill established in 1978, serving bulk buyers from Village Daha Madanpur, Karnal.</p></div>
         <div><h2 class="footer-title">Mill</h2><div class="footer-links"><a href="about.html">About UrbanFresh</a><a href="infrastructure.html">Infrastructure</a><a href="quality.html">Quality Control</a><a href="certifications.html">Certifications</a><a href="private-label.html">Private Label</a></div></div>
-        <div><h2 class="footer-title">Rice range</h2><div class="footer-links"><a href="products.html">All Rice Products</a><a href="{GUIDE_SLUG}">1121 vs 1509 vs 1401 Guide</a><a href="1121-basmati-rice.html">1121 Basmati</a><a href="pusa-basmati-rice.html">Pusa Basmati</a><a href="sugandha-rice.html">Sugandha Rice</a><a href="pr-11-rice.html">PR 11 Rice</a></div></div>
+        <div><h2 class="footer-title">Rice range</h2><div class="footer-links"><a href="products.html">All Rice Products</a><a href="{PRICE_SLUG}">Latest Rice Prices</a><a href="{GUIDE_SLUG}">1121 vs 1509 vs 1401 Guide</a><a href="1121-basmati-rice.html">1121 Basmati</a><a href="pusa-basmati-rice.html">Pusa Basmati</a><a href="sugandha-rice.html">Sugandha Rice</a><a href="pr-11-rice.html">PR 11 Rice</a></div></div>
         <div><h2 class="footer-title">Contact</h2><div class="footer-links"><span>119/6, Highway, Village Daha, Madanpur</span><span>Karnal 132001, Haryana, India</span><a href="tel:{PHONE_LINK}">{PHONE}</a><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp UrbanFresh</a><a href="{quote_href}">Quote form</a></div></div>
       </div><div class="container footer-bottom"><span>© <span data-year></span> UrbanFresh Rice Mills.</span><span>Availability, specifications, certificates and terms are confirmed per enquiry.</span></div></footer>
       <a class="whatsapp-float" href="{WA_URL}" target="_blank" rel="noopener" aria-label="Chat with UrbanFresh on WhatsApp">Quote on WhatsApp</a>
@@ -322,6 +381,9 @@ def render_product_page(product: dict) -> None:
         guide_link = dedent(f"""
           <section class="section-sm guide-callout"><div class="container guide-callout-grid"><div><p class="section-label">Buyer guide</p><h2>Comparing 1121, 1509 and 1401?</h2><p>Learn what grain appearance can show, why processing style matters and how to verify a bulk sample before buying.</p></div><a class="button button-arrow" href="{GUIDE_SLUG}">Read the Comparison</a></div></section>
         """)
+    price_link = ""
+    if product["name"] in PRICE_PRODUCT_ANCHORS:
+        price_link = f'<a class="text-link product-price-link" href="{PRICE_SLUG}#{PRICE_PRODUCT_ANCHORS[product["name"]]}">View {PRICE_DATE_LABEL} indicative rates</a>'
     schema = {
         "@context": "https://schema.org",
         "@graph": [
@@ -340,7 +402,7 @@ def render_product_page(product: dict) -> None:
         ],
     }
     body = page_hero(product["tag"], product["name"], product["summary"], product["image"], [("Home", "index.html"), ("Rice Products", "products.html"), (product["name"], None)]) + dedent(f"""
-      <section class="section"><div class="container content-grid"><article class="prose"><p class="section-label">Milled in Karnal</p><h2>{escape(product['name'])} for wholesale and export requirements</h2><p>{escape(product['detail'])}</p><div class="availability-note">{escape(controlled_note)}</div><h2>What to include in your enquiry</h2><p>Tell us the processing style, approximate metric tons, required pack, delivery city or destination port and buying timeline. Add important quality parameters or ask for guidance if your customer has not fixed them yet.</p><h2>Made at our Karnal rice mill</h2><p>We handle your enquiry from our rice mill at {ADDRESS}. Established in 1978, our plant is equipped for cleaning, parboiling, drying, milling, sorting and packaging. We confirm commercial feasibility for every order.</p></article><aside class="info-panel"><h2>Quote {escape(product['name'])}</h2><p>Send a complete buying brief.</p><div class="spec-list"><div class="spec-row"><span>Product</span><strong>{escape(product['name'])}</strong></div><div class="spec-row"><span>Processes</span><strong>{len(product['variants'])} options</strong></div><div class="spec-row"><span>Quantity</span><strong>Required</strong></div><div class="spec-row"><span>Packaging</span><strong>Buyer specified</strong></div><div class="spec-row"><span>Mill</span><strong>Daha Madanpur, Karnal</strong></div></div><a class="button button-arrow" href="contact.html#quote">Get Product Quote</a></aside></div></section>
+      <section class="section"><div class="container content-grid"><article class="prose"><p class="section-label">Milled in Karnal</p><h2>{escape(product['name'])} for wholesale and export requirements</h2><p>{escape(product['detail'])}</p><div class="availability-note">{escape(controlled_note)}</div><h2>What to include in your enquiry</h2><p>Tell us the processing style, approximate metric tons, required pack, delivery city or destination port and buying timeline. Add important quality parameters or ask for guidance if your customer has not fixed them yet.</p><h2>Made at our Karnal rice mill</h2><p>We handle your enquiry from our rice mill at {ADDRESS}. Established in 1978, our plant is equipped for cleaning, parboiling, drying, milling, sorting and packaging. We confirm commercial feasibility for every order.</p></article><aside class="info-panel"><h2>Quote {escape(product['name'])}</h2><p>Send a complete buying brief.</p><div class="spec-list"><div class="spec-row"><span>Product</span><strong>{escape(product['name'])}</strong></div><div class="spec-row"><span>Processes</span><strong>{len(product['variants'])} options</strong></div><div class="spec-row"><span>Quantity</span><strong>Required</strong></div><div class="spec-row"><span>Packaging</span><strong>Buyer specified</strong></div><div class="spec-row"><span>Mill</span><strong>Daha Madanpur, Karnal</strong></div></div><a class="button button-arrow" href="contact.html#quote">Get Product Quote</a>{price_link}</aside></div></section>
       {guide_link}
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Processing options</p><h2 class="section-title">Choose the rice format for your market.</h2></div><p class="section-lede">These photographs show rice from our product range. Appearance can vary by crop and lot, so we confirm the final sample and specification with each buyer.</p></div><div class="variant-grid">{variants}</div></div></section>
       <section class="section"><div class="container"><p class="section-label">Buying questions</p><h2 class="section-title">Before you request {escape(product['name'])}.</h2><div class="faq-list">{faq_html}</div></div></section>
@@ -391,6 +453,7 @@ def render_home() -> None:
       <section class="section"><div class="container intro-grid"><div class="photo-stack"><img src="{image_path('mill-about-1.webp')}" alt="White rice in an open jute sack" width="900" height="700"><img src="{image_path('mill-about-2.webp')}" alt="Rice grains presented for trade" loading="lazy" width="700" height="700"></div><div><p class="section-label">UrbanFresh Rice Mills</p><h2 class="section-title">From paddy procurement to packed rice.</h2><p class="section-lede">We handle paddy selection, drying, parboiling, cleaning, milling, sorting and packaging. Our production flow uses pre-cleaners, de-huskers, polishers, sortex equipment, bins and magnets.</p><ul class="check-list"><li>Family-operated rice manufacturing in Karnal.</li><li>Basmati, non-basmati and residue-controlled rice ranges.</li><li>Bulk supply, export and buyer-brand packaging.</li></ul><p><a class="button button-outline button-arrow" href="infrastructure.html">See Our Mill Infrastructure</a></p></div></div></section>
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Basmati rice range</p><h2 class="section-title">Six basmati varieties from our Karnal mill.</h2></div><p class="section-lede">Explore the processing formats we offer, then send your crop, specification, quantity, packaging and destination for current availability.</p></div><div class="catalog-grid">{featured}</div><p class="section-action"><a class="button button-arrow" href="products.html">Explore Complete Catalogue</a></p></div></section>
       <section class="section"><div class="container guide-feature"><div class="guide-feature-images"><img src="{image_path('category-1121.webp')}" alt="1121 Basmati rice grains" loading="lazy" width="700" height="520"><img src="{image_path('category-1509.webp')}" alt="1509 Basmati rice grains" loading="lazy" width="700" height="520"><img src="{image_path('category-1401.webp')}" alt="1401 Basmati rice grains" loading="lazy" width="700" height="520"></div><div><p class="section-label">Buyer guide</p><h2 class="section-title">1121, 1509 or 1401: what can the grain actually tell you?</h2><p class="section-lede">Compare like-for-like processing, inspect uniformity and chalkiness, then cook a controlled sample. Grain appearance is useful, but it should support a written specification rather than replace one.</p><a class="button button-outline button-arrow" href="{GUIDE_SLUG}">Read the Comparison Guide</a></div></div></section>
+      <section class="section-sm guide-callout"><div class="container guide-callout-grid"><div><p class="section-label">Latest mill rates · {PRICE_DATE_LABEL}</p><h2>Indicative wholesale and export rice prices.</h2><p>Compare variety, processing type, crop year, average grain length, INR ex-mill rates and USD FOB rates from our latest approved price list.</p></div><a class="button button-arrow" href="{PRICE_SLUG}">View Rice Prices</a></div></section>
       <section class="section surface-dark"><div class="container split"><div><p class="section-label">Plant and process</p><h2 class="section-title">Built for cleaning, parboiling, drying and milling.</h2><p class="section-lede">The parboiling process uses treated soft water and sensor-controlled soaking. Mechanised drying is designed for uniform drying, while milling equipment supports cleaning, sorting, polishing and contamination control.</p><p><a class="button button-ghost button-arrow" href="infrastructure.html">Tour the Infrastructure</a></p></div><div class="dark-photo"><img src="{image_path('mill-plant.webp')}" alt="Rice processing plant at the Karnal mill" loading="lazy" width="900" height="720"></div></div></section>
       <section class="section"><div class="container content-grid"><article class="prose"><p class="section-label">Quality and registrations</p><h2>Checks begin before paddy enters our plant.</h2><p>Our quality process covers field procurement, drying, storage, pre-cleaning, de-stoning, grading, paddy separation, metal detection and trained supervision.</p><p>Our available documents include ISO 22000:2018, FSSAI, APEDA, U.S. FDA registration, Importer Exporter Code and rice-mill registrations. Buyers can request current copies and verify their scope for the intended order.</p><p><a class="button button-outline" href="quality.html">Quality Process</a> <a class="button button-outline" href="certifications.html">View Certificates</a></p></article><aside class="address-panel"><p class="section-label">Our mill location</p><h2>119/6, Highway</h2><p>Village Daha, Madanpur<br>Karnal 132001, Haryana, India</p><a class="button button-arrow" href="contact.html#quote">Send Your Requirement</a></aside></div></section>
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Buyer questions</p><h2 class="section-title">Start with the facts that affect the order.</h2></div></div><div class="faq-list"><details class="faq"><summary>Which rice varieties does UrbanFresh manufacture?</summary><p>The catalogue covers six basmati ranges, five non-basmati ranges and four residue-controlled processing categories.</p></details><details class="faq"><summary>Where is the UrbanFresh rice mill?</summary><p>The manufacturing address is {ADDRESS}.</p></details><details class="faq"><summary>Can I request private-label packing?</summary><p>Yes. Send the rice, pack sizes, material, artwork status, volume and destination market for review.</p></details><details class="faq"><summary>Can overseas buyers and merchant exporters enquire?</summary><p>Yes. Include the destination country or port, product, volume, packaging and documentation expectations.</p></details></div></div></section>
@@ -489,6 +552,114 @@ def render_landing_pages() -> None:
           <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Have a buyer requirement ready?</h2><p>Send product, volume, pack, destination and timeline in one message.</p></div><a class="button button-arrow" href="contact.html#quote">Request Quote</a></div></section>
         """)
         render_page(filename, title, meta, body, "", schema, image_path(image))
+
+
+def render_price_page() -> None:
+    table_rows = []
+    anchored = set()
+    for anchor, variety, rice_type, crop_year, avg_length, inr_price, usd_price in PRICE_ROWS:
+        row_id = f' id="{anchor}"' if anchor not in anchored else ""
+        anchored.add(anchor)
+        variety_label = escape(variety)
+        if variety in PRICE_VARIETY_LINKS:
+            variety_label = f'<a href="{PRICE_VARIETY_LINKS[variety]}">{variety_label}</a>'
+        inr_label = f"₹{inr_price:,.0f}" if inr_price is not None else "Update soon"
+        usd_label = f"${usd_price:,.0f}" if usd_price is not None else "Update soon"
+        price_class = ' class="price-update-soon"' if inr_price is None else ""
+        table_rows.append(dedent(f"""
+          <tr{row_id}{price_class}><th scope="row">{variety_label}</th><td>{escape(rice_type)}</td><td>{escape(crop_year)}</td><td>{escape(avg_length)}</td><td>{inr_label}</td><td>{usd_label}</td></tr>
+        """).strip())
+
+    faq = [
+        ("Are these final rice prices?", "No. These are indicative mill rates dated 6 July 2026. A final quotation depends on the variety, processing type, crop, quality specification, quantity, packaging, destination, payment terms and delivery schedule."),
+        ("What does PMT mean in the rice price table?", "PMT means per metric ton. The INR column is the rate-sheet value for loose ex-mill rice, while the USD column is the rate-sheet value for 40 kg jute bag FOB supply."),
+        ("Which FOB port is included in the USD rice price?", "The supplied rate sheet does not name a port. Share the destination and required port so the final quotation can state the applicable FOB basis and logistics terms."),
+        ("What do White and Golden mean in this price list?", "White and Golden are reproduced exactly as written in the supplied mill rate sheet. Confirm the required processing specification with UrbanFresh before placing an order."),
+        ("How often are the rice prices updated?", "This page keeps one permanent URL and is updated when a new approved mill rate sheet is available. Always check the visible rate date before using the figures."),
+    ]
+    faq_html = "".join(f'<details class="faq"><summary>{escape(question)}</summary><p>{escape(answer)}</p></details>' for question, answer in faq)
+    schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            organization_schema(),
+            {
+                "@type": "WebPage",
+                "name": "Basmati Rice Price in India: Wholesale and Export Rates",
+                "description": "Indicative UrbanFresh wholesale and export rice prices from Karnal, with variety, processing type, crop year, grain length, INR ex-mill and USD FOB rates.",
+                "url": f"https://urbanfresh.in/{PRICE_SLUG}",
+                "datePublished": "2026-07-15",
+                "dateModified": "2026-07-15",
+            },
+            {
+                "@type": "Dataset",
+                "name": f"UrbanFresh rice price list dated {PRICE_DATE_LABEL}",
+                "description": "Indicative rice mill price list covering Basmati, 1121, 1718, 1509, Taj, Sugandha, 1401, Pusa, RH-10, Sharbati and PR-14 rice.",
+                "url": f"https://urbanfresh.in/{PRICE_SLUG}",
+                "creator": {"@type": "Organization", "name": "UrbanFresh Rice Mills"},
+                "dateModified": "2026-07-15",
+                "temporalCoverage": PRICE_DATE_ISO,
+                "spatialCoverage": {"@type": "Place", "name": "Karnal, Haryana, India"},
+                "variableMeasured": ["Rice variety", "Processing type", "Crop year", "Average grain length", "INR per metric ton", "USD per metric ton"],
+                "distribution": {
+                    "@type": "DataDownload",
+                    "encodingFormat": "image/jpeg",
+                    "contentUrl": "https://urbanfresh.in/pricelist.jpeg",
+                },
+            },
+            {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": question, "acceptedAnswer": {"@type": "Answer", "text": answer}} for question, answer in faq]},
+        ],
+    }
+    body = page_hero(
+        "Indicative mill rates",
+        "Basmati and rice prices in India: wholesale mill rates.",
+        f"Compare our latest indicative INR ex-mill and USD FOB rice prices, dated {PRICE_DATE_LABEL}, then request a confirmed quotation for your order.",
+        "category-1121.webp",
+        [("Home", "index.html"), ("Rice Prices", None)],
+    ) + dedent(f"""
+      <section class="section"><div class="container article-layout"><article class="buyer-article price-article">
+        <div class="article-meta"><span>Mill price list</span><time datetime="{PRICE_DATE_ISO}">{PRICE_DATE_LABEL}</time><span>UrbanFresh Rice Mills, Karnal</span></div>
+        <p class="article-lead">This price list helps wholesale, export and private-label buyers compare current commercial positions before requesting a product-specific quote.</p>
+        <div class="quick-answer"><strong>Important:</strong> these are indicative rates from our approved sheet dated {PRICE_DATE_LABEL}, not binding offers. The final price depends on the exact rice, specification, quantity, packaging, destination and commercial terms.</div>
+
+        <h2 id="current-rates">Current indicative rice prices</h2>
+        <p>The table is written as crawlable text so buyers and search engines can read each variety, processing type, crop year, grain length and price. “Update soon” is shown where the supplied rate sheet did not include a current figure.</p>
+        <div class="table-scroll" role="region" aria-label="UrbanFresh rice price list dated {PRICE_DATE_LABEL}" tabindex="0"><table class="comparison-table price-table">
+          <caption>Indicative rice mill rates dated {PRICE_DATE_LABEL}</caption>
+          <thead><tr><th scope="col">Rice variety</th><th scope="col">Type</th><th scope="col">Crop year</th><th scope="col">Average length</th><th scope="col">INR PMT, ex-mill loose</th><th scope="col">USD PMT, 40 kg jute bag FOB</th></tr></thead>
+          <tbody>{''.join(table_rows)}</tbody>
+        </table></div>
+        <p class="image-note">PMT means per metric ton. Type labels and currency values are reproduced from the supplied rate sheet. Confirm the exact processing specification, FOB port, currency basis and order terms in the final quotation.</p>
+
+        <h2 id="how-to-read">How to read the price list</h2>
+        <div class="choice-grid price-explainer">
+          <article><h3>INR mill rate</h3><p>The INR column shows the supplied loose ex-mill rate per metric ton. Loading, packaging, transport and taxes may change the delivered amount.</p></article>
+          <article><h3>USD FOB rate</h3><p>The USD column shows the supplied rate per metric ton for 40 kg jute bag FOB supply. Confirm the port, shipment size and applicable terms.</p></article>
+          <article><h3>Grain and crop</h3><p>Average length and crop year help define the commercial position, but the final order should also state broken tolerance, moisture, cooking and other quality limits.</p></article>
+        </div>
+
+        <h2 id="why-prices-change">Why the final quotation can differ</h2>
+        <p>Rice is an agricultural and specification-led product. Crop availability, ageing, milling yield, processing style, quality limits, order size, bag material, printing, inland freight, port charges, exchange rates and payment terms can all affect the final offer.</p>
+        <p>For the fastest confirmation, send the variety, processing type, metric tons, packaging, destination, required timeline and any fixed quality limits.</p>
+
+        <figure class="price-source-image"><a href="pricelist.jpeg" target="_blank" rel="noopener"><img src="pricelist.jpeg" alt="UrbanFresh wholesale rice price list dated 6 July 2026" loading="lazy" width="1179" height="761"></a><figcaption>Original UrbanFresh rate sheet dated {PRICE_DATE_LABEL}. Open the image to review the source document.</figcaption></figure>
+
+        <h2 id="price-questions">Questions about the rice price list</h2>
+        <div class="faq-list">{faq_html}</div>
+      </article>
+      <aside class="article-aside"><div><p class="section-label">On this page</p><nav aria-label="Price page contents"><a href="#current-rates">Current rates</a><a href="#how-to-read">How to read the table</a><a href="#why-prices-change">Why prices change</a><a href="#price-questions">Price questions</a></nav></div><div class="article-quote"><p class="section-label">Rate date</p><h2>{PRICE_DATE_LABEL}</h2><p>Send your exact order details for a confirmed current quotation.</p><a class="button button-arrow" href="contact.html#quote">Request Current Price</a></div></aside>
+      </div></section>
+      <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Need a confirmed rice price?</h2><p>Send variety, type, quantity, pack, destination and timeline in one message.</p></div><a class="button button-arrow" href="contact.html#quote">Get a Current Quote</a></div></section>
+    """)
+    render_page(
+        PRICE_SLUG,
+        "Basmati Rice Price in India | Wholesale & Export Rates",
+        f"Check indicative Basmati and rice prices from UrbanFresh Rice Mills, dated {PRICE_DATE_LABEL}, with INR ex-mill and USD FOB rates per metric ton.",
+        body,
+        "",
+        schema,
+        "pricelist.jpeg",
+        "price-page",
+    )
 
 
 def render_buyer_guide() -> None:
@@ -606,6 +777,7 @@ def render_buyer_guide() -> None:
 def render_sitemap() -> None:
     pages = [
         ("", "weekly", "1.0"), ("products.html", "monthly", "0.9"), ("about.html", "monthly", "0.8"), ("infrastructure.html", "monthly", "0.8"), ("quality.html", "monthly", "0.8"), ("certifications.html", "monthly", "0.7"), ("contact.html", "monthly", "0.9"),
+        (PRICE_SLUG, "weekly", "0.9"),
         (GUIDE_SLUG, "monthly", "0.9"),
         ("basmati-rice-manufacturer-india.html", "monthly", "0.9"), ("basmati-rice-exporter-india.html", "monthly", "0.9"), ("rice-manufacturer-for-merchant-exporters.html", "monthly", "0.8"), ("private-label.html", "monthly", "0.8"),
     ] + [(item["slug"], "monthly", "0.9") for item in PRODUCTS]
@@ -624,6 +796,7 @@ def main() -> None:
     render_certifications()
     render_contact()
     render_landing_pages()
+    render_price_page()
     render_buyer_guide()
     render_sitemap()
     print(f"Rebuilt UrbanFresh with {len(PRODUCTS)} product pages.")

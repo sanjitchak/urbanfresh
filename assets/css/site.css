@@ -282,6 +282,15 @@ h1, h2, h3 { text-wrap: balance; }
 .comparison-table th:last-child, .comparison-table td:last-child { border-right: 0; }
 .comparison-table thead th { color: var(--paper); background: var(--forest); font-family: var(--serif); font-size: 1rem; }
 .comparison-table tbody th { width: 21%; color: var(--forest); background: var(--paper-green); }
+.product-price-link { display: inline-flex; margin-top: 18px; }
+.price-table { min-width: 980px; }
+.price-table th a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.price-update-soon td:nth-last-child(-n + 2) { color: var(--gold-deep); font-weight: 700; }
+.price-explainer p { min-height: 0; }
+.price-source-image { margin: 52px 0 0; border: 1px solid var(--line); background: var(--paper); }
+.price-source-image a { display: block; }
+.price-source-image img { display: block; width: 100%; height: auto; }
+.price-source-image figcaption { padding: 14px 18px; color: var(--ink-soft); border-top: 1px solid var(--line); font-size: .88rem; }
 .numbered-checks { display: grid; gap: 0; padding: 0; margin: 28px 0; list-style: none; counter-reset: grain-check; border-top: 1px solid var(--line); }
 .numbered-checks li { position: relative; display: grid; grid-template-columns: 180px 1fr; gap: 28px; padding: 22px 0 22px 58px; border-bottom: 1px solid var(--line); counter-increment: grain-check; }
 .numbered-checks li::before { position: absolute; left: 0; top: 22px; content: counter(grain-check, decimal-leading-zero); color: var(--gold-deep); font: 650 1.12rem/1 var(--serif); }

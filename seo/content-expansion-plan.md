@@ -33,6 +33,16 @@ Use Search Console queries and repeated sales questions to choose articles. Good
 
 Publish one useful guide at a time, link it to the relevant product and commercial page, then measure impressions, clicks and qualified WhatsApp leads for four weeks.
 
+### Implemented price page
+
+- Permanent URL: `rice-price-india.html`
+- Source: approved mill price sheet dated 6 July 2026.
+- Primary search intent: `basmati rice price in India` and variety-level price searches.
+- Buyer value: a crawlable table with variety, processing type, crop year, average grain length, INR ex-mill rates and USD FOB rates.
+- Conversion path: homepage or product page → current rate table → confirmed quote request.
+- Update rule: keep the same URL when a new approved rate sheet arrives, update the visible date and data, and preserve an honest indicative-price disclaimer.
+- Measurement rule: use the weekly Search Console report for four comparable weeks before changing the title, scope or internal links.
+
 ### Implemented buyer guide
 
 - 1121 vs 1509 vs 1401 Basmati rice: grain screening, controlled cooking comparison and specification checks — `1121-vs-1509-vs-1401-basmati-rice.html`
