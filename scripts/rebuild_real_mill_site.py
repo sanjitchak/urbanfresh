@@ -452,8 +452,8 @@ def render_certifications() -> None:
 
 def render_contact() -> None:
     varieties = "".join(f"<option>{escape(item['name'])}</option>" for item in PRODUCTS)
-    schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "ContactPage", "name": "Request a Rice Mill Quote", "url": "https://urbanfresh.in/contact.html"}]}
-    body = page_hero("Bulk rice quotation", "Send your requirement directly to the Karnal mill.", "Choose from the full basmati, non-basmati and residue-controlled catalogue, then add volume, packaging, destination and buying timeline.", "mill-hero-3.webp", [("Home", "index.html"), ("Get a Quote", None)]) + dedent(f"""
+    schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "ContactPage", "name": "Contact UrbanFresh Rice Mills for a Bulk Rice Quote", "url": "https://urbanfresh.in/contact.html"}]}
+    body = page_hero("Bulk rice quotation", "Contact UrbanFresh Rice Mills for a bulk rice quote.", "Choose from the full basmati, non-basmati and residue-controlled catalogue, then add volume, packaging, destination and buying timeline.", "mill-hero-3.webp", [("Home", "index.html"), ("Get a Quote", None)]) + dedent(f"""
       <section class="section"><div class="container quote-layout"><aside class="quote-copy surface-dark"><p class="section-label">UrbanFresh, Karnal</p><h2 class="section-title">A useful quote starts with a useful brief.</h2><p class="section-lede">Rice prices change with product, process, quantity, pack and destination. Fill in what you know and ask us to advise where needed.</p><div class="contact-stack"><a class="contact-card" href="tel:{PHONE_LINK}"><small>Call UrbanFresh</small><strong>{PHONE}</strong></a><a class="contact-card" href="{WA_URL}" target="_blank" rel="noopener"><small>WhatsApp</small><strong>Start a direct chat</strong></a><div class="contact-card"><small>Rice mill location</small><strong>{ADDRESS}</strong></div></div></aside>
         <form class="quote-form" id="quote" data-quote-form novalidate><div class="form-grid">
           <div class="field"><label for="name">Name or company <span aria-hidden="true">*</span></label><input id="name" name="name" autocomplete="organization" required placeholder="Your name or business"></div>
@@ -471,7 +471,7 @@ def render_contact() -> None:
         </div></form></div></section>
       <section class="section surface"><div class="container advice-row"><div><p class="section-label">Mill-ready enquiry</p><h2 class="section-title">Specific details help us give a useful answer.</h2></div><blockquote class="buyer-example">“1121 Steam, 25 MT, 25 kg bags, delivery to Mumbai within 30 days.”<cite>A complete quote brief</cite></blockquote></div></section>
     """)
-    render_page("contact.html", "Request a Bulk Rice Mill Quote | UrbanFresh Karnal", "Request a rice quote from UrbanFresh Rice Mills at Village Daha Madanpur, Karnal. Send product, process, quantity, packaging, destination and timeline.", body, "contact", schema, image_path("mill-hero-3.webp"), contact_page=True)
+    render_page("contact.html", "Contact UrbanFresh Rice Mills | Request a Bulk Rice Quote", "Contact UrbanFresh Rice Mills in Village Daha Madanpur, Karnal for a bulk rice quote. Send product, process, quantity, packaging, destination and timeline.", body, "contact", schema, image_path("mill-hero-3.webp"), contact_page=True)
 
 
 def render_landing_pages() -> None:

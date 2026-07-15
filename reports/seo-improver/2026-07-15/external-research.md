@@ -15,6 +15,10 @@
 
 ## Decision
 
-The exact query has low reported difficulty but no reported demand. Combined with zero current Search Console rows, this is not enough evidence for a page change. The next monthly run should use Ubersuggest to test broader mapped supplier and manufacturer queries, then make at most one change only when demand, intent and competition evidence support it.
+The exact query has low reported difficulty but no reported demand. Combined with zero current Search Console rows, this is not enough evidence for a new keyword landing page.
+
+Ubersuggest's site audit separately flagged `https://urbanfresh.in/contact.html` as a poorly formatted SEO URL. Its character and dynamic checks passed; only the keyword check failed. The URL is already short, readable and stable, with about 180 internal references. Instead of creating a risky URL migration, the existing contact page was aligned around the accurate phrase “Contact UrbanFresh Rice Mills” while retaining its bulk-rice-quote intent. The title, description, H1, ContactPage structured data and keyword map were updated together.
+
+The next Ubersuggest crawl should verify whether that alignment clears the keyword check. A URL rename should be considered only if later search evidence justifies a migration and a permanent server-side redirect is available.
 
 Ubersuggest metrics are third-party estimates. Search Console remains the source of truth for UrbanFresh impressions, clicks, CTR and average position.

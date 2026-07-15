@@ -9,7 +9,7 @@
 - Movement: 0 gained, 0 lost, 0 new, 0 dropped
 - Technical audit: PASS
 - External research: Ubersuggest Individual Lifetime MCP connected; see `external-research.md`
-- Single most important action: Search Console access is working; wait for Google to record impressions before changing content.
+- Single most important action: Re-crawl `contact.html` in Ubersuggest after deployment and verify that the URL keyword check clears.
 
 ## Movement since the previous period
 
