@@ -77,6 +77,18 @@ launchctl kickstart -k gui/$UID/com.urbanfresh.seo-improver
 
 Logs are written to `seo/scheduler.log` and `seo/scheduler-error.log`; both are gitignored.
 
+## Unattended monthly improvement loop
+
+The Codex desktop automation **UrbanFresh Monthly SEO Loop** runs on the first Monday of every month after the weekly measurement job. It:
+
+1. Fast-forwards a clean local `main` branch from GitHub.
+2. Collects the latest free Search Console data and reads the prior report and experiment log.
+3. Evaluates the previous experiment, then makes at most one evidence-backed page change. If the sample is too small, it records a no-change month instead.
+4. Runs the SEO audit, unit tests and Git diff checks.
+5. Updates `seo/monthly-log.csv`, commits the result and pushes `main` to GitHub only when every check passes.
+
+The automation does not invent business facts, create doorway pages or make unrelated design changes. A dirty worktree, unavailable credentials, failed validation or a non-fast-forward repository stops publishing for that run and leaves a report explaining why.
+
 ## Decision rules
 
 The report considers:
@@ -86,7 +98,7 @@ The report considers:
 - **Cannibalization:** the same query receiving impressions through at least two different pages.
 - **Decay:** average position worsened by at least two places, or clicks fell by at least 30% from a meaningful prior level.
 
-Only the five highest-scoring opportunities are reported, and the executive summary names one priority. The script never edits the live pages automatically.
+Only the five highest-scoring opportunities are reported, and the executive summary names one priority. The measurement script itself is read-only; the monthly Codex automation may implement only the single highest-confidence opportunity under the publishing safeguards below.
 
 ## Publishing safeguards
 
