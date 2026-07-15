@@ -2,7 +2,7 @@
 
 ## Source
 
-- Provider: Ubersuggest MCP using the OAuth-authorized paid account
+- Provider: Ubersuggest MCP using the OAuth-authorized Individual Lifetime account
 - Tool: `keyword_overview`
 - Country/database: India
 - Research type: read-only connection and keyword-metric baseline

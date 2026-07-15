@@ -8,7 +8,7 @@
 - Search rows measured: 0 current, 0 previous
 - Movement: 0 gained, 0 lost, 0 new, 0 dropped
 - Technical audit: PASS
-- External research: Ubersuggest paid-account MCP connected; see `external-research.md`
+- External research: Ubersuggest Individual Lifetime MCP connected; see `external-research.md`
 - Single most important action: Search Console access is working; wait for Google to record impressions before changing content.
 
 ## Movement since the previous period
