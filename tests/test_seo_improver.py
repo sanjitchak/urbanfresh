@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import csv
+import json
+import os
 import sys
 import tempfile
 import unittest
@@ -14,6 +16,37 @@ import seo_improver  # noqa: E402
 
 
 class SeoImproverTests(unittest.TestCase):
+    def test_http_date_epoch_uses_utc_server_time(self) -> None:
+        epoch = seo_improver.http_date_epoch("Wed, 15 Jul 2026 02:15:02 GMT")
+
+        self.assertEqual(epoch, 1784081702)
+
+    def test_load_dotenv_accepts_raw_service_account_json(self) -> None:
+        original = os.environ.pop("GSC_CREDENTIALS_JSON", None)
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / ".env.local"
+                path.write_text(
+                    json.dumps(
+                        {
+                            "type": "service_account",
+                            "client_email": "seo@example.iam.gserviceaccount.com",
+                            "private_key": "private-key-placeholder",
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+
+                seo_improver.load_dotenv(path)
+
+            loaded = json.loads(os.environ["GSC_CREDENTIALS_JSON"])
+            self.assertEqual(loaded["type"], "service_account")
+            self.assertEqual(loaded["client_email"], "seo@example.iam.gserviceaccount.com")
+        finally:
+            os.environ.pop("GSC_CREDENTIALS_JSON", None)
+            if original is not None:
+                os.environ["GSC_CREDENTIALS_JSON"] = original
+
     def test_csv_loader_accepts_search_console_headers_and_percent_ctr(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "gsc.csv"

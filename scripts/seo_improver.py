@@ -23,6 +23,7 @@ import urllib.parse
 import urllib.request
 from collections import defaultdict
 from dataclasses import dataclass
+from email.utils import parsedate_to_datetime
 from html import unescape
 from pathlib import Path
 from typing import Any, Iterable
@@ -94,7 +95,22 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def load_dotenv(path: Path) -> None:
     if not path.exists():
         return
-    for raw_line in path.read_text(encoding="utf-8").splitlines():
+    text = path.read_text(encoding="utf-8")
+    stripped = text.strip()
+    if stripped.startswith("{"):
+        try:
+            credentials = json.loads(stripped)
+        except json.JSONDecodeError as exc:
+            raise RuntimeError(f"Invalid raw service-account JSON in {path}: {exc}") from exc
+        if credentials.get("type") != "service_account":
+            raise RuntimeError(f"Raw JSON in {path} is not a Google service-account key")
+        os.environ.setdefault(
+            "GSC_CREDENTIALS_JSON",
+            json.dumps(credentials, separators=(",", ":")),
+        )
+        return
+
+    for raw_line in text.splitlines():
         line = raw_line.strip()
         if not line or line.startswith("#") or "=" not in line:
             continue
@@ -110,6 +126,31 @@ def b64url(data: bytes) -> str:
     return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
 
 
+def http_date_epoch(value: str) -> int:
+    parsed = parsedate_to_datetime(value)
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=dt.timezone.utc)
+    return int(parsed.timestamp())
+
+
+def google_server_epoch() -> int:
+    """Use Google's clock so JWT auth survives a locally skewed Mac clock."""
+    request = urllib.request.Request(TOKEN_URL, method="HEAD")
+    headers = None
+    try:
+        with urllib.request.urlopen(request, timeout=15) as response:
+            headers = response.headers
+    except urllib.error.HTTPError as exc:
+        # The token endpoint returns 404 to HEAD but still supplies an authoritative Date header.
+        headers = exc.headers
+    except urllib.error.URLError:
+        pass
+    date_header = headers.get("Date") if headers is not None else None
+    if date_header:
+        return http_date_epoch(date_header)
+    return int(dt.datetime.now(dt.timezone.utc).timestamp())
+
+
 def service_account_token(credentials_json: str) -> str:
     try:
         credentials = json.loads(credentials_json)
@@ -118,7 +159,7 @@ def service_account_token(credentials_json: str) -> str:
     except (json.JSONDecodeError, KeyError, TypeError) as exc:
         raise RuntimeError(f"Invalid GSC_CREDENTIALS_JSON: {exc}") from exc
 
-    now = int(dt.datetime.now(dt.timezone.utc).timestamp())
+    now = google_server_epoch()
     header = b64url(json.dumps({"alg": "RS256", "typ": "JWT"}, separators=(",", ":")).encode())
     claim = b64url(
         json.dumps(
@@ -654,11 +695,16 @@ def write_report(
         status_counts[str(row["status"])] += 1
 
     top_actions = opportunities[:5]
-    summary_action = top_actions[0].action if top_actions else (
-        "Finish Search Console access and wait for measured impressions before changing content."
-        if not current
-        else "Keep collecting data; no opportunity met the minimum evidence thresholds this week."
-    )
+    if top_actions:
+        summary_action = top_actions[0].action
+    elif blocker:
+        summary_action = "Resolve the ranking-data blocker before changing content."
+    elif not current:
+        summary_action = (
+            "Search Console access is working; wait for Google to record impressions before changing content."
+        )
+    else:
+        summary_action = "Keep collecting data; no opportunity met the minimum evidence thresholds this week."
 
     movement_rows: list[list[str]] = []
     for row in snapshot:
