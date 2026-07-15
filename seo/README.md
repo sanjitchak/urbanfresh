@@ -1,8 +1,8 @@
-# UrbanFresh free local SEO improver
+# UrbanFresh local SEO improver
 
-UrbanFresh has a complete local, no-subscription SEO improvement loop inspired by Atom Eve's SEO Improver. It measures first-party Google Search Console performance, compares the latest complete 28 days with the preceding 28 days, identifies a small number of evidence-backed opportunities and checks whether earlier movement was positive or negative.
+UrbanFresh has a complete local SEO improvement loop inspired by Atom Eve's SEO Improver. It measures first-party Google Search Console performance, compares the latest complete 28 days with the preceding 28 days, identifies a small number of evidence-backed opportunities and checks whether earlier movement was positive or negative. The monthly Codex automation supplements this evidence with the existing OAuth-authorized Ubersuggest paid account.
 
-It does not use DataForSEO, paid AI models, Vercel or Google-result scraping.
+It does not use DataForSEO, Vercel or Google-result scraping, and it cannot purchase Ubersuggest credits, upgrade the plan or change billing.
 
 ## What is implemented
 
@@ -15,6 +15,7 @@ It does not use DataForSEO, paid AI models, Vercel or Google-result scraping.
 - Technical audit at `scripts/seo_audit.py`
 - Weekly ranking and opportunity report at `scripts/seo_improver.py`
 - Free Search Console API access using a read-only service account
+- Paid Ubersuggest MCP research for keyword demand, difficulty, SERPs, competitors, backlinks and audits
 - Search Console CSV fallback when credentials are not configured
 - Local macOS scheduling through `launchd`
 - Stable recommendation IDs for striking distance, weak CTR, cannibalization and decay
@@ -82,12 +83,12 @@ Logs are written to `seo/scheduler.log` and `seo/scheduler-error.log`; both are 
 The Codex desktop automation **UrbanFresh Monthly SEO Loop** runs on the first Monday of every month after the weekly measurement job. It:
 
 1. Fast-forwards a clean local `main` branch from GitHub.
-2. Collects the latest free Search Console data and reads the prior report and experiment log.
-3. Evaluates the previous experiment, then makes at most one evidence-backed page change. If the sample is too small, it records a no-change month instead.
+2. Collects the latest free Search Console data, researches a small evidence-led set through Ubersuggest and reads the prior report and experiment log.
+3. Evaluates the previous experiment, then makes at most one evidence-backed page change. Search Console remains the first-party source of truth; Ubersuggest supplies external demand and competition estimates. If the evidence is too weak, it records a no-change month instead.
 4. Runs the SEO audit, unit tests and Git diff checks.
 5. Updates `seo/monthly-log.csv`, commits the result and pushes `main` to GitHub only when every check passes.
 
-The automation does not invent business facts, create doorway pages or make unrelated design changes. A dirty worktree, unavailable credentials, failed validation or a non-fast-forward repository stops publishing for that run and leaves a report explaining why.
+The automation does not invent business facts, create doorway pages or make unrelated design changes. It uses only features already available in the authorized Ubersuggest subscription and cannot approve extra spending. A dirty worktree, unavailable credentials, failed validation or a non-fast-forward repository stops publishing for that run and leaves a report explaining why.
 
 ## Decision rules
 
