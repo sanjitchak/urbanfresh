@@ -20,6 +20,7 @@ WA_URL = f"https://wa.me/919433569217?text={WA_TEXT.replace(' ', '%20').replace(
 GUIDE_SLUG = "1121-vs-1509-vs-1401-basmati-rice.html"
 PRICE_SLUG = "rice-price-india.html"
 LINKEDIN_URL = "https://www.linkedin.com/company/urbanfreshin"
+GMB_URL = "https://local.google.com/place?placeid=ChIJEXtmKGRxDjkRqoJCBUKpPQI&utm_medium=noren&utm_source=gbp&utm_campaign=2026"
 PRICE_DATE_ISO = "2026-07-06"
 PRICE_DATE_LABEL = "6 July 2026"
 
@@ -279,6 +280,7 @@ def organization_schema() -> dict:
         "url": "https://urbanfresh.in/",
         "logo": "https://urbanfresh.in/assets/images/urbanfresh-logo.webp",
         "sameAs": [LINKEDIN_URL],
+        "hasMap": GMB_URL,
         "telephone": "+91-94335-69217",
         "foundingDate": "1978",
         "address": {
@@ -316,7 +318,7 @@ def footer(contact_page: bool = False) -> str:
         <div class="footer-brand"><a class="brand" href="index.html"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt=""><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><p>A family-operated rice mill established in 1978, serving bulk buyers from Village Daha Madanpur, Karnal.</p></div>
         <div><h2 class="footer-title">Mill</h2><div class="footer-links"><a href="about.html">About UrbanFresh</a><a href="infrastructure.html">Infrastructure</a><a href="quality.html">Quality Control</a><a href="certifications.html">Certifications</a><a href="private-label.html">Private Label</a></div></div>
         <div><h2 class="footer-title">Rice range</h2><div class="footer-links"><a href="products.html">All Rice Products</a><a href="{PRICE_SLUG}">Latest Rice Prices</a><a href="{GUIDE_SLUG}">1121 vs 1509 vs 1401 Guide</a><a href="1121-basmati-rice.html">1121 Basmati</a><a href="pusa-basmati-rice.html">Pusa Basmati</a><a href="sugandha-rice.html">Sugandha Rice</a><a href="pr-11-rice.html">PR 11 Rice</a></div></div>
-        <div><h2 class="footer-title">Contact</h2><div class="footer-links"><span>119/6, Highway, Village Daha, Madanpur</span><span>Karnal 132001, Haryana, India</span><a href="tel:{PHONE_LINK}">{PHONE}</a><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp UrbanFresh</a><a href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">Follow UrbanFresh on LinkedIn</a><a href="{quote_href}">Quote form</a></div></div>
+        <div><h2 class="footer-title">Contact</h2><div class="footer-links"><span>119/6, Highway, Village Daha, Madanpur</span><span>Karnal 132001, Haryana, India</span><a href="tel:{PHONE_LINK}">{PHONE}</a><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp UrbanFresh</a><a href="{escape(GMB_URL, quote=True)}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">Follow UrbanFresh on LinkedIn</a><a href="{quote_href}">Quote form</a></div></div>
       </div><div class="container footer-bottom"><span>© <span data-year></span> UrbanFresh Rice Mills.</span><span>Availability, specifications, certificates and terms are confirmed per enquiry.</span></div></footer>
       <a class="whatsapp-float" href="{WA_URL}" target="_blank" rel="noopener" aria-label="Chat with UrbanFresh on WhatsApp">Quote on WhatsApp</a>
       <div class="mobile-cta"><a class="button button-whatsapp" href="{WA_URL}" target="_blank" rel="noopener">Chat on WhatsApp</a><a class="button" href="{quote_href}">Get Quote</a></div>
@@ -519,7 +521,7 @@ def render_contact() -> None:
     varieties = "".join(f"<option>{escape(item['name'])}</option>" for item in PRODUCTS)
     schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "ContactPage", "name": "Contact UrbanFresh Rice Mills for a Bulk Rice Quote", "url": "https://urbanfresh.in/contact.html"}]}
     body = page_hero("Bulk rice quotation", "Contact UrbanFresh Rice Mills for a bulk rice quote.", "Choose from the full basmati, non-basmati and residue-controlled catalogue, then add volume, packaging, destination and buying timeline.", "mill-hero-3.webp", [("Home", "index.html"), ("Get a Quote", None)]) + dedent(f"""
-      <section class="section"><div class="container quote-layout"><aside class="quote-copy surface-dark"><p class="section-label">UrbanFresh, Karnal</p><h2 class="section-title">A useful quote starts with a useful brief.</h2><p class="section-lede">Rice prices change with product, process, quantity, pack and destination. Fill in what you know and ask us to advise where needed.</p><div class="contact-stack"><a class="contact-card" href="tel:{PHONE_LINK}"><small>Call UrbanFresh</small><strong>{PHONE}</strong></a><a class="contact-card" href="{WA_URL}" target="_blank" rel="noopener"><small>WhatsApp</small><strong>Start a direct chat</strong></a><a class="contact-card" href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer"><small>LinkedIn</small><strong>Follow UrbanFresh</strong></a><div class="contact-card"><small>Rice mill location</small><strong>{ADDRESS}</strong></div></div></aside>
+      <section class="section"><div class="container quote-layout"><aside class="quote-copy surface-dark"><p class="section-label">UrbanFresh, Karnal</p><h2 class="section-title">A useful quote starts with a useful brief.</h2><p class="section-lede">Rice prices change with product, process, quantity, pack and destination. Fill in what you know and ask us to advise where needed.</p><div class="contact-stack"><a class="contact-card" href="tel:{PHONE_LINK}"><small>Call UrbanFresh</small><strong>{PHONE}</strong></a><a class="contact-card" href="{WA_URL}" target="_blank" rel="noopener"><small>WhatsApp</small><strong>Start a direct chat</strong></a><a class="contact-card" href="{escape(GMB_URL, quote=True)}" target="_blank" rel="noopener noreferrer"><small>Google Business Profile</small><strong>View UrbanFresh on Google</strong></a><a class="contact-card" href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer"><small>LinkedIn</small><strong>Follow UrbanFresh</strong></a><div class="contact-card"><small>Rice mill location</small><strong>{ADDRESS}</strong></div></div></aside>
         <form class="quote-form" id="quote" data-quote-form novalidate><div class="form-grid">
           <div class="field"><label for="name">Name or company <span aria-hidden="true">*</span></label><input id="name" name="name" autocomplete="organization" required placeholder="Your name or business"></div>
           <div class="field"><label for="phone">Phone or WhatsApp <span aria-hidden="true">*</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="Country code and number"></div>
