@@ -1,6 +1,6 @@
 # Free Google Search Console setup
 
-The local SEO improver uses the Google Search Console API, which is free and read-only with this configuration.
+The local SEO improver uses the free Google Search Console API. Ranking collection stays read-only; the deployment workflow uses write permission only to submit the sitemap.
 
 ## 1. Confirm the live property
 
@@ -9,7 +9,7 @@ The local SEO improver uses the Google Search Console API, which is free and rea
 3. Submit `https://urbanfresh.in/sitemap.xml`.
 4. Inspect the homepage and commercial landing pages and request indexing.
 
-## 2. Create a read-only service account
+## 2. Create the service account
 
 In any Google Cloud project:
 
@@ -23,7 +23,7 @@ In Search Console, open the `urbanfresh.in` property:
 1. Go to **Settings → Users and permissions**.
 2. Click **Add user**.
 3. Paste the service account's `client_email` from the JSON file.
-4. Choose **Restricted** permission.
+4. Choose **Full** permission so the deployment workflow can submit the sitemap. Restricted permission supports reporting only.
 
 ## 3. Store the key locally
 
@@ -50,6 +50,15 @@ Success prints:
 ```text
 Verified read-only Search Console access to sc-domain:urbanfresh.in
 ```
+
+Verify the sitemap submission path with:
+
+```bash
+python3 scripts/submit_sitemap.py --verify-only
+python3 scripts/submit_sitemap.py --wait-for-live --verify
+```
+
+Add the same complete service-account JSON to the GitHub repository as the encrypted Actions secret `GSC_CREDENTIALS_JSON`. The workflow waits until the public sitemap matches the merged repository before submitting it.
 
 If the property is not listed, recheck the service-account email in Search Console and wait a minute for permissions to propagate.
 

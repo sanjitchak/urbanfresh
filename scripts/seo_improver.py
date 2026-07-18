@@ -34,6 +34,7 @@ DEFAULT_PROPERTY = "sc-domain:urbanfresh.in"
 DEFAULT_DOMAIN = "urbanfresh.in"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 GSC_SCOPE = "https://www.googleapis.com/auth/webmasters.readonly"
+GSC_WRITE_SCOPE = "https://www.googleapis.com/auth/webmasters"
 GSC_API = "https://searchconsole.googleapis.com/webmasters/v3"
 REPORT_FIELDS = [
     "keyword",
@@ -151,7 +152,7 @@ def google_server_epoch() -> int:
     return int(dt.datetime.now(dt.timezone.utc).timestamp())
 
 
-def service_account_token(credentials_json: str) -> str:
+def service_account_token(credentials_json: str, scope: str = GSC_SCOPE) -> str:
     try:
         credentials = json.loads(credentials_json)
         client_email = credentials["client_email"]
@@ -165,7 +166,7 @@ def service_account_token(credentials_json: str) -> str:
         json.dumps(
             {
                 "iss": client_email,
-                "scope": GSC_SCOPE,
+                "scope": scope,
                 "aud": TOKEN_URL,
                 "iat": now,
                 "exp": now + 3600,

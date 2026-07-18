@@ -14,7 +14,7 @@ It does not use DataForSEO, Vercel or Google-result scraping, and it cannot purc
 - Quote calls-to-action and structured WhatsApp enquiry flow
 - Technical audit at `scripts/seo_audit.py`
 - Weekly ranking and opportunity report at `scripts/seo_improver.py`
-- Free Search Console API access using a read-only service account
+- Free Search Console API access: read-only ranking collection plus authenticated sitemap submission after deployments
 - Ubersuggest Individual Lifetime MCP research for keyword demand, difficulty, SERPs, competitors, backlinks and audits
 - Search Console CSV fallback when credentials are not configured
 - Local macOS scheduling through `launchd`
@@ -42,7 +42,7 @@ reports/seo-improver/YYYY-MM-DD/
 
 ### Option A — automatic API access
 
-Copy `.env.local.example` to `.env.local`, put the complete Google service-account key JSON into `GSC_CREDENTIALS_JSON`, add the service-account email as a restricted Search Console user, then run:
+Copy `.env.local.example` to `.env.local`, put the complete Google service-account key JSON into `GSC_CREDENTIALS_JSON`, and add the service-account email in Search Console. Restricted permission is sufficient for ranking collection; sitemap submission requires **Full** permission. Then run:
 
 ```bash
 python3 scripts/seo_improver.py --verify-only
@@ -50,6 +50,24 @@ python3 scripts/seo_improver.py
 ```
 
 The script uses only Python's standard library and the macOS OpenSSL binary.
+
+## Automatic Search Console submission after deployment
+
+The site generator preserves `<lastmod>` for unchanged pages and updates it when generated HTML changes. The GitHub Actions workflow `.github/workflows/submit-search-console.yml` waits until the live sitemap matches the merged repository version, submits it through the official Search Console Sitemaps API and verifies the Search Console record.
+
+The workflow uses one encrypted repository secret named `GSC_CREDENTIALS_JSON`, containing the same complete service-account JSON used by `.env.local`. The service-account email must have **Full** permission for `sc-domain:urbanfresh.in`. Ranking collection remains read-only; only `scripts/submit_sitemap.py` requests the write-enabled `webmasters` scope.
+
+Run the same deployment handoff locally with:
+
+```bash
+python3 scripts/submit_sitemap.py --wait-for-live --verify
+```
+
+Use a dry run to validate the command without authentication or submission:
+
+```bash
+python3 scripts/submit_sitemap.py --dry-run
+```
 
 ### Option B — CSV exports
 
@@ -87,6 +105,7 @@ The Codex desktop automation **UrbanFresh Monthly SEO Loop** runs on the first M
 3. Evaluates the previous experiment, then makes at most one evidence-backed page change. Search Console remains the first-party source of truth; Ubersuggest supplies external demand and competition estimates. If the evidence is too weak, it records a no-change month instead.
 4. Runs the SEO audit, unit tests and Git diff checks.
 5. Updates `seo/monthly-log.csv`, commits the result and pushes `main` to GitHub only when every check passes.
+6. The GitHub workflow waits for the deployed sitemap and submits it to Search Console when the published HTML or sitemap changes.
 
 The automation does not invent business facts, create doorway pages or make unrelated design changes. It uses only features already available in the authorized Ubersuggest Individual Lifetime plan and cannot approve add-ons, upgrades or extra spending. A dirty worktree, unavailable credentials, failed validation or a non-fast-forward repository stops publishing for that run and leaves a report explaining why.
 
