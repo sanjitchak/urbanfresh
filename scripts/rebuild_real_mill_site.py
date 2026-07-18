@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import json
+import xml.etree.ElementTree as ET
 from html import escape
 from pathlib import Path
 from textwrap import dedent
@@ -23,6 +25,10 @@ LINKEDIN_URL = "https://www.linkedin.com/company/urbanfreshin"
 GMB_URL = "https://local.google.com/place?placeid=ChIJEXtmKGRxDjkRqoJCBUKpPQI&utm_medium=noren&utm_source=gbp&utm_campaign=2026"
 PRICE_DATE_ISO = "2026-07-06"
 PRICE_DATE_LABEL = "6 July 2026"
+SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
+EXISTING_LASTMODS: dict[str, str] = {}
+PAGE_LASTMODS: dict[str, str] = {}
+BUILD_DATE = dt.date.today().isoformat()
 
 
 PRICE_ROWS = [
@@ -273,6 +279,33 @@ def image_path(name: str) -> str:
     return f"assets/images/ricefarm/{name}"
 
 
+def load_sitemap_lastmods(path: Path) -> dict[str, str]:
+    if not path.exists():
+        return {}
+    try:
+        root = ET.fromstring(path.read_text(encoding="utf-8"))
+    except ET.ParseError:
+        return {}
+
+    lastmods: dict[str, str] = {}
+    namespace = {"sm": SITEMAP_NAMESPACE}
+    for entry in root.findall("sm:url", namespace):
+        location = entry.findtext("sm:loc", default="", namespaces=namespace).strip()
+        lastmod = entry.findtext("sm:lastmod", default="", namespaces=namespace).strip()
+        if not location or not lastmod:
+            continue
+        prefix = "https://urbanfresh.in/"
+        slug = location[len(prefix):] if location.startswith(prefix) else location
+        lastmods[slug] = lastmod
+    return lastmods
+
+
+def choose_lastmod(previous_html: str | None, current_html: str, existing_lastmod: str | None, build_date: str) -> str:
+    if previous_html == current_html and existing_lastmod:
+        return existing_lastmod
+    return build_date
+
+
 def organization_schema() -> dict:
     return {
         "@type": ["Organization", "LocalBusiness"],
@@ -357,7 +390,16 @@ def render_page(filename: str, title: str, meta: str, body: str, active: str, sc
     </body>
     </html>
     """)
-    (ROOT / filename).write_text(html, encoding="utf-8")
+    output_path = ROOT / filename
+    previous_html = output_path.read_text(encoding="utf-8") if output_path.exists() else None
+    output_path.write_text(html, encoding="utf-8")
+    slug = "" if filename == "index.html" else filename
+    PAGE_LASTMODS[slug] = choose_lastmod(
+        previous_html,
+        html,
+        EXISTING_LASTMODS.get(slug),
+        BUILD_DATE,
+    )
 
 
 def page_hero(kicker: str, title: str, text: str, image: str, crumbs: list[tuple[str, str | None]]) -> str:
@@ -785,11 +827,18 @@ def render_sitemap() -> None:
         (GUIDE_SLUG, "monthly", "0.9"),
         ("basmati-rice-manufacturer-india.html", "monthly", "0.9"), ("basmati-rice-exporter-india.html", "monthly", "0.9"), ("rice-manufacturer-for-merchant-exporters.html", "monthly", "0.8"), ("private-label.html", "monthly", "0.8"),
     ] + [(item["slug"], "monthly", "0.9") for item in PRODUCTS]
-    urls = "\n".join(f'  <url><loc>https://urbanfresh.in/{slug}</loc><changefreq>{freq}</changefreq><priority>{priority}</priority></url>' for slug, freq, priority in pages)
+    urls = "\n".join(
+        f'  <url><loc>https://urbanfresh.in/{slug}</loc><lastmod>{PAGE_LASTMODS.get(slug, EXISTING_LASTMODS.get(slug, BUILD_DATE))}</lastmod><changefreq>{freq}</changefreq><priority>{priority}</priority></url>'
+        for slug, freq, priority in pages
+    )
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
 
 
 def main() -> None:
+    global BUILD_DATE, EXISTING_LASTMODS, PAGE_LASTMODS
+    BUILD_DATE = dt.date.today().isoformat()
+    EXISTING_LASTMODS = load_sitemap_lastmods(ROOT / "sitemap.xml")
+    PAGE_LASTMODS = {}
     for product in PRODUCTS:
         render_product_page(product)
     render_products()
