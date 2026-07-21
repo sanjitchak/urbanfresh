@@ -14,17 +14,17 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Open items
 
-- **2026-07-21 — Product snippets structured-data warning:** Search Console identified five invalid Product items on the homepage. The truthful code correction replaces unsupported `Product` claims with `ItemList`, `ItemPage`, and `Thing` markup because UrbanFresh does not publish fixed offers or verified reviews on those pages. Keep this item open until the corrected pages are deployed and Search Console validation is started or passed.
+- **2026-07-21 — Product snippets structured-data warning:** Search Console identified five invalid Product items on the homepage. PR #7 deployed the truthful correction as commit `67c9fb2`, replacing unsupported `Product` claims with `ItemList`, `ItemPage`, and `Thing` markup because UrbanFresh does not publish fixed offers or verified reviews on those pages. The live homepage and a live rice detail page were verified with zero Product nodes, and Search Console validation started on 2026-07-22. Keep this item open until Google reports validation passed.
 
 ## Change history
 
-### 2026-07-22 — Product snippets schema correction prepared
+### 2026-07-22 — Product snippets schema correction deployed
 
 - Confirmed in Search Console that all five current invalid items are rice entries nested in the homepage catalogue.
 - Removed unsupported Product-rich-result declarations site-wide instead of inventing `offers`, `review`, or `aggregateRating` data.
 - Preserved truthful Organization, WebSite, ItemList, ItemPage, Thing, CollectionPage and FAQ structured data.
 - Added an audit rule and unit tests that reject any future `Product` node missing Google-required offer, review or aggregate-rating data.
-- Deployment and Search Console fix validation remain pending until this change is published and verified live.
+- Merged PR #7 as commit `67c9fb2`; verified the live sitemap submission and live homepage/product-page JSON-LD, then started Search Console fix validation.
 
 ### 2026-07-21 — Persistent cross-chat handoff added
 
