@@ -14,9 +14,17 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Open items
 
-- **2026-07-21 — Product snippets structured-data warning:** Search Console reported that either `offers`, `review`, or `aggregateRating` should be specified. The affected URL has not yet been identified in this chat. Do not invent prices, ratings, or reviews; inspect the affected Product markup and use only truthful business data before changing it.
+- **2026-07-21 — Product snippets structured-data warning:** Search Console identified five invalid Product items on the homepage. The truthful code correction replaces unsupported `Product` claims with `ItemList`, `ItemPage`, and `Thing` markup because UrbanFresh does not publish fixed offers or verified reviews on those pages. Keep this item open until the corrected pages are deployed and Search Console validation is started or passed.
 
 ## Change history
+
+### 2026-07-22 — Product snippets schema correction prepared
+
+- Confirmed in Search Console that all five current invalid items are rice entries nested in the homepage catalogue.
+- Removed unsupported Product-rich-result declarations site-wide instead of inventing `offers`, `review`, or `aggregateRating` data.
+- Preserved truthful Organization, WebSite, ItemList, ItemPage, Thing, CollectionPage and FAQ structured data.
+- Added an audit rule and unit tests that reject any future `Product` node missing Google-required offer, review or aggregate-rating data.
+- Deployment and Search Console fix validation remain pending until this change is published and verified live.
 
 ### 2026-07-21 — Persistent cross-chat handoff added
 
