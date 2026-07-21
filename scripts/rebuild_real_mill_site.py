@@ -435,14 +435,23 @@ def render_product_page(product: dict) -> None:
         "@graph": [
             organization_schema(),
             {
-                "@type": "Product",
+                "@type": "ItemPage",
                 "name": product["name"],
-                "image": [f"https://urbanfresh.in/{image_path(image)}" for _, image in product["variants"]],
-                "description": product["summary"],
-                "category": product["group"],
                 "url": f"https://urbanfresh.in/{product['slug']}",
-                "brand": {"@type": "Brand", "name": "UrbanFresh"},
-                "manufacturer": {"@type": "Organization", "name": "UrbanFresh Rice Mills"},
+                "description": product["summary"],
+                "image": [f"https://urbanfresh.in/{image_path(image)}" for _, image in product["variants"]],
+                "isPartOf": {
+                    "@type": "CollectionPage",
+                    "name": "UrbanFresh Rice Product Catalogue",
+                    "url": "https://urbanfresh.in/products.html",
+                },
+                "mainEntity": {
+                    "@type": "Thing",
+                    "name": product["name"],
+                    "description": product["summary"],
+                    "image": [f"https://urbanfresh.in/{image_path(image)}" for _, image in product["variants"]],
+                    "url": f"https://urbanfresh.in/{product['slug']}",
+                },
             },
             {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]},
         ],
@@ -488,8 +497,28 @@ def render_products() -> None:
 
 
 def render_home() -> None:
-    catalog_names = [item["name"] for item in PRODUCTS]
-    schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "WebSite", "name": "UrbanFresh Rice Mills", "url": "https://urbanfresh.in/"}, {"@type": "OfferCatalog", "name": "UrbanFresh Rice Catalogue", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Product", "name": name}} for name in catalog_names]}]}
+    catalog_items = [
+        {
+            "@type": "ListItem",
+            "position": position,
+            "name": product["name"],
+            "url": f"https://urbanfresh.in/{product['slug']}",
+        }
+        for position, product in enumerate(PRODUCTS, 1)
+    ]
+    schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            organization_schema(),
+            {"@type": "WebSite", "name": "UrbanFresh Rice Mills", "url": "https://urbanfresh.in/"},
+            {
+                "@type": "ItemList",
+                "name": "UrbanFresh Rice Catalogue",
+                "numberOfItems": len(catalog_items),
+                "itemListElement": catalog_items,
+            },
+        ],
+    }
     featured = "".join(dedent(f"""
       <article class="catalog-card compact"><a class="catalog-image" href="{p['slug']}"><img src="{image_path(p['image'])}" alt="{escape(p['name'])} produced at the UrbanFresh mill" loading="lazy" width="900" height="620"></a><div class="catalog-copy"><span>{escape(p['group'])}</span><h3><a href="{p['slug']}">{escape(p['name'])}</a></h3><a class="text-link" href="{p['slug']}">See processing options</a></div></article>
     """).strip() for p in PRODUCTS[:6])

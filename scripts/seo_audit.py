@@ -82,6 +82,29 @@ def internal_target(source: Path, href: str) -> Path | None:
     return target
 
 
+def json_objects(value: object):
+    if isinstance(value, dict):
+        yield value
+        for nested in value.values():
+            yield from json_objects(nested)
+    elif isinstance(value, list):
+        for nested in value:
+            yield from json_objects(nested)
+
+
+def unsupported_product_snippets(data: object) -> list[str]:
+    unsupported: list[str] = []
+    for node in json_objects(data):
+        node_type = node.get("@type")
+        types = node_type if isinstance(node_type, list) else [node_type]
+        if "Product" not in types:
+            continue
+        if any(node.get(required) for required in ("offers", "review", "aggregateRating")):
+            continue
+        unsupported.append(str(node.get("name", "unnamed Product")))
+    return unsupported
+
+
 def audit() -> int:
     pages = sorted(ROOT.glob("*.html"))
     errors: list[str] = []
@@ -119,7 +142,13 @@ def audit() -> int:
             warnings.append(f"{label}: no JSON-LD structured data")
         else:
             try:
-                json.loads(clean(parser.jsonld_parts))
+                structured_data = json.loads(clean(parser.jsonld_parts))
+                unsupported = unsupported_product_snippets(structured_data)
+                if unsupported:
+                    errors.append(
+                        f"{label}: Product markup lacks offers, review or aggregateRating: "
+                        f"{', '.join(unsupported)}"
+                    )
             except json.JSONDecodeError as exc:
                 errors.append(f"{label}: invalid JSON-LD ({exc.msg})")
 
