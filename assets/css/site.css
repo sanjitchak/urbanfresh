@@ -203,8 +203,13 @@ h1, h2, h3 { text-wrap: balance; }
 .surface .photo-stack > img:last-child { border-color: var(--paper); }
 .dark-photo img, .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
 .dark-photo { min-height: 430px; border: 1px solid oklch(76% 0.04 145 / .4); }
+.mill-plant-photo { position: relative; margin: 0; overflow: hidden; }
+.mill-plant-photo img { min-height: 520px; object-position: center 46%; }
+.mill-plant-photo figcaption { position: absolute; inset: auto 0 0; padding: 18px 22px; color: oklch(92% 0.02 145); background: oklch(18% 0.05 158 / .9); font-size: .92rem; }
 .photo-frame { min-height: 480px; overflow: hidden; background: var(--paper-green); border: 1px solid var(--line); }
 .compact-frame { min-height: 520px; }
+.photo-proof-note { margin: 16px 0 0; color: var(--ink-soft); font-size: .92rem; }
+.photo-proof-note strong { color: var(--forest); }
 .section-action { margin: 38px 0 0; text-align: center; }
 .address-panel { padding: 34px; color: var(--paper); background: var(--forest-deep); border-top: 5px solid var(--gold-deep); }
 .address-panel h2 { margin: 0; font: 650 2rem/1.2 var(--serif); }
@@ -240,6 +245,16 @@ h1, h2, h3 { text-wrap: balance; }
 .photo-pair figcaption { padding: 16px 18px; color: var(--ink-soft); font-weight: 600; }
 .photo-feature { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 64px; align-items: center; }
 .photo-feature > img { width: 100%; min-height: 500px; object-fit: cover; border: 1px solid oklch(76% 0.04 145 / .4); }
+.mill-proof-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); grid-template-rows: repeat(2, 330px); gap: 20px; }
+.mill-proof-grid figure { position: relative; min-width: 0; margin: 0; overflow: hidden; border: 1px solid oklch(76% 0.04 145 / .45); background: var(--forest); }
+.mill-proof-grid .mill-proof-primary { grid-row: 1 / 3; }
+.mill-proof-grid img { width: 100%; height: 100%; object-fit: cover; }
+.mill-proof-grid .mill-proof-primary img { object-position: center 42%; }
+.mill-proof-grid figure:nth-child(2) img { object-position: center 36%; }
+.mill-proof-grid figure:nth-child(3) img { object-position: center 30%; }
+.mill-proof-grid figcaption { position: absolute; inset: auto 0 0; display: grid; gap: 3px; padding: 17px 19px; color: var(--paper); background: linear-gradient(transparent, oklch(16% 0.045 158 / .94) 34%); }
+.mill-proof-grid figcaption strong { color: var(--gold); font: 650 1.02rem/1.2 var(--serif); }
+.mill-proof-grid figcaption span { color: oklch(88% 0.025 145); font-size: .88rem; }
 .light-process { color: var(--ink); border-color: var(--line); }
 .light-process .process-step { border-color: var(--line); }
 .light-process .process-step p { color: var(--ink-soft); }
@@ -399,6 +414,8 @@ h1, h2, h3 { text-wrap: balance; }
   .catalog-grid, .certificate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .variant-grid { grid-template-columns: 1fr; }
   .photo-feature { grid-template-columns: 1fr; }
+  .mill-proof-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 520px 300px; }
+  .mill-proof-grid .mill-proof-primary { grid-column: 1 / -1; grid-row: auto; }
   .guide-feature { grid-template-columns: 1fr; }
   .article-layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 48px; }
   .choice-grid { grid-template-columns: 1fr; }
@@ -452,6 +469,12 @@ h1, h2, h3 { text-wrap: balance; }
   .mill-gallery figure:nth-child(1), .mill-gallery figure:nth-child(5) { grid-column: auto; }
   .mill-gallery figure, .mill-gallery img { min-height: 240px; }
   .photo-feature > img, .photo-frame { min-height: 340px; }
+  .mill-plant-photo img { min-height: 440px; }
+  .mill-proof-grid { grid-template-columns: 1fr; grid-template-rows: none; }
+  .mill-proof-grid .mill-proof-primary { grid-column: auto; }
+  .mill-proof-grid figure { min-height: 430px; }
+  .mill-proof-grid figure:nth-child(2) { min-height: 370px; }
+  .mill-proof-grid figure:nth-child(3) { min-height: 360px; }
   .compact-frame { min-height: 400px; }
   .guide-feature { gap: 34px; }
   .guide-feature-images, .guide-feature-images img { min-height: 280px; }

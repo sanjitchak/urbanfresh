@@ -7,7 +7,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - Production site: `https://urbanfresh.in/`
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages passing the local audit as of 2026-07-18
+- SEO audit baseline: 29 HTML pages passing the local audit as of 2026-07-22
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live sitemap, submit it to Search Console, and verify the recorded sitemap
 - Monthly SEO automation: active on the first Monday at 10:00 AM IST; uses Search Console as the first-party source and Ubersuggest as secondary research
@@ -17,6 +17,13 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - **2026-07-21 — Product snippets structured-data warning:** Search Console identified five invalid Product items on the homepage. PR #7 deployed the truthful correction as commit `67c9fb2`, replacing unsupported `Product` claims with `ItemList`, `ItemPage`, and `Thing` markup because UrbanFresh does not publish fixed offers or verified reviews on those pages. The live homepage and a live rice detail page were verified with zero Product nodes, and Search Console validation started on 2026-07-22. Keep this item open until Google reports validation passed.
 
 ## Change history
+
+### 2026-07-22 — First-party mill photography integrated
+
+- Added optimized WebP photographs of the processing plant, mill office and RI-marked chimney supplied by the mill team.
+- Replaced generic imagery in prominent homepage and About-page proof areas, and added a captioned photographed-at-our-mill gallery to the Infrastructure page.
+- Added descriptive image alt text and truthful Organization, AboutPage and WebPage image references without changing product or capacity claims.
+- Validated all 29 pages, all 14 unit tests, desktop and mobile layouts, image loading, mobile CTAs and zero browser console errors.
 
 ### 2026-07-22 — Product snippets schema correction deployed
 
