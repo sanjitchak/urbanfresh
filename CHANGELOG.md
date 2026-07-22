@@ -24,6 +24,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - Replaced generic imagery in prominent homepage and About-page proof areas, and added a captioned photographed-at-our-mill gallery to the Infrastructure page.
 - Added descriptive image alt text and truthful Organization, AboutPage and WebPage image references without changing product or capacity claims.
 - Validated all 29 pages, all 14 unit tests, desktop and mobile layouts, image loading, mobile CTAs and zero browser console errors.
+- Deployed the photo integration as commit `b4aa295`; GitHub Pages and the Search Console sitemap workflow succeeded, and the live pages plus all three image assets returned HTTP 200.
 
 ### 2026-07-22 — Product snippets schema correction deployed
 
