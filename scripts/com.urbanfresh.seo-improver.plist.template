@@ -6,8 +6,8 @@
   <string>com.urbanfresh.seo-improver</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/opt/homebrew/bin/python3</string>
-    <string>__ROOT__/scripts/seo_improver.py</string>
+    <string>/bin/zsh</string>
+    <string>__ROOT__/scripts/run_weekly_seo.sh</string>
   </array>
   <key>WorkingDirectory</key>
   <string>__ROOT__</string>

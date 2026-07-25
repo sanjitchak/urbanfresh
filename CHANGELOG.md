@@ -5,6 +5,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 ## Current state
 
 - Production site: `https://urbanfresh.in/`
+- International site: `https://urbanfreshrice.com/` (new repository and DNS/HTTPS deployment verification in progress)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
 - SEO audit baseline: 29 HTML pages passing the local audit as of 2026-07-22
@@ -14,9 +15,24 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Open items
 
-- **2026-07-21 — Product snippets structured-data warning:** Search Console identified five invalid Product items on the homepage. PR #7 deployed the truthful correction as commit `67c9fb2`, replacing unsupported `Product` claims with `ItemList`, `ItemPage`, and `Thing` markup because UrbanFresh does not publish fixed offers or verified reviews on those pages. The live homepage and a live rice detail page were verified with zero Product nodes, and Search Console validation started on 2026-07-22. Keep this item open until Google reports validation passed.
+- Verify GitHub Pages deployment, DNS and HTTPS for `urbanfreshrice.com`, then
+  add its Search Console domain property and encrypted repository credential.
 
 ## Change history
+
+### 2026-07-25 — Separate international buyer site wired in
+
+- Added `urbanfreshrice.com` to the Organization entity references, global
+  navigation and footer while keeping `urbanfresh.in` focused on domestic India
+  sales.
+- Added contextual international-site links only on the existing exporter and
+  merchant-exporter landing pages.
+- Added reciprocal hreflang for the genuine About-page pair and an audit map so
+  broken declarations fail local validation.
+- Extended the weekly SEO runner to collect both domain properties and added a
+  `domain` column to the monthly experiment log.
+- Search Console now reports the earlier Product-snippet issue as Passed with
+  zero invalid items; the prior open warning is closed.
 
 ### 2026-07-22 — First-party mill photography integrated
 

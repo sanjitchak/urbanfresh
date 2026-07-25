@@ -109,6 +109,19 @@ The Codex desktop automation **UrbanFresh Monthly SEO Loop** runs on the first M
 
 The automation does not invent business facts, create doorway pages or make unrelated design changes. It uses only features already available in the authorized Ubersuggest Individual Lifetime plan and cannot approve add-ons, upgrades or extra spending. A dirty worktree, unavailable credentials, failed validation or a non-fast-forward repository stops publishing for that run and leaves a report explaining why.
 
+## Two-domain operating rule
+
+- `urbanfresh.in` remains limited to one evidence-backed content change per
+  monthly run.
+- For `urbanfreshrice.com` months 1 to 6, the limit is suspended only for
+  publishing the initial compliance and export-mechanics pages. Changes to an
+  already-published export page remain limited to one evidence-backed change per
+  month.
+- Once the export site's Tier 1 and Tier 2 pages are live and receiving
+  impressions, both domains use the one-change-per-month rule.
+- `seo/monthly-log.csv` includes a `domain` column so experiments and qualified
+  quote leads remain attributable.
+
 ## Decision rules
 
 The report considers:
@@ -124,7 +137,7 @@ Only the five highest-scoring opportunities are reported, and the executive summ
 
 - Never publish invented certifications, capacity, test results, export registrations, customer logos or testimonials.
 - Never create templated city or country pages without real market-specific evidence.
-- Make only one evidence-backed content change at a time.
+- Make only one evidence-backed change to an already-published page at a time.
 - Run `python3 scripts/seo_audit.py` before committing any SEO page change.
 - Wait for the next comparable Search Console period before deciding whether a change worked.
 - Treat qualified quote leads—not traffic alone—as the business outcome, and update `monthly-log.csv` during the monthly review.

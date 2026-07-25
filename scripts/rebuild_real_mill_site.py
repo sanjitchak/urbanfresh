@@ -15,13 +15,14 @@ ROOT = Path(__file__).resolve().parents[1]
 PHONE = "+91 94335 69217"
 PHONE_LINK = "+919433569217"
 ADDRESS = "119/6, Highway, Village Daha, Madanpur, Karnal 132001, Haryana, India"
-CSS_VERSION = "20260722-1"
+CSS_VERSION = "20260725-1"
 JS_VERSION = "20260714-2"
 WA_TEXT = "Hello UrbanFresh, I would like a bulk rice quote."
 WA_URL = f"https://wa.me/919433569217?text={WA_TEXT.replace(' ', '%20').replace(',', '%2C')}"
 GUIDE_SLUG = "1121-vs-1509-vs-1401-basmati-rice.html"
 PRICE_SLUG = "rice-price-india.html"
 LINKEDIN_URL = "https://www.linkedin.com/company/urbanfreshin"
+EXPORT_URL = "https://urbanfreshrice.com/"
 GMB_URL = "https://local.google.com/place?placeid=ChIJEXtmKGRxDjkRqoJCBUKpPQI&utm_medium=noren&utm_source=gbp&utm_campaign=2026"
 PRICE_DATE_ISO = "2026-07-06"
 PRICE_DATE_LABEL = "6 July 2026"
@@ -317,7 +318,7 @@ def organization_schema() -> dict:
             "https://urbanfresh.in/assets/images/ricefarm/mill-campus-office.webp",
             "https://urbanfresh.in/assets/images/ricefarm/mill-campus-chimney.webp",
         ],
-        "sameAs": [LINKEDIN_URL],
+        "sameAs": [LINKEDIN_URL, EXPORT_URL],
         "hasMap": GMB_URL,
         "telephone": "+91-94335-69217",
         "foundingDate": "1978",
@@ -345,7 +346,7 @@ def header(active: str = "") -> str:
     return dedent(f"""
       <a class="skip-link" href="#main">Skip to content</a>
       <div class="topbar"><div class="container topbar-inner"><span>Our rice mill: <strong>Village Daha, Madanpur, Karnal</strong></span><div class="topbar-list"><a href="tel:{PHONE_LINK}">{PHONE}</a><span>India and export enquiries welcome</span></div></div></div>
-      <header class="site-header"><div class="container nav-wrap"><a class="brand" href="index.html" aria-label="UrbanFresh Rice Mills home"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt="UrbanFresh rice grain and sunrise logo"><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span></button><nav class="main-nav" aria-label="Main navigation" data-main-nav>{nav}<a class="button button-sm {"active" if active == "contact" else ""}" href="contact.html#quote">Get a Quote</a></nav></div></header>
+      <header class="site-header"><div class="container nav-wrap"><a class="brand" href="index.html" aria-label="UrbanFresh Rice Mills home"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt="UrbanFresh rice grain and sunrise logo"><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span></button><nav class="main-nav" aria-label="Main navigation" data-main-nav>{nav}<a href="{EXPORT_URL}">International Buyers</a><a class="button button-sm {"active" if active == "contact" else ""}" href="contact.html#quote">Get a Quote</a></nav></div></header>
     """).strip()
 
 
@@ -356,7 +357,7 @@ def footer(contact_page: bool = False) -> str:
         <div class="footer-brand"><a class="brand" href="index.html"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt=""><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><p>A family-operated rice mill established in 1978, serving bulk buyers from Village Daha Madanpur, Karnal.</p></div>
         <div><h2 class="footer-title">Mill</h2><div class="footer-links"><a href="about.html">About UrbanFresh</a><a href="infrastructure.html">Infrastructure</a><a href="quality.html">Quality Control</a><a href="certifications.html">Certifications</a><a href="private-label.html">Private Label</a></div></div>
         <div><h2 class="footer-title">Rice range</h2><div class="footer-links"><a href="products.html">All Rice Products</a><a href="{PRICE_SLUG}">Latest Rice Prices</a><a href="{GUIDE_SLUG}">1121 vs 1509 vs 1401 Guide</a><a href="1121-basmati-rice.html">1121 Basmati</a><a href="pusa-basmati-rice.html">Pusa Basmati</a><a href="sugandha-rice.html">Sugandha Rice</a><a href="pr-11-rice.html">PR 11 Rice</a></div></div>
-        <div><h2 class="footer-title">Contact</h2><div class="footer-links"><span>119/6, Highway, Village Daha, Madanpur</span><span>Karnal 132001, Haryana, India</span><a href="tel:{PHONE_LINK}">{PHONE}</a><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp UrbanFresh</a><a href="{escape(GMB_URL, quote=True)}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">Follow UrbanFresh on LinkedIn</a><a href="{quote_href}">Quote form</a></div></div>
+        <div><h2 class="footer-title">Contact</h2><div class="footer-links"><span>119/6, Highway, Village Daha, Madanpur</span><span>Karnal 132001, Haryana, India</span><a href="tel:{PHONE_LINK}">{PHONE}</a><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp UrbanFresh</a><a href="{escape(GMB_URL, quote=True)}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">Follow UrbanFresh on LinkedIn</a><a href="{quote_href}">Quote form</a><a href="{EXPORT_URL}">Export enquiries: urbanfreshrice.com</a></div></div>
       </div><div class="container footer-bottom"><span>© <span data-year></span> UrbanFresh Rice Mills.</span><span>Availability, specifications, certificates and terms are confirmed per enquiry.</span></div></footer>
       <a class="whatsapp-float" href="{WA_URL}" target="_blank" rel="noopener" aria-label="Chat with UrbanFresh on WhatsApp">Quote on WhatsApp</a>
       <div class="mobile-cta"><a class="button button-whatsapp" href="{WA_URL}" target="_blank" rel="noopener">Chat on WhatsApp</a><a class="button" href="{quote_href}">Get Quote</a></div>
@@ -367,6 +368,12 @@ def footer(contact_page: bool = False) -> str:
 def render_page(filename: str, title: str, meta: str, body: str, active: str, schema: dict, image: str, body_class: str = "", contact_page: bool = False) -> None:
     canonical = "https://urbanfresh.in/" if filename == "index.html" else f"https://urbanfresh.in/{filename}"
     image_url = f"https://urbanfresh.in/{image}"
+    alternates = ""
+    if filename == "about.html":
+        alternates = dedent(f"""
+          <link rel="alternate" hreflang="en-IN" href="https://urbanfresh.in/about.html">
+          <link rel="alternate" hreflang="en" href="{EXPORT_URL}about-mill-infrastructure.html">
+        """).strip()
     html = dedent(f"""\
     <!doctype html>
     <html lang="en-IN">
@@ -376,6 +383,7 @@ def render_page(filename: str, title: str, meta: str, body: str, active: str, sc
       <title>{escape(title)}</title>
       <meta name="description" content="{escape(meta, quote=True)}">
       <link rel="canonical" href="{canonical}">
+      {alternates}
       <meta name="robots" content="index,follow,max-image-preview:large">
       <meta name="theme-color" content="#0f3d2e">
       <meta property="og:type" content="website">
@@ -624,10 +632,16 @@ def render_landing_pages() -> None:
         ("private-label.html", "Private Label Rice Manufacturer in India | UrbanFresh", "Build a private-label rice requirement with UrbanFresh Rice Mills in Karnal. Choose rice, process, pack size, material, artwork, volume and destination.", "Private-label rice manufacturing", "Your rice brand starts with the product and pack brief.", "We welcome buyer-brand enquiries across basmati and non-basmati ranges. Share pack sizes, material, artwork status, quantity and destination market.", "mill-about-2.webp"),
     ]
     for filename, title, meta, kicker, heading, intro, image in pages:
+        export_site_link = ""
+        if filename in {"basmati-rice-exporter-india.html", "rice-manufacturer-for-merchant-exporters.html"}:
+            export_site_link = dedent(f"""
+              <section class="section-sm guide-callout"><div class="container guide-callout-grid"><div><p class="section-label">International buyer resources</p><h2>Need export specifications, quality evidence and shipment planning?</h2><p>Use the separate UrbanFresh international website for specification-led rice enquiries, residue-testing requirements, export documents and packing briefs.</p></div><a class="button button-arrow" href="{EXPORT_URL}">Visit urbanfreshrice.com</a></div></section>
+            """).strip()
         schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "Service", "name": heading, "provider": {"@type": "Organization", "name": "UrbanFresh Rice Mills"}, "areaServed": ["India", "International"], "url": f"https://urbanfresh.in/{filename}"}]}
         body = page_hero(kicker, heading, intro, image, [("Home", "index.html"), (heading, None)]) + dedent(f"""
           <section class="section"><div class="container content-grid"><article class="prose"><h2>Start with a complete commercial brief</h2><p>{escape(intro)} Our mill is located at {ADDRESS}. We began in 1978 and have a daily production capacity of 230 metric tons across three production units.</p><h2>Rice products we manufacture</h2><p>We manufacture 1121, 1509, Traditional, 1401, Pusa and 1718 Basmati, along with Sugandha, Sharbati, PR 11, Parmal and Sona Masoori Raw Rice. Residue-controlled Raw, Steam, Sella and Golden Sella options are also available.</p><h2>What we need from you</h2><ul><li>Rice variety and processing style.</li><li>Quantity, purchase frequency and target timeline.</li><li>Pack size, material and buyer-brand requirements.</li><li>Delivery city, destination country or port.</li><li>Quality, testing and document expectations.</li></ul><div class="availability-note">We confirm product, capacity, documents, samples, specification, pricing and delivery terms against your enquiry.</div></article><aside class="info-panel"><h2>Mill enquiry</h2><p>Send these details together.</p><div class="spec-list"><div class="spec-row"><span>Rice</span><strong>Product + process</strong></div><div class="spec-row"><span>Volume</span><strong>Metric tons</strong></div><div class="spec-row"><span>Pack</span><strong>Size + material</strong></div><div class="spec-row"><span>Destination</span><strong>City / port / country</strong></div><div class="spec-row"><span>Timeline</span><strong>Buying window</strong></div></div><a class="button button-arrow" href="contact.html#quote">Send Requirement</a></aside></div></section>
           <section class="section surface"><div class="container split"><div class="photo-frame"><img src="{image_path(image)}" alt="UrbanFresh rice mill in Karnal for {escape(heading)}" loading="lazy" width="1000" height="760"></div><div><p class="section-label">Our Karnal mill</p><h2 class="section-title">Manufacturing from Village Daha, Madanpur, Karnal.</h2><p class="section-lede">Our plant covers paddy handling, parboiling, drying, cleaning, milling, sorting and packaging. Buyers can review our infrastructure, quality process and available registrations before commercial closure.</p><p><a class="button button-outline" href="infrastructure.html">Infrastructure</a> <a class="button button-outline" href="certifications.html">Certificates</a></p></div></div></section>
+          {export_site_link}
           <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Have a buyer requirement ready?</h2><p>Send product, volume, pack, destination and timeline in one message.</p></div><a class="button button-arrow" href="contact.html#quote">Request Quote</a></div></section>
         """)
         render_page(filename, title, meta, body, "", schema, image_path(image))

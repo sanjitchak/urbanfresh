@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+DOMAIN = "urbanfresh.in"
 
 
 class PageParser(HTMLParser):
@@ -25,6 +26,7 @@ class PageParser(HTMLParser):
         self.description = ""
         self.canonical = ""
         self.links: list[str] = []
+        self.hreflangs: dict[str, str] = {}
         self.images_missing_alt: list[str] = []
         self.jsonld_parts: list[str] = []
 
@@ -39,6 +41,8 @@ class PageParser(HTMLParser):
             self.description = values.get("content", "") or ""
         elif tag == "link" and "canonical" in (values.get("rel", "") or "").lower():
             self.canonical = values.get("href", "") or ""
+        elif tag == "link" and "alternate" in (values.get("rel", "") or "").lower() and values.get("hreflang"):
+            self.hreflangs[values["hreflang"] or ""] = values.get("href", "") or ""
         elif tag == "a" and values.get("href"):
             self.links.append(values["href"] or "")
         elif tag == "img" and "alt" not in values:
@@ -110,6 +114,7 @@ def audit() -> int:
     errors: list[str] = []
     warnings: list[str] = []
     canonicals: dict[str, str] = {}
+    page_hreflangs: dict[str, dict[str, str]] = {}
 
     for page in pages:
         parser = PageParser()
@@ -136,6 +141,7 @@ def audit() -> int:
             errors.append(f"{label}: duplicate canonical also used by {canonicals[parser.canonical]}")
         else:
             canonicals[parser.canonical] = label
+            page_hreflangs[parser.canonical] = parser.hreflangs
         if parser.images_missing_alt:
             errors.append(f"{label}: image(s) missing alt: {', '.join(parser.images_missing_alt)}")
         if not clean(parser.jsonld_parts):
@@ -163,6 +169,28 @@ def audit() -> int:
         errors.append("site: sitemap.xml missing")
     if not robots.exists():
         errors.append("site: robots.txt missing")
+
+    hreflang_map = ROOT / "seo" / "hreflang-map.json"
+    if hreflang_map.exists():
+        try:
+            pairs = json.loads(hreflang_map.read_text(encoding="utf-8")).get("pairs", [])
+        except (json.JSONDecodeError, AttributeError):
+            errors.append("site: invalid seo/hreflang-map.json")
+            pairs = []
+        for pair in pairs:
+            if not isinstance(pair, dict) or set(pair) != {"en-IN", "en"}:
+                errors.append("site: each hreflang pair must contain en-IN and en")
+                continue
+            local_urls = [url for url in pair.values() if urlsplit(url).netloc == DOMAIN]
+            if len(local_urls) != 1:
+                errors.append(f"site: hreflang pair must contain exactly one {DOMAIN} URL")
+                continue
+            local_url = local_urls[0]
+            actual = page_hreflangs.get(local_url)
+            if actual is None:
+                errors.append(f"site: hreflang local page missing from generated canonicals: {local_url}")
+            elif actual != pair:
+                errors.append(f"{canonicals[local_url]}: hreflang declarations do not match reciprocal map")
 
     print(f"UrbanFresh SEO audit: {len(pages)} HTML pages")
     if errors:
