@@ -29,6 +29,9 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   mobile breakpoint to avoid duplicate or overlapping controls.
 - Rebuilt all 29 pages and verified the rendered 60 px control at desktop width;
   the SEO audit, all 16 unit tests and `git diff --check` passed.
+- Published commit `5a9952d`; GitHub Pages deployment `30169545097` and Search
+  Console sitemap workflow `30169545375` succeeded. Live desktop QA confirmed
+  the new stylesheet, circular icon and prefilled domestic quote link.
 
 ### 2026-07-25 — Separate international buyer site wired in
 
