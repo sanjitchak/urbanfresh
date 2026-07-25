@@ -5,7 +5,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 ## Current state
 
 - Production site: `https://urbanfresh.in/`
-- International site: `https://urbanfreshrice.com/` (new repository and DNS/HTTPS deployment verification in progress)
+- International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
 - SEO audit baseline: 29 HTML pages passing the local audit as of 2026-07-22
@@ -15,8 +15,9 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Open items
 
-- Verify GitHub Pages deployment, DNS and HTTPS for `urbanfreshrice.com`, then
-  add its Search Console domain property and encrypted repository credential.
+- Add the `urbanfreshrice.com` Search Console domain property, grant the
+  existing service account Full access, and add its encrypted repository
+  credential after explicit approval.
 
 ## Change history
 
@@ -33,6 +34,9 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   `domain` column to the monthly experiment log.
 - Search Console now reports the earlier Product-snippet issue as Passed with
   zero invalid items; the prior open warning is closed.
+- Deployed commit `488c06c`; the GitHub Pages and domestic Search Console
+  sitemap workflows succeeded. Live checks confirmed the navigation/footer
+  links, contextual export link and reciprocal About-page hreflang.
 
 ### 2026-07-22 — First-party mill photography integrated
 
