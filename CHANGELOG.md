@@ -21,6 +21,15 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Change history
 
+### 2026-07-26 — Desktop WhatsApp floating icon added
+
+- Replaced the desktop “Quote on WhatsApp” text pill with a compact, circular
+  WhatsApp icon linked to the existing prefilled mill chat.
+- Preserved the existing mobile bottom CTA and hid the floating icon at the
+  mobile breakpoint to avoid duplicate or overlapping controls.
+- Rebuilt all 29 pages and verified the rendered 60 px control at desktop width;
+  the SEO audit, all 16 unit tests and `git diff --check` passed.
+
 ### 2026-07-25 — Separate international buyer site wired in
 
 - Added `urbanfreshrice.com` to the Organization entity references, global
