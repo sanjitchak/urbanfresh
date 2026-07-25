@@ -32,6 +32,8 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   broken declarations fail local validation.
 - Extended the weekly SEO runner to collect both domain properties and added a
   `domain` column to the monthly experiment log.
+- Reinstalled the existing Monday 09:00 local schedule with the dual-domain
+  runner; the LaunchAgent passed `plutil` validation and loaded successfully.
 - Search Console now reports the earlier Product-snippet issue as Passed with
   zero invalid items; the prior open warning is closed.
 - Deployed commit `488c06c`; the GitHub Pages and domestic Search Console
