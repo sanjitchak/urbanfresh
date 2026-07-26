@@ -10,13 +10,17 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
 - SEO audit baseline: 29 HTML pages passing the expanded local audit as of 2026-07-26
 - Search Console: service account has Full access; authenticated sitemap submission is working
-- Deployment automation: SEO-relevant pushes to `main` wait for the live sitemap, submit it to Search Console, and verify the recorded sitemap
-- Monthly SEO automation: active on the first Monday at 10:00 AM IST; uses Search Console as the first-party source and Ubersuggest as secondary research
+- Deployment automation: SEO-relevant pushes to `main` wait for the live
+  sitemap and IndexNow key, submit and verify the sitemap in Search Console,
+  then notify IndexNow
+- Monitoring: weekly GitHub quality checks and a Monday 09:30 AM IST read-only
+  dual-domain monitor; the evidence-gated monthly optimizer remains active on
+  the first Monday at 10:00 AM IST
 
 ## Open items
 
-- Commit and push the current SEO hardening changes, then verify GitHub Pages,
-  Search Console sitemap submission and the first live IndexNow submission.
+- Search Console evidence remains sparse. Wait for a full comparable data
+  period before allowing the monthly loop to test any page change.
 
 ## Change history
 
@@ -45,9 +49,13 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - Raised evidence thresholds in the local SEO improver to 100 impressions for
   page-change opportunities and 50 impressions for cannibalization checks, so
   small or noisy samples cannot trigger automated content suggestions.
-- Rebuilt all generated pages; the 29-page SEO audit, all 30 unit tests and
-  `git diff --check` passed. These combined changes are local only and have not
-  been committed, deployed or submitted live.
+- Rebuilt all generated pages; the 29-page SEO audit, all 30 unit tests,
+  rendered 390/1440 px checks and `git diff --check` passed.
+- Published commit `890ada9`. GitHub Pages run `30185516493`, weekly-quality
+  run `30185516936` and discovery run `30185516886` succeeded. The live sitemap
+  matched the repository byte-for-byte, Search Console recorded the submission
+  at `2026-07-26T03:03:12.265Z`, and IndexNow accepted all 28 canonical URLs
+  with HTTP 202.
 
 ### 2026-07-26 — Desktop WhatsApp floating icon added
 
