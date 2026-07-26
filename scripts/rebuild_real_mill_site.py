@@ -9,14 +9,16 @@ import xml.etree.ElementTree as ET
 from html import escape
 from pathlib import Path
 from textwrap import dedent
+from xml.sax.saxutils import escape as xml_escape
 
 
 ROOT = Path(__file__).resolve().parents[1]
 PHONE = "+91 94335 69217"
 PHONE_LINK = "+919433569217"
 ADDRESS = "119/6, Highway, Village Daha, Madanpur, Karnal 132001, Haryana, India"
-CSS_VERSION = "20260726-1"
+CSS_VERSION = "20260726-2"
 JS_VERSION = "20260714-2"
+FONT_STYLESHEET = "https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;650;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
 WA_TEXT = "Hello UrbanFresh, I would like a bulk rice quote."
 WA_URL = f"https://wa.me/919433569217?text={WA_TEXT.replace(' ', '%20').replace(',', '%2C')}"
 GUIDE_SLUG = "1121-vs-1509-vs-1401-basmati-rice.html"
@@ -27,8 +29,10 @@ GMB_URL = "https://local.google.com/place?placeid=ChIJEXtmKGRxDjkRqoJCBUKpPQI&ut
 PRICE_DATE_ISO = "2026-07-06"
 PRICE_DATE_LABEL = "6 July 2026"
 SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
+IMAGE_SITEMAP_NAMESPACE = "http://www.google.com/schemas/sitemap-image/1.1"
 EXISTING_LASTMODS: dict[str, str] = {}
 PAGE_LASTMODS: dict[str, str] = {}
+PAGE_IMAGES: dict[str, str] = {}
 BUILD_DATE = dt.date.today().isoformat()
 
 
@@ -307,6 +311,32 @@ def choose_lastmod(previous_html: str | None, current_html: str, existing_lastmo
     return build_date
 
 
+def breadcrumb_schema(canonical: str, crumbs: list[tuple[str, str | None]]) -> dict:
+    items = []
+    for position, (label, href) in enumerate(crumbs, 1):
+        if href == "index.html":
+            item_url = "https://urbanfresh.in/"
+        elif href and href.startswith(("https://", "http://")):
+            item_url = href
+        elif href:
+            item_url = f"https://urbanfresh.in/{href.lstrip('/')}"
+        else:
+            item_url = canonical
+        items.append(
+            {
+                "@type": "ListItem",
+                "position": position,
+                "name": label,
+                "item": item_url,
+            }
+        )
+    return {
+        "@type": "BreadcrumbList",
+        "@id": f"{canonical}#breadcrumb",
+        "itemListElement": items,
+    }
+
+
 def organization_schema() -> dict:
     return {
         "@type": ["Organization", "LocalBusiness"],
@@ -355,7 +385,7 @@ def footer(contact_page: bool = False) -> str:
     return dedent(f"""
       <footer class="site-footer"><div class="container footer-grid">
         <div class="footer-brand"><a class="brand" href="index.html"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt=""><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><p>A family-operated rice mill established in 1978, serving bulk buyers from Village Daha Madanpur, Karnal.</p></div>
-        <div><h2 class="footer-title">Mill</h2><div class="footer-links"><a href="about.html">About UrbanFresh</a><a href="infrastructure.html">Infrastructure</a><a href="quality.html">Quality Control</a><a href="certifications.html">Certifications</a><a href="private-label.html">Private Label</a></div></div>
+        <div><h2 class="footer-title">Mill</h2><div class="footer-links"><a href="about.html">About UrbanFresh</a><a href="infrastructure.html">Infrastructure</a><a href="quality.html">Quality Control</a><a href="certifications.html">Certifications</a><a href="private-label.html">Private Label</a><a href="basmati-rice-manufacturer-india.html">Basmati Manufacturer</a><a href="basmati-rice-exporter-india.html">Overseas Basmati Supply</a><a href="rice-manufacturer-for-merchant-exporters.html">Merchant Exporter Supply</a></div></div>
         <div><h2 class="footer-title">Rice range</h2><div class="footer-links"><a href="products.html">All Rice Products</a><a href="{PRICE_SLUG}">Latest Rice Prices</a><a href="{GUIDE_SLUG}">1121 vs 1509 vs 1401 Guide</a><a href="1121-basmati-rice.html">1121 Basmati</a><a href="pusa-basmati-rice.html">Pusa Basmati</a><a href="sugandha-rice.html">Sugandha Rice</a><a href="pr-11-rice.html">PR 11 Rice</a></div></div>
         <div><h2 class="footer-title">Contact</h2><div class="footer-links"><span>119/6, Highway, Village Daha, Madanpur</span><span>Karnal 132001, Haryana, India</span><a href="tel:{PHONE_LINK}">{PHONE}</a><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp UrbanFresh</a><a href="{escape(GMB_URL, quote=True)}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">Follow UrbanFresh on LinkedIn</a><a href="{quote_href}">Quote form</a><a href="{EXPORT_URL}">Export enquiries: urbanfreshrice.com</a></div></div>
       </div><div class="container footer-bottom"><span>© <span data-year></span> UrbanFresh Rice Mills.</span><span>Availability, specifications, certificates and terms are confirmed per enquiry.</span></div></footer>
@@ -365,9 +395,25 @@ def footer(contact_page: bool = False) -> str:
     """).strip()
 
 
-def render_page(filename: str, title: str, meta: str, body: str, active: str, schema: dict, image: str, body_class: str = "", contact_page: bool = False) -> None:
+def render_page(
+    filename: str,
+    title: str,
+    meta: str,
+    body: str,
+    active: str,
+    schema: dict,
+    image: str,
+    *,
+    crumbs: list[tuple[str, str | None]] | None = None,
+    body_class: str = "",
+    contact_page: bool = False,
+    hero_image: str | None = None,
+) -> None:
     canonical = "https://urbanfresh.in/" if filename == "index.html" else f"https://urbanfresh.in/{filename}"
     image_url = f"https://urbanfresh.in/{image}"
+    hero_image_url = f"https://urbanfresh.in/{hero_image or image}"
+    if crumbs:
+        schema["@graph"].append(breadcrumb_schema(canonical, crumbs))
     alternates = ""
     if filename == "about.html":
         alternates = dedent(f"""
@@ -393,6 +439,10 @@ def render_page(filename: str, title: str, meta: str, body: str, active: str, sc
       <meta property="og:url" content="{canonical}">
       <meta property="og:image" content="{image_url}">
       <link rel="icon" href="assets/images/favicon.png" type="image/png">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="preload" as="image" href="{hero_image_url}" fetchpriority="high">
+      <link rel="stylesheet" href="{escape(FONT_STYLESHEET, quote=True)}">
       <link rel="stylesheet" href="assets/css/site.css?v={CSS_VERSION}">
       <script type="application/ld+json">{json.dumps(schema, ensure_ascii=False, separators=(",", ":"))}</script>
     </head>
@@ -407,6 +457,7 @@ def render_page(filename: str, title: str, meta: str, body: str, active: str, sc
     previous_html = output_path.read_text(encoding="utf-8") if output_path.exists() else None
     output_path.write_text(html, encoding="utf-8")
     slug = "" if filename == "index.html" else filename
+    PAGE_IMAGES[slug] = image_url
     PAGE_LASTMODS[slug] = choose_lastmod(
         previous_html,
         html,
@@ -469,7 +520,8 @@ def render_product_page(product: dict) -> None:
             {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]},
         ],
     }
-    body = page_hero(product["tag"], product["name"], product["summary"], product["image"], [("Home", "index.html"), ("Rice Products", "products.html"), (product["name"], None)]) + dedent(f"""
+    crumbs = [("Home", "index.html"), ("Rice Products", "products.html"), (product["name"], None)]
+    body = page_hero(product["tag"], product["name"], product["summary"], product["image"], crumbs) + dedent(f"""
       <section class="section"><div class="container content-grid"><article class="prose"><p class="section-label">Milled in Karnal</p><h2>{escape(product['name'])} for wholesale and export requirements</h2><p>{escape(product['detail'])}</p><div class="availability-note">{escape(controlled_note)}</div><h2>What to include in your enquiry</h2><p>Tell us the processing style, approximate metric tons, required pack, delivery city or destination port and buying timeline. Add important quality parameters or ask for guidance if your customer has not fixed them yet.</p><h2>Made at our Karnal rice mill</h2><p>We handle your enquiry from our rice mill at {ADDRESS}. Established in 1978, our plant is equipped for cleaning, parboiling, drying, milling, sorting and packaging. We confirm commercial feasibility for every order.</p></article><aside class="info-panel"><h2>Quote {escape(product['name'])}</h2><p>Send a complete buying brief.</p><div class="spec-list"><div class="spec-row"><span>Product</span><strong>{escape(product['name'])}</strong></div><div class="spec-row"><span>Processes</span><strong>{len(product['variants'])} options</strong></div><div class="spec-row"><span>Quantity</span><strong>Required</strong></div><div class="spec-row"><span>Packaging</span><strong>Buyer specified</strong></div><div class="spec-row"><span>Mill</span><strong>Daha Madanpur, Karnal</strong></div></div><a class="button button-arrow" href="contact.html#quote">Get Product Quote</a>{price_link}</aside></div></section>
       {guide_link}
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Processing options</p><h2 class="section-title">Choose the rice format for your market.</h2></div><p class="section-lede">These photographs show rice from our product range. Appearance can vary by crop and lot, so we confirm the final sample and specification with each buyer.</p></div><div class="variant-grid">{variants}</div></div></section>
@@ -477,7 +529,17 @@ def render_product_page(product: dict) -> None:
       <section class="section surface"><div class="container"><p class="section-label">Related rice</p><h2 class="section-title">Compare more rice from our mill.</h2><div class="benefit-grid">{related}</div></div></section>
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Need a bulk {escape(product['name'])} quote?</h2><p>Send process, volume, packing, destination and timeline in one message.</p></div><a class="button button-arrow" href="contact.html#quote">Request Quote</a></div></section>
     """)
-    render_page(product["slug"], product["title"], product["meta"], body, "products", schema, image_path(product["image"]), f"product-page product-{product['slug'].split('.')[0]}")
+    render_page(
+        product["slug"],
+        product["title"],
+        product["meta"],
+        body,
+        "products",
+        schema,
+        image_path(product["image"]),
+        crumbs=crumbs,
+        body_class=f"product-page product-{product['slug'].split('.')[0]}",
+    )
 
 
 def render_products() -> None:
@@ -503,10 +565,11 @@ def render_products() -> None:
           <section class="section {'' if group == 'Non-basmati rice' else 'surface'}"><div class="container"><div class="section-head"><div><p class="section-label">{escape(group)}</p><h2 class="section-title">{escape(heading)}</h2></div><p class="section-lede">{escape(lede)}</p></div><div class="catalog-grid">{''.join(cards)}</div></div></section>
         """).strip())
     schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "CollectionPage", "name": "UrbanFresh Rice Product Catalogue", "url": "https://urbanfresh.in/products.html", "mainEntity": {"@type": "ItemList", "numberOfItems": len(all_items), "itemListElement": all_items}}]}
-    body = page_hero("Complete mill catalogue", "Basmati and non-basmati rice from Karnal.", "Explore the rice ranges and processing options we offer from our Village Daha Madanpur mill, then request a quote for your exact requirement.", "mill-hero-2.webp", [("Home", "index.html"), ("Rice Products", None)]) + "".join(sections) + dedent("""
+    crumbs = [("Home", "index.html"), ("Rice Products", None)]
+    body = page_hero("Complete mill catalogue", "Basmati and non-basmati rice from Karnal.", "Explore the rice ranges and processing options we offer from our Village Daha Madanpur mill, then request a quote for your exact requirement.", "mill-hero-2.webp", crumbs) + "".join(sections) + dedent("""
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Found the right rice?</h2><p>Send the variety, process, quantity, packaging and destination for a mill-ready quotation.</p></div><a class="button button-arrow" href="contact.html#quote">Get a Quote</a></div></section>
     """)
-    render_page("products.html", "Rice Products Manufacturer in Karnal | UrbanFresh", "Explore UrbanFresh basmati, non-basmati and residue-controlled rice products from our Karnal mill, with product photos and processing options.", body, "products", schema, image_path("mill-hero-2.webp"))
+    render_page("products.html", "Rice Products Manufacturer in Karnal | UrbanFresh", "Explore UrbanFresh basmati, non-basmati and residue-controlled rice products from our Karnal mill, with product photos and processing options.", body, "products", schema, image_path("mill-hero-2.webp"), crumbs=crumbs)
 
 
 def render_home() -> None:
@@ -538,7 +601,7 @@ def render_home() -> None:
     body = dedent(f"""
       <section class="hero real-hero" style="--hero-image:url('/{image_path('mill-hero-1.webp')}')"><div class="container hero-inner"><div class="hero-content"><div class="hero-kicker">Rice manufacturer in Karnal, Haryana</div><h1>Rice milling in Karnal. <span>From paddy to packed rice.</span></h1><p>We are a family-operated rice mill at Village Daha Madanpur, Karnal. Since 1978, we have produced basmati and non-basmati rice for buyers in India and overseas.</p><div class="hero-actions"><a class="button button-arrow" href="contact.html#quote">Request a Mill Quote</a><a class="button button-ghost" href="products.html">View All Rice Products</a></div><div class="hero-note"><span>230 MT daily capacity</span><span>3 production units</span><span>30+ country reach</span></div></div></div></section>
       <section class="fact-strip"><div class="container fact-grid"><div><strong>1978</strong><span>Mill established</span></div><div><strong>230 MT</strong><span>Daily production capacity</span></div><div><strong>3</strong><span>Production units</span></div><div><strong>30+</strong><span>Countries reached</span></div></div></section>
-      <section class="section" id="mill-campus"><div class="container intro-grid"><div class="mill-photo-proof"><div class="photo-stack"><img src="{image_path('mill-campus-office.webp')}" alt="UrbanFresh Rice Mills office building at Village Daha Madanpur in Karnal" width="956" height="1280"><img src="{image_path('mill-campus-chimney.webp')}" alt="RI-marked chimney at the UrbanFresh rice mill campus in Karnal" loading="lazy" width="751" height="1280"></div><p class="photo-proof-note"><strong>At our Karnal mill:</strong> the office and production campus at Village Daha, Madanpur.</p></div><div><p class="section-label">UrbanFresh Rice Mills</p><h2 class="section-title">From paddy procurement to packed rice.</h2><p class="section-lede">We handle paddy selection, drying, parboiling, cleaning, milling, sorting and packaging. Our production flow uses pre-cleaners, de-huskers, polishers, sortex equipment, bins and magnets.</p><ul class="check-list"><li>Family-operated rice manufacturing in Karnal.</li><li>Basmati, non-basmati and residue-controlled rice ranges.</li><li>Bulk supply, export and buyer-brand packaging.</li></ul><p><a class="button button-outline button-arrow" href="infrastructure.html#mill-photos">See Our Mill Infrastructure</a></p></div></div></section>
+      <section class="section" id="mill-campus"><div class="container intro-grid"><div class="mill-photo-proof"><div class="photo-stack"><img src="{image_path('mill-campus-office.webp')}" alt="UrbanFresh Rice Mills office building at Village Daha Madanpur in Karnal" width="956" height="1280"><img src="{image_path('mill-campus-chimney.webp')}" alt="RI-marked chimney at the UrbanFresh rice mill campus in Karnal" loading="lazy" width="751" height="1280"></div><p class="photo-proof-note"><strong>At our Karnal mill:</strong> the office and production campus at Village Daha, Madanpur.</p></div><div><p class="section-label">UrbanFresh Rice Mills</p><h2 class="section-title">From paddy procurement to packed rice.</h2><p class="section-lede">We handle paddy selection, drying, parboiling, cleaning, milling, sorting and packaging. Our production flow uses pre-cleaners, de-huskers, polishers, sortex equipment, bins and magnets.</p><ul class="check-list"><li><a href="basmati-rice-manufacturer-india.html">Family-operated basmati rice manufacturing in Karnal.</a></li><li>Basmati, non-basmati and residue-controlled rice ranges.</li><li><a href="basmati-rice-exporter-india.html">Overseas basmati supply enquiries.</a></li><li><a href="rice-manufacturer-for-merchant-exporters.html">Mill supply for merchant exporters.</a></li><li>Bulk supply and buyer-brand packaging.</li></ul><p><a class="button button-outline button-arrow" href="infrastructure.html#mill-photos">See Our Mill Infrastructure</a></p></div></div></section>
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Basmati rice range</p><h2 class="section-title">Six basmati varieties from our Karnal mill.</h2></div><p class="section-lede">Explore the processing formats we offer, then send your crop, specification, quantity, packaging and destination for current availability.</p></div><div class="catalog-grid">{featured}</div><p class="section-action"><a class="button button-arrow" href="products.html">Explore Complete Catalogue</a></p></div></section>
       <section class="section"><div class="container guide-feature"><div class="guide-feature-images"><img src="{image_path('category-1121.webp')}" alt="1121 Basmati rice grains" loading="lazy" width="700" height="520"><img src="{image_path('category-1509.webp')}" alt="1509 Basmati rice grains" loading="lazy" width="700" height="520"><img src="{image_path('category-1401.webp')}" alt="1401 Basmati rice grains" loading="lazy" width="700" height="520"></div><div><p class="section-label">Buyer guide</p><h2 class="section-title">1121, 1509 or 1401: what can the grain actually tell you?</h2><p class="section-lede">Compare like-for-like processing, inspect uniformity and chalkiness, then cook a controlled sample. Grain appearance is useful, but it should support a written specification rather than replace one.</p><a class="button button-outline button-arrow" href="{GUIDE_SLUG}">Read the Comparison Guide</a></div></div></section>
       <section class="section-sm guide-callout"><div class="container guide-callout-grid"><div><p class="section-label">Latest mill rates · {PRICE_DATE_LABEL}</p><h2>Indicative wholesale and export rice prices.</h2><p>Compare variety, processing type, crop year, average grain length, INR ex-mill rates and USD FOB rates from our latest approved price list.</p></div><a class="button button-arrow" href="{PRICE_SLUG}">View Rice Prices</a></div></section>
@@ -547,44 +610,47 @@ def render_home() -> None:
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Buyer questions</p><h2 class="section-title">Start with the facts that affect the order.</h2></div></div><div class="faq-list"><details class="faq"><summary>Which rice varieties does UrbanFresh manufacture?</summary><p>The catalogue covers six basmati ranges, five non-basmati ranges and four residue-controlled processing categories.</p></details><details class="faq"><summary>Where is the UrbanFresh rice mill?</summary><p>The manufacturing address is {ADDRESS}.</p></details><details class="faq"><summary>Can I request private-label packing?</summary><p>Yes. Send the rice, pack sizes, material, artwork status, volume and destination market for review.</p></details><details class="faq"><summary>Can overseas buyers and merchant exporters enquire?</summary><p>Yes. Include the destination country or port, product, volume, packaging and documentation expectations.</p></details></div></div></section>
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Send us your rice requirement.</h2><p>Tell us the rice, process, quantity, pack and destination. We will review the commercial fit.</p></div><a class="button button-arrow" href="contact.html#quote">Get My Quote</a></div></section>
     """)
-    render_page("index.html", "Rice Mill in Karnal | UrbanFresh Rice Manufacturer", "UrbanFresh is a family-operated rice mill in Village Daha Madanpur, Karnal, producing basmati and non-basmati rice for Indian and export buyers.", body, "home", schema, image_path("mill-processing-plant.webp"))
+    render_page("index.html", "Rice Mill in Karnal | UrbanFresh Rice Manufacturer", "UrbanFresh is a family-operated rice mill in Village Daha Madanpur, Karnal, producing basmati and non-basmati rice for Indian and export buyers.", body, "home", schema, image_path("mill-processing-plant.webp"), hero_image=image_path("mill-hero-1.webp"))
 
 
 def render_about() -> None:
     schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "AboutPage", "name": "About UrbanFresh Rice Mills", "url": "https://urbanfresh.in/about.html", "primaryImageOfPage": {"@type": "ImageObject", "contentUrl": "https://urbanfresh.in/assets/images/ricefarm/mill-campus-office.webp"}}]}
+    crumbs = [("Home", "index.html"), ("About the Mill", None)]
     gallery = "".join(f'<figure><img src="{image_path(name)}" alt="{alt}" loading="lazy" width="900" height="700"></figure>' for name, alt in [
         ("mill-about-1.webp", "White rice in an open jute sack"), ("mill-about-2.webp", "Rice grains presented for trade"), ("mill-about-3.webp", "Basmati rice with paddy stalks and wooden utensils"), ("mill-about-4.webp", "Paddy and white rice in jute sacks and bowls"), ("mill-choose.webp", "Rice grains arranged around kitchen utensils"), ("mill-about-panel.webp", "Cooked basmati rice served in a bowl"),
     ])
-    body = page_hero("Family rice business since 1978", "A Karnal rice mill built across generations.", "We are a family-operated rice mill at Village Daha Madanpur, with three production units and a rice business history that began in 1978.", "mill-about-3.webp", [("Home", "index.html"), ("About the Mill", None)]) + dedent(f"""
+    body = page_hero("Family rice business since 1978", "A Karnal rice mill built across generations.", "We are a family-operated rice mill at Village Daha Madanpur, with three production units and a rice business history that began in 1978.", "mill-about-3.webp", crumbs) + dedent(f"""
       <section class="section"><div class="container split"><div><p class="section-label">Our mill story</p><h2 class="section-title">From a family enterprise to an integrated rice operation.</h2><p class="section-lede">We began in 1978 and grew to three production units serving buyers in India and overseas. Our work covers procurement, processing, quality control, packaging and commercial coordination.</p><p>Our rice has reached buyers across more than 30 countries. Our approach remains practical: understand the buyer's market, match the right rice and processing style, then confirm the specification and terms before production.</p></div><div class="mill-photo-proof"><div class="photo-stack"><img src="{image_path('mill-campus-office.webp')}" alt="Office building at the UrbanFresh rice mill campus in Village Daha Madanpur" width="956" height="1280"><img src="{image_path('mill-campus-chimney.webp')}" alt="Rice mill chimney marked RI at our Karnal production campus" loading="lazy" width="751" height="1280"></div><p class="photo-proof-note">Photographs from our Village Daha, Madanpur manufacturing campus.</p></div></div></section>
       <section class="fact-strip"><div class="container fact-grid"><div><strong>1978</strong><span>Established</span></div><div><strong>3</strong><span>Production units</span></div><div><strong>230 MT</strong><span>Daily production capacity</span></div><div><strong>30+</strong><span>Countries reached</span></div></div></section>
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Our rice</p><h2 class="section-title">A closer look at the rice we process and supply.</h2></div><p class="section-lede">Explore our rice range, from paddy and raw grains to finished basmati and non-basmati products.</p></div><div class="mill-gallery">{gallery}</div></div></section>
       <section class="section"><div class="container"><p class="section-label">How we work</p><h2 class="section-title">A complete requirement comes before a commercial promise.</h2><div class="benefit-grid"><article class="benefit-card"><span class="number">01</span><h3>Understand the buyer</h3><p>Market, channel, destination, volume and buying timeline shape the right product discussion.</p></article><article class="benefit-card"><span class="number">02</span><h3>Match the right rice</h3><p>Basmati, non-basmati, processing style and packaging are aligned with the intended use.</p></article><article class="benefit-card"><span class="number">03</span><h3>Confirm before supply</h3><p>Specification, evidence, availability, price, packaging and dispatch are tied to the accepted order.</p></article></div></div></section>
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Talk to us about your rice requirement.</h2><p>Send your product, volume, pack and destination so we can prepare the right quotation.</p></div><a class="button button-arrow" href="contact.html#quote">Contact Our Mill</a></div></section>
     """)
-    render_page("about.html", "About UrbanFresh Rice Mill in Karnal | Since 1978", "Meet UrbanFresh Rice Mills at Village Daha Madanpur, Karnal. Our family-operated rice business began in 1978 and now runs three production units.", body, "about", schema, image_path("mill-campus-office.webp"))
+    render_page("about.html", "About UrbanFresh Rice Mill in Karnal | Since 1978", "Meet UrbanFresh Rice Mills at Village Daha Madanpur, Karnal. Our family-operated rice business began in 1978 and now runs three production units.", body, "about", schema, image_path("mill-campus-office.webp"), crumbs=crumbs, hero_image=image_path("mill-about-3.webp"))
 
 
 def render_infrastructure() -> None:
     schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "WebPage", "name": "UrbanFresh Rice Mill Infrastructure", "url": "https://urbanfresh.in/infrastructure.html", "about": {"@type": "Thing", "name": "Rice milling, parboiling and drying infrastructure"}, "primaryImageOfPage": {"@type": "ImageObject", "contentUrl": "https://urbanfresh.in/assets/images/ricefarm/mill-processing-plant.webp"}}]}
-    body = page_hero("Rice processing infrastructure", "A mill built for controlled processing from paddy to pack.", "See the plant systems used for cleaning, parboiling, drying, milling, sorting and packaging at our Village Daha Madanpur manufacturing base.", "mill-infrastructure.webp", [("Home", "index.html"), ("Infrastructure", None)]) + dedent(f"""
+    crumbs = [("Home", "index.html"), ("Infrastructure", None)]
+    body = page_hero("Rice processing infrastructure", "A mill built for controlled processing from paddy to pack.", "See the plant systems used for cleaning, parboiling, drying, milling, sorting and packaging at our Village Daha Madanpur manufacturing base.", "mill-infrastructure.webp", crumbs) + dedent(f"""
       <section class="section"><div class="container split"><div class="photo-frame"><img src="{image_path('mill-infrastructure.webp')}" alt="UrbanFresh rice mill infrastructure in Karnal" width="1000" height="760"></div><div><p class="section-label">Our plant</p><h2 class="section-title">Modern equipment across the processing line.</h2><p class="section-lede">Our daily production capacity is 230 metric tons. We use pre-cleaners, de-huskers, polishers, sortex equipment, silky polishers, rice bins and magnets across the manufacturing flow.</p><ul class="check-list"><li>Paddy procurement, drying and warehousing.</li><li>Cleaning, de-stoning, grading and separation.</li><li>Parboiling, drying, milling, sorting and polishing.</li><li>Packaging and logistics coordination.</li></ul></div></div></section>
       <section class="section surface"><div class="container"><p class="section-label">Processing systems</p><h2 class="section-title">Four connected parts of our mill.</h2><div class="process-grid light-process"><div class="process-step"><span class="step-number">01</span><h3>Parboiling</h3><p>Treated soft water, controlled temperatures and sensor-equipped soaking bins support the parboiling process.</p></div><div class="process-step"><span class="step-number">02</span><h3>Drying</h3><p>Mechanised, sensor-based temperature control is used to promote uniform drying and reduce grain breakage.</p></div><div class="process-step"><span class="step-number">03</span><h3>Milling</h3><p>Cleaning, de-husking, sorting, polishing, magnets and rice bins support a controlled production flow.</p></div><div class="process-step"><span class="step-number">04</span><h3>Packing</h3><p>Product, pack format, quality brief and logistics are coordinated against the accepted order.</p></div></div></div></section>
       <section class="section surface-dark" id="mill-photos"><div class="container"><div class="section-head"><div><p class="section-label">Photographed at our mill</p><h2 class="section-title">The Village Daha, Madanpur manufacturing campus.</h2></div><p class="section-lede">These first-party photographs show the processing structure, office building and RI-marked mill chimney at our Karnal site.</p></div><div class="mill-proof-grid"><figure class="mill-proof-primary"><img src="{image_path('mill-processing-plant.webp')}" alt="UrbanFresh rice processing plant and grain handling structures in Karnal" loading="lazy" width="896" height="1280"><figcaption><strong>Processing plant</strong><span>Grain handling structures and loading activity at the mill.</span></figcaption></figure><figure><img src="{image_path('mill-campus-office.webp')}" alt="UrbanFresh Rice Mills office building at Village Daha Madanpur in Karnal" loading="lazy" width="956" height="1280"><figcaption><strong>Mill office</strong><span>The office building inside our manufacturing campus.</span></figcaption></figure><figure><img src="{image_path('mill-campus-chimney.webp')}" alt="RI-marked chimney and production buildings at the UrbanFresh rice mill" loading="lazy" width="751" height="1280"><figcaption><strong>Production campus</strong><span>The RI-marked chimney beside the mill buildings.</span></figcaption></figure></div></div></section>
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Planning a production order?</h2><p>Send product, process, volume, pack, destination and required timeline for a feasibility review.</p></div><a class="button button-arrow" href="contact.html#quote">Check Order Fit</a></div></section>
     """)
-    render_page("infrastructure.html", "Rice Mill Infrastructure in Karnal | UrbanFresh", "Explore UrbanFresh rice mill infrastructure in Village Daha Madanpur, Karnal, including parboiling, drying, milling, sorting and packaging systems.", body, "infrastructure", schema, image_path("mill-processing-plant.webp"))
+    render_page("infrastructure.html", "Rice Mill Infrastructure in Karnal | UrbanFresh", "Explore UrbanFresh rice mill infrastructure in Village Daha Madanpur, Karnal, including parboiling, drying, milling, sorting and packaging systems.", body, "infrastructure", schema, image_path("mill-processing-plant.webp"), crumbs=crumbs, hero_image=image_path("mill-infrastructure.webp"))
 
 
 def render_quality() -> None:
     schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "WebPage", "name": "UrbanFresh Rice Quality Control", "url": "https://urbanfresh.in/quality.html", "about": {"@type": "Thing", "name": "Rice quality control and research"}}]}
-    body = page_hero("Rice quality control", "Checks from paddy procurement to packed rice.", "Our quality process begins in the field and continues through drying, storage, cleaning, milling, sorting, packing and commercial approval.", "mill-quality.webp", [("Home", "index.html"), ("Quality", None)]) + dedent(f"""
+    crumbs = [("Home", "index.html"), ("Quality", None)]
+    body = page_hero("Rice quality control", "Checks from paddy procurement to packed rice.", "Our quality process begins in the field and continues through drying, storage, cleaning, milling, sorting, packing and commercial approval.", "mill-quality.webp", crumbs) + dedent(f"""
       <section class="section"><div class="container split"><div class="photo-frame"><img src="{image_path('mill-quality.webp')}" alt="Rice quality control at UrbanFresh Rice Mills" width="1000" height="760"></div><div><p class="section-label">Procurement and process control</p><h2 class="section-title">Quality begins before milling.</h2><p class="section-lede">Representatives review paddy during harvest, while drying, transport and warehouse storage are managed before the grain enters the plant. Production checks then continue across cleaning, grading, separation and milling.</p><ul class="check-list"><li>Pre-cleaners, de-stoners and precision graders.</li><li>Paddy separators, de-huskers, magnets and metal detectors.</li><li>Trained supervision at key processing stages.</li><li>Buyer-approved specification before commercial closure.</li></ul></div></div></section>
       <section class="section surface"><div class="container content-grid"><article class="prose"><h2>What buyers should confirm</h2><p>A product name does not replace a commercial specification. Variety, process, crop, grain, moisture, broken tolerance, polish, cooking expectations, packaging and destination requirements should be written into the order discussion.</p><h2>Research and development</h2><p>We invest in research, process improvement and technical participation to keep pace with changing rice technology and market requirements.</p><div class="availability-note">Certificate scope, laboratory evidence and destination compliance can change. Request current documents for the product and lot before placing an order.</div><p><a class="button button-arrow" href="certifications.html">View Our Certificates</a></p></article><aside class="photo-frame compact-frame"><img src="{image_path('mill-rd.webp')}" alt="Research and development in rice processing" loading="lazy" width="800" height="900"></aside></div></section>
       <section class="section"><div class="container"><p class="section-label">A practical order flow</p><h2 class="section-title">Evidence should follow the requirement.</h2><div class="benefit-grid"><article class="benefit-card"><span class="number">01</span><h3>Define the market</h3><p>Destination and customer type determine which specifications and documents matter.</p></article><article class="benefit-card"><span class="number">02</span><h3>Approve the rice</h3><p>Product, process, sample and commercial parameters should be accepted before production.</p></article><article class="benefit-card"><span class="number">03</span><h3>Verify current evidence</h3><p>Ask for documents and laboratory information applicable to the offered order and lot.</p></article></div></div></section>
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Have a target rice specification?</h2><p>Send it with volume, pack, destination and timeline for mill review.</p></div><a class="button button-arrow" href="contact.html#quote">Send Specification</a></div></section>
     """)
-    render_page("quality.html", "Rice Quality Control at Karnal Mill | UrbanFresh", "See UrbanFresh rice quality control from paddy procurement through drying, cleaning, milling, sorting, metal detection, packing and buyer approval.", body, "quality", schema, image_path("mill-quality.webp"))
+    render_page("quality.html", "Rice Quality Control at Karnal Mill | UrbanFresh", "See UrbanFresh rice quality control from paddy procurement through drying, cleaning, milling, sorting, metal detection, packing and buyer approval.", body, "quality", schema, image_path("mill-quality.webp"), crumbs=crumbs)
 
 
 def render_certifications() -> None:
@@ -593,17 +659,19 @@ def render_certifications() -> None:
     ]
     cards = "".join(f'<figure class="certificate-card"><a href="{image_path(f"certificate-{number}.webp")}" target="_blank" rel="noopener"><img src="{image_path(f"certificate-{number}.webp")}" alt="UrbanFresh rice mill {escape(label)}" loading="lazy" width="900" height="1200"></a><figcaption>{escape(label)}</figcaption></figure>' for number, label in certificates)
     schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "CollectionPage", "name": "UrbanFresh Rice Mill Certifications", "url": "https://urbanfresh.in/certifications.html", "about": [label for _, label in certificates]}]}
-    body = page_hero("Our registrations and certificates", "Documents available for buyer review.", "Review the certificate and registration images for our Village Daha Madanpur rice mill, then request current copies for your order.", "certificate-1.webp", [("Home", "index.html"), ("Certifications", None)]) + dedent(f"""
+    crumbs = [("Home", "index.html"), ("Certifications", None)]
+    body = page_hero("Our registrations and certificates", "Documents available for buyer review.", "Review the certificate and registration images for our Village Daha Madanpur rice mill, then request current copies for your order.", "certificate-1.webp", crumbs) + dedent(f"""
       <section class="section"><div class="container"><div class="content-grid"><article class="prose"><h2>Our mill documents</h2><p>Our available records include ISO 22000:2018, FSSAI, APEDA, U.S. FDA registration, Importer Exporter Code, rice-mill registration and related compliance documents.</p><p>The documents are issued to the legal entity that operates our mill. UrbanFresh is our customer-facing brand.</p><div class="availability-note"><strong>Buyer verification:</strong> registrations can expire, renew or apply to a specific legal entity, unit, product or market. Request current full-resolution copies and verify validity and scope before placing an order.</div></article><aside class="info-panel"><h2>Need documents?</h2><p>Tell us the destination, rice, volume and certificates your buyer requires.</p><a class="button button-arrow" href="contact.html#quote">Request Current Copies</a></aside></div><div class="certificate-grid">{cards}</div></div></section>
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Checking documents for an order?</h2><p>Send the destination and buyer checklist so the relevant current records can be reviewed.</p></div><a class="button button-arrow" href="contact.html#quote">Send Checklist</a></div></section>
     """)
-    render_page("certifications.html", "Rice Mill Certifications and Registrations | UrbanFresh", "View registrations and certificates for UrbanFresh Rice Mills, including ISO 22000:2018, FSSAI, APEDA and export records.", body, "quality", schema, image_path("certificate-1.webp"))
+    render_page("certifications.html", "Rice Mill Certifications and Registrations | UrbanFresh", "View registrations and certificates for UrbanFresh Rice Mills, including ISO 22000:2018, FSSAI, APEDA and export records.", body, "quality", schema, image_path("certificate-1.webp"), crumbs=crumbs)
 
 
 def render_contact() -> None:
     varieties = "".join(f"<option>{escape(item['name'])}</option>" for item in PRODUCTS)
     schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "ContactPage", "name": "Contact UrbanFresh Rice Mills for a Bulk Rice Quote", "url": "https://urbanfresh.in/contact.html"}]}
-    body = page_hero("Bulk rice quotation", "Contact UrbanFresh Rice Mills for a bulk rice quote.", "Choose from the full basmati, non-basmati and residue-controlled catalogue, then add volume, packaging, destination and buying timeline.", "mill-hero-3.webp", [("Home", "index.html"), ("Get a Quote", None)]) + dedent(f"""
+    crumbs = [("Home", "index.html"), ("Get a Quote", None)]
+    body = page_hero("Bulk rice quotation", "Contact UrbanFresh Rice Mills for a bulk rice quote.", "Choose from the full basmati, non-basmati and residue-controlled catalogue, then add volume, packaging, destination and buying timeline.", "mill-hero-3.webp", crumbs) + dedent(f"""
       <section class="section"><div class="container quote-layout"><aside class="quote-copy surface-dark"><p class="section-label">UrbanFresh, Karnal</p><h2 class="section-title">A useful quote starts with a useful brief.</h2><p class="section-lede">Rice prices change with product, process, quantity, pack and destination. Fill in what you know and ask us to advise where needed.</p><div class="contact-stack"><a class="contact-card" href="tel:{PHONE_LINK}"><small>Call UrbanFresh</small><strong>{PHONE}</strong></a><a class="contact-card" href="{WA_URL}" target="_blank" rel="noopener"><small>WhatsApp</small><strong>Start a direct chat</strong></a><a class="contact-card" href="{escape(GMB_URL, quote=True)}" target="_blank" rel="noopener noreferrer"><small>Google Business Profile</small><strong>View UrbanFresh on Google</strong></a><a class="contact-card" href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer"><small>LinkedIn</small><strong>Follow UrbanFresh</strong></a><div class="contact-card"><small>Rice mill location</small><strong>{ADDRESS}</strong></div></div></aside>
         <form class="quote-form" id="quote" data-quote-form novalidate><div class="form-grid">
           <div class="field"><label for="name">Name or company <span aria-hidden="true">*</span></label><input id="name" name="name" autocomplete="organization" required placeholder="Your name or business"></div>
@@ -621,7 +689,7 @@ def render_contact() -> None:
         </div></form></div></section>
       <section class="section surface"><div class="container advice-row"><div><p class="section-label">Mill-ready enquiry</p><h2 class="section-title">Specific details help us give a useful answer.</h2></div><blockquote class="buyer-example">“1121 Steam, 25 MT, 25 kg bags, delivery to Mumbai within 30 days.”<cite>A complete quote brief</cite></blockquote></div></section>
     """)
-    render_page("contact.html", "Contact UrbanFresh Rice Mills | Request a Bulk Rice Quote", "Contact UrbanFresh Rice Mills in Village Daha Madanpur, Karnal for a bulk rice quote. Send product, process, quantity, packaging, destination and timeline.", body, "contact", schema, image_path("mill-hero-3.webp"), contact_page=True)
+    render_page("contact.html", "Contact UrbanFresh Rice Mills | Request a Bulk Rice Quote", "Contact UrbanFresh Rice Mills in Village Daha Madanpur, Karnal for a bulk rice quote. Send product, process, quantity, packaging, destination and timeline.", body, "contact", schema, image_path("mill-hero-3.webp"), crumbs=crumbs, contact_page=True)
 
 
 def render_landing_pages() -> None:
@@ -638,13 +706,14 @@ def render_landing_pages() -> None:
               <section class="section-sm guide-callout"><div class="container guide-callout-grid"><div><p class="section-label">International buyer resources</p><h2>Need export specifications, quality evidence and shipment planning?</h2><p>Use the separate UrbanFresh international website for specification-led rice enquiries, residue-testing requirements, export documents and packing briefs.</p></div><a class="button button-arrow" href="{EXPORT_URL}">Visit urbanfreshrice.com</a></div></section>
             """).strip()
         schema = {"@context": "https://schema.org", "@graph": [organization_schema(), {"@type": "Service", "name": heading, "provider": {"@type": "Organization", "name": "UrbanFresh Rice Mills"}, "areaServed": ["India", "International"], "url": f"https://urbanfresh.in/{filename}"}]}
-        body = page_hero(kicker, heading, intro, image, [("Home", "index.html"), (heading, None)]) + dedent(f"""
+        crumbs = [("Home", "index.html"), (heading, None)]
+        body = page_hero(kicker, heading, intro, image, crumbs) + dedent(f"""
           <section class="section"><div class="container content-grid"><article class="prose"><h2>Start with a complete commercial brief</h2><p>{escape(intro)} Our mill is located at {ADDRESS}. We began in 1978 and have a daily production capacity of 230 metric tons across three production units.</p><h2>Rice products we manufacture</h2><p>We manufacture 1121, 1509, Traditional, 1401, Pusa and 1718 Basmati, along with Sugandha, Sharbati, PR 11, Parmal and Sona Masoori Raw Rice. Residue-controlled Raw, Steam, Sella and Golden Sella options are also available.</p><h2>What we need from you</h2><ul><li>Rice variety and processing style.</li><li>Quantity, purchase frequency and target timeline.</li><li>Pack size, material and buyer-brand requirements.</li><li>Delivery city, destination country or port.</li><li>Quality, testing and document expectations.</li></ul><div class="availability-note">We confirm product, capacity, documents, samples, specification, pricing and delivery terms against your enquiry.</div></article><aside class="info-panel"><h2>Mill enquiry</h2><p>Send these details together.</p><div class="spec-list"><div class="spec-row"><span>Rice</span><strong>Product + process</strong></div><div class="spec-row"><span>Volume</span><strong>Metric tons</strong></div><div class="spec-row"><span>Pack</span><strong>Size + material</strong></div><div class="spec-row"><span>Destination</span><strong>City / port / country</strong></div><div class="spec-row"><span>Timeline</span><strong>Buying window</strong></div></div><a class="button button-arrow" href="contact.html#quote">Send Requirement</a></aside></div></section>
           <section class="section surface"><div class="container split"><div class="photo-frame"><img src="{image_path(image)}" alt="UrbanFresh rice mill in Karnal for {escape(heading)}" loading="lazy" width="1000" height="760"></div><div><p class="section-label">Our Karnal mill</p><h2 class="section-title">Manufacturing from Village Daha, Madanpur, Karnal.</h2><p class="section-lede">Our plant covers paddy handling, parboiling, drying, cleaning, milling, sorting and packaging. Buyers can review our infrastructure, quality process and available registrations before commercial closure.</p><p><a class="button button-outline" href="infrastructure.html">Infrastructure</a> <a class="button button-outline" href="certifications.html">Certificates</a></p></div></div></section>
           {export_site_link}
           <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Have a buyer requirement ready?</h2><p>Send product, volume, pack, destination and timeline in one message.</p></div><a class="button button-arrow" href="contact.html#quote">Request Quote</a></div></section>
         """)
-        render_page(filename, title, meta, body, "", schema, image_path(image))
+        render_page(filename, title, meta, body, "", schema, image_path(image), crumbs=crumbs)
 
 
 def render_price_page() -> None:
@@ -702,12 +771,13 @@ def render_price_page() -> None:
             {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": question, "acceptedAnswer": {"@type": "Answer", "text": answer}} for question, answer in faq]},
         ],
     }
+    crumbs = [("Home", "index.html"), ("Rice Prices", None)]
     body = page_hero(
         "Indicative mill rates",
         "Basmati and rice prices in India: wholesale mill rates.",
         f"Compare our latest indicative INR ex-mill and USD FOB rice prices, dated {PRICE_DATE_LABEL}, then request a confirmed quotation for your order.",
         "category-1121.webp",
-        [("Home", "index.html"), ("Rice Prices", None)],
+        crumbs,
     ) + dedent(f"""
       <section class="section"><div class="container article-layout"><article class="buyer-article price-article">
         <div class="article-meta"><span>Mill price list</span><time datetime="{PRICE_DATE_ISO}">{PRICE_DATE_LABEL}</time><span>UrbanFresh Rice Mills, Karnal</span></div>
@@ -751,7 +821,9 @@ def render_price_page() -> None:
         "",
         schema,
         "pricelist.jpeg",
-        "price-page",
+        crumbs=crumbs,
+        body_class="price-page",
+        hero_image=image_path("category-1121.webp"),
     )
 
 
@@ -786,12 +858,13 @@ def render_buyer_guide() -> None:
         ],
     }
     faq_html = "".join(f'<details class="faq"><summary>{escape(question)}</summary><p>{escape(answer)}</p></details>' for question, answer in faq)
+    crumbs = [("Home", "index.html"), ("Rice Products", "products.html"), ("1121 vs 1509 vs 1401", None)]
     body = page_hero(
         "Basmati buyer guide",
         "1121 vs 1509 vs 1401 Basmati Rice: how can a buyer tell the difference?",
         "A practical way to compare grain appearance, processing style and cooked performance before you approve a bulk rice specification.",
         "category-1121.webp",
-        [("Home", "index.html"), ("Rice Products", "products.html"), ("1121 vs 1509 vs 1401", None)],
+        crumbs,
     ) + dedent(f"""
       <section class="section"><div class="container article-layout"><article class="buyer-article">
         <div class="article-meta"><span>Buyer education</span><time datetime="2026-07-14">14 July 2026</time><span>UrbanFresh Rice Mills, Karnal</span></div>
@@ -863,7 +936,8 @@ def render_buyer_guide() -> None:
         "",
         schema,
         image_path("category-1121.webp"),
-        "buyer-guide-page",
+        crumbs=crumbs,
+        body_class="buyer-guide-page",
     )
 
 
@@ -875,16 +949,23 @@ def render_sitemap() -> None:
         ("basmati-rice-manufacturer-india.html", "monthly", "0.9"), ("basmati-rice-exporter-india.html", "monthly", "0.9"), ("rice-manufacturer-for-merchant-exporters.html", "monthly", "0.8"), ("private-label.html", "monthly", "0.8"),
     ] + [(item["slug"], "monthly", "0.9") for item in PRODUCTS]
     urls = "\n".join(
-        f'  <url><loc>https://urbanfresh.in/{slug}</loc><lastmod>{PAGE_LASTMODS.get(slug, EXISTING_LASTMODS.get(slug, BUILD_DATE))}</lastmod><changefreq>{freq}</changefreq><priority>{priority}</priority></url>'
+        f'  <url><loc>https://urbanfresh.in/{slug}</loc><lastmod>{PAGE_LASTMODS.get(slug, EXISTING_LASTMODS.get(slug, BUILD_DATE))}</lastmod><changefreq>{freq}</changefreq><priority>{priority}</priority><image:image><image:loc>{xml_escape(PAGE_IMAGES[slug])}</image:loc></image:image></url>'
         for slug, freq, priority in pages
     )
-    (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
+    (ROOT / "sitemap.xml").write_text(
+        f'<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<urlset xmlns="{SITEMAP_NAMESPACE}" xmlns:image="{IMAGE_SITEMAP_NAMESPACE}">\n'
+        f"{urls}\n"
+        f"</urlset>\n",
+        encoding="utf-8",
+    )
 
 
 def main() -> None:
-    global BUILD_DATE, EXISTING_LASTMODS, PAGE_LASTMODS
+    global BUILD_DATE, EXISTING_LASTMODS, PAGE_IMAGES, PAGE_LASTMODS
     BUILD_DATE = dt.date.today().isoformat()
     EXISTING_LASTMODS = load_sitemap_lastmods(ROOT / "sitemap.xml")
+    PAGE_IMAGES = {}
     PAGE_LASTMODS = {}
     for product in PRODUCTS:
         render_product_page(product)

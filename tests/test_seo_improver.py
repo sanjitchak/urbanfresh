@@ -105,6 +105,32 @@ class SeoImproverTests(unittest.TestCase):
         self.assertIn("CTR", kinds)
         self.assertIn("DECAY", kinds)
 
+    def test_weak_samples_do_not_trigger_content_changes(self) -> None:
+        current = [
+            seo_improver.Metric(
+                "rice mill",
+                "https://urbanfresh.in/",
+                0,
+                10,
+                0,
+                9,
+            )
+        ]
+        previous = [
+            seo_improver.Metric(
+                "rice mill",
+                "https://urbanfresh.in/",
+                1,
+                10,
+                0.1,
+                5,
+            )
+        ]
+
+        opportunities = seo_improver.detect_opportunities(current, previous, "urbanfresh.in")
+
+        self.assertEqual(opportunities, [])
+
     def test_snapshot_keeps_missing_seed_keywords_visible(self) -> None:
         snapshot = seo_improver.build_snapshot([], [])
 

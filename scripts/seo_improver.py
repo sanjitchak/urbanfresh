@@ -51,6 +51,8 @@ REPORT_FIELDS = [
     "position_delta",
     "status",
 ]
+MIN_ACTION_IMPRESSIONS = 100
+MIN_CANNIBAL_IMPRESSIONS = 50
 
 
 @dataclass
@@ -484,7 +486,7 @@ def detect_opportunities(
     for row in current:
         if not row.page or row.position is None:
             continue
-        if 4 <= row.position <= 20 and row.impressions >= 5:
+        if 4 <= row.position <= 20 and row.impressions >= MIN_ACTION_IMPRESSIONS:
             opportunities.append(
                 Opportunity(
                     kind="STRIKE",
@@ -505,7 +507,7 @@ def detect_opportunities(
             )
 
         target_ctr = expected_ctr(row.position)
-        if row.impressions >= 10 and row.ctr < target_ctr:
+        if row.impressions >= MIN_ACTION_IMPRESSIONS and row.ctr < target_ctr:
             current_title, _ = html_metadata(row.page, domain)
             new_title = suggested_title(row.query)
             opportunities.append(
@@ -532,7 +534,9 @@ def detect_opportunities(
             click_loss_ratio = (
                 (prior.clicks - row.clicks) / prior.clicks if prior.clicks >= 3 else 0.0
             )
-            if position_loss >= 2 or click_loss_ratio >= 0.30:
+            if row.impressions >= MIN_ACTION_IMPRESSIONS and (
+                position_loss >= 2 or click_loss_ratio >= 0.30
+            ):
                 opportunities.append(
                     Opportunity(
                         kind="DECAY",
@@ -553,7 +557,7 @@ def detect_opportunities(
 
     by_query: defaultdict[str, list[Metric]] = defaultdict(list)
     for row in current:
-        if row.page and row.impressions >= 3:
+        if row.page and row.impressions >= MIN_CANNIBAL_IMPRESSIONS:
             by_query[row.query.casefold()].append(row)
     for rows in by_query.values():
         unique_pages = {row.page for row in rows}

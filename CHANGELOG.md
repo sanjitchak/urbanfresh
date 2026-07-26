@@ -8,18 +8,46 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages passing the local audit as of 2026-07-22
+- SEO audit baseline: 29 HTML pages passing the expanded local audit as of 2026-07-26
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live sitemap, submit it to Search Console, and verify the recorded sitemap
 - Monthly SEO automation: active on the first Monday at 10:00 AM IST; uses Search Console as the first-party source and Ubersuggest as secondary research
 
 ## Open items
 
-- Add the `urbanfreshrice.com` Search Console domain property, grant the
-  existing service account Full access, and add its encrypted repository
-  credential after explicit approval.
+- Commit and push the current SEO hardening changes, then verify GitHub Pages,
+  Search Console sitemap submission and the first live IndexNow submission.
 
 ## Change history
+
+### 2026-07-26 — Crawl structure and automatic SEO guardrails prepared
+
+- Added a truthful local image entry for every one of the 28 public sitemap
+  URLs and matching `BreadcrumbList` structured data to all 27 generated pages
+  that show visible breadcrumbs.
+- Added homepage and sitewide contextual links to the basmati-manufacturer,
+  overseas-supply and merchant-exporter pages so no indexable landing page is
+  orphaned.
+- Expanded `seo/keyword-map.csv` from 16 to all 28 indexable sitemap URLs with
+  distinct, page-specific buyer intents and conversion actions.
+- Extended the local audit and regression tests to reject sitemap/canonical
+  drift, missing image entries, orphan pages, incomplete keyword coverage and
+  duplicate primary intents.
+- Ignored generated weekly report folders so the scheduled measurement job
+  cannot dirty the publishing branch; the existing 2026-07-21 report and
+  rankings files remained byte-for-byte unchanged.
+- Removed the render-blocking Google Fonts CSS `@import`, added direct
+  stylesheet loading with Google Fonts preconnects, and preloaded each public
+  page's exact existing CSS hero WebP at high priority without changing page
+  content or layout. Focused tests protect the font and hero-preload contract.
+- Added the separately implemented IndexNow deployment handoff and weekly
+  GitHub quality workflow; the dry run validated all 28 canonical page URLs.
+- Raised evidence thresholds in the local SEO improver to 100 impressions for
+  page-change opportunities and 50 impressions for cannibalization checks, so
+  small or noisy samples cannot trigger automated content suggestions.
+- Rebuilt all generated pages; the 29-page SEO audit, all 30 unit tests and
+  `git diff --check` passed. These combined changes are local only and have not
+  been committed, deployed or submitted live.
 
 ### 2026-07-26 — Desktop WhatsApp floating icon added
 

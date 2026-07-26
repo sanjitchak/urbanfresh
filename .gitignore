@@ -9,3 +9,4 @@ seo/input/previous.csv
 seo/input/*.private.csv
 seo/scheduler.log
 seo/scheduler-error.log
+reports/seo-improver/

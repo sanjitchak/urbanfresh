@@ -6,8 +6,11 @@ on:
       - main
     paths:
       - "**.html"
+      - "robots.txt"
       - "sitemap.xml"
+      - "c9bfacff25ef7a96c1817a046e3a2639.txt"
       - "scripts/rebuild_real_mill_site.py"
+      - "scripts/submit_indexnow.py"
       - "scripts/submit_sitemap.py"
       - ".github/workflows/submit-search-console.yml"
   workflow_dispatch:
@@ -36,3 +39,6 @@ jobs:
         env:
           GSC_CREDENTIALS_JSON: ${{ secrets.GSC_CREDENTIALS_JSON }}
         run: python3 scripts/submit_sitemap.py --wait-for-live --verify
+
+      - name: Verify deployed key and submit URLs to IndexNow
+        run: python3 scripts/submit_indexnow.py --wait-for-key
