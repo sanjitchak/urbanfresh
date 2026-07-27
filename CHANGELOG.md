@@ -38,6 +38,11 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   repository. Added regression coverage for schedule completeness, path
   portability and credential exclusion.
 - Existing active local and Codex schedules were preserved and not duplicated.
+- Published the privacy-safe recovery state through commit `05b626c`; SEO
+  quality run `30310979149` and Pages run `30310978240` succeeded. A manually
+  triggered domestic report artifact from the superseded workflow was
+  permanently deleted, GitHub confirmed zero remaining artifacts for that run,
+  and the current workflow list contains no cloud report uploader.
 
 ### 2026-07-26 — Crawl structure and automatic SEO guardrails prepared
 
