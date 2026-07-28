@@ -18,6 +18,7 @@ PHONE_LINK = "+919433569217"
 ADDRESS = "119/6, Highway, Village Daha, Madanpur, Karnal 132001, Haryana, India"
 CSS_VERSION = "20260726-2"
 JS_VERSION = "20260714-2"
+CONTACT_JS_VERSION = "20260729-1"
 FONT_STYLESHEET = "https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;650;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
 WA_TEXT = "Hello UrbanFresh, I would like a bulk rice quote."
 WA_URL = f"https://wa.me/919433569217?text={WA_TEXT.replace(' ', '%20').replace(',', '%2C')}"
@@ -382,6 +383,7 @@ def header(active: str = "") -> str:
 
 def footer(contact_page: bool = False) -> str:
     quote_href = "#quote" if contact_page else "contact.html#quote"
+    script_version = CONTACT_JS_VERSION if contact_page else JS_VERSION
     return dedent(f"""
       <footer class="site-footer"><div class="container footer-grid">
         <div class="footer-brand"><a class="brand" href="index.html"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt=""><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><p>A family-operated rice mill established in 1978, serving bulk buyers from Village Daha Madanpur, Karnal.</p></div>
@@ -391,7 +393,7 @@ def footer(contact_page: bool = False) -> str:
       </div><div class="container footer-bottom"><span>© <span data-year></span> UrbanFresh Rice Mills.</span><span>Availability, specifications, certificates and terms are confirmed per enquiry.</span></div></footer>
       <a class="whatsapp-float" href="{WA_URL}" target="_blank" rel="noopener" aria-label="Chat with UrbanFresh on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.075-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.002-5.45 4.438-9.89 9.892-9.89a9.82 9.82 0 0 1 7.021 2.91 9.82 9.82 0 0 1 2.9 7.024c-.002 5.45-4.438 9.89-9.888 9.89m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.3-1.654a11.882 11.882 0 0 0 5.69 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></a>
       <div class="mobile-cta"><a class="button button-whatsapp" href="{WA_URL}" target="_blank" rel="noopener">Chat on WhatsApp</a><a class="button" href="{quote_href}">Get Quote</a></div>
-      <script src="assets/js/site.js?v={JS_VERSION}" defer></script>
+      <script src="assets/js/site.js?v={script_version}" defer></script>
     """).strip()
 
 
@@ -676,6 +678,7 @@ def render_contact() -> None:
         <form class="quote-form" id="quote" data-quote-form novalidate><div class="form-grid">
           <div class="field"><label for="name">Name or company <span aria-hidden="true">*</span></label><input id="name" name="name" autocomplete="organization" required placeholder="Your name or business"></div>
           <div class="field"><label for="phone">Phone or WhatsApp <span aria-hidden="true">*</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="Country code and number"></div>
+          <div class="field field-full"><label for="email">Business email <span aria-hidden="true">*</span></label><input id="email" name="email" type="email" autocomplete="email" required placeholder="name@company.com"></div>
           <div class="field field-full"><label for="location">Delivery city or country *</label><input id="location" name="location" autocomplete="country-name" required placeholder="Example: Delhi, Dubai, London"></div>
           <div class="field"><label for="buyer_type">Buyer type</label><select id="buyer_type" name="buyer_type"><option value="">Select</option><option>Wholesaler / distributor</option><option>Merchant exporter</option><option>Food-service buyer</option><option>Retail rice brand</option><option>Institutional buyer</option><option>Other</option></select></div>
           <div class="field"><label for="variety">Rice product</label><select id="variety" name="variety"><option value="">Please advise</option>{varieties}<option>Other / not sure</option></select></div>
@@ -685,7 +688,7 @@ def render_contact() -> None:
           <div class="field"><label for="timeline">Purchase timeline</label><select id="timeline" name="timeline"><option value="">Select</option><option>Immediately</option><option>Within 30 days</option><option>Within 1 to 3 months</option><option>Planning or comparing</option></select></div>
           <div class="field field-full"><label for="message">Other requirements</label><textarea id="message" name="message" placeholder="Target specification, destination port, branding, certificates or questions"></textarea></div>
           <div class="field honeypot" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
-          <div class="field-full"><button class="button button-arrow form-submit" type="submit">Save My Quote Request</button><p class="form-note">We save your request in our private lead sheet. You can continue on WhatsApp after submitting for a faster reply.</p><div class="form-status" data-form-status role="status" aria-live="polite" tabindex="-1"></div></div>
+          <div class="field-full"><button class="button button-arrow form-submit" type="submit">Send My Quote Request</button><p class="form-note">We email your confirmation and save the request in our private lead sheet. You can continue on WhatsApp after submitting for a faster reply.</p><div class="form-status" data-form-status role="status" aria-live="polite" tabindex="-1"></div></div>
         </div></form></div></section>
       <section class="section surface"><div class="container advice-row"><div><p class="section-label">Mill-ready enquiry</p><h2 class="section-title">Specific details help us give a useful answer.</h2></div><blockquote class="buyer-example">“1121 Steam, 25 MT, 25 kg bags, delivery to Mumbai within 30 days.”<cite>A complete quote brief</cite></blockquote></div></section>
     """)

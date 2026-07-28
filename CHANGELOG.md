@@ -24,6 +24,17 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Change history
 
+### 2026-07-29 — Domestic quote form connected to Hostinger SMTP
+
+- Added a required business-email field to the domestic quote form and
+  connected it to the existing shared Hostinger PHP mailer before the Google
+  Sheets backup.
+- The mailer sends the complete lead to `sanjit@growonlinetoday.com` and a
+  branded confirmation containing the submitted brief to the buyer. WhatsApp
+  remains the visible fallback if email delivery fails.
+- Added regression coverage for the required email field, email-first delivery,
+  Sheets fallback ordering and WhatsApp follow-up details.
+
 ### 2026-07-28 — SEO schedules backed up for hardware recovery
 
 - Added a mirrored, secret-free recovery pack that inventories every domestic
