@@ -51,6 +51,44 @@ class ProductSnippetAuditTests(unittest.TestCase):
         self.assertEqual(seo_audit.unsupported_product_snippets(data), [])
 
 
+class DatasetAuditTests(unittest.TestCase):
+    def test_dataset_without_license_is_rejected(self) -> None:
+        data = {
+            "@type": "Dataset",
+            "name": "Example price list",
+            "description": "An example dataset without stated use terms.",
+        }
+
+        self.assertEqual(
+            seo_audit.datasets_missing_license(data),
+            ["Example price list"],
+        )
+
+    def test_generated_price_dataset_has_visible_versioned_license(self) -> None:
+        page = ROOT / "rice-price-india.html"
+        html = page.read_text(encoding="utf-8")
+        parser = seo_audit.PageParser()
+        parser.feed(html)
+        structured_data = json.loads(seo_audit.clean(parser.jsonld_parts))
+        datasets = [
+            node
+            for node in seo_audit.json_objects(structured_data)
+            if node.get("@type") == "Dataset"
+        ]
+
+        self.assertEqual(len(datasets), 1)
+        self.assertEqual(
+            datasets[0].get("license"),
+            {
+                "@type": "CreativeWork",
+                "name": "UrbanFresh Rice Price Data Use Terms, version 1",
+                "url": "https://urbanfresh.in/rice-price-india.html#data-license-v1",
+            },
+        )
+        self.assertTrue(datasets[0].get("isAccessibleForFree"))
+        self.assertIn('id="data-license-v1"', html)
+
+
 class SiteStructureAuditTests(unittest.TestCase):
     def test_orphan_pages_require_an_inbound_link_from_an_indexable_page(self) -> None:
         pages = {"index.html", "products.html", "orphan.html"}

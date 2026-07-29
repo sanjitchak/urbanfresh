@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages passing the expanded local audit as of 2026-07-26
+- SEO audit baseline: 29 HTML pages passing the expanded local audit as of 2026-07-29
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -21,8 +21,21 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 - Search Console evidence remains sparse. Wait for a full comparable data
   period before allowing the monthly loop to test any page change.
+- Search Console must recrawl `rice-price-india.html` before its non-critical
+  Dataset `license` warning can be confirmed as cleared.
 
 ## Change history
+
+### 2026-07-29 — Dataset license warning corrected
+
+- Added a versioned, visible UrbanFresh data-use notice to the dated rice-price
+  dataset instead of assigning a broad third-party reuse license.
+- Added the matching Google-supported `license` CreativeWork object and
+  `isAccessibleForFree` flag to the generated `Dataset` JSON-LD.
+- Extended the local SEO audit and regression tests to reject future Dataset
+  markup that omits a license.
+- Rebuilt all 29 pages; the expanded SEO audit, all 37 tests, dry-run sitemap
+  and IndexNow checks, and `git diff --check` passed.
 
 ### 2026-07-29 — Domestic quote form connected to Hostinger SMTP
 

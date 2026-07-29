@@ -29,6 +29,8 @@ EXPORT_URL = "https://urbanfreshrice.com/"
 GMB_URL = "https://local.google.com/place?placeid=ChIJEXtmKGRxDjkRqoJCBUKpPQI&utm_medium=noren&utm_source=gbp&utm_campaign=2026"
 PRICE_DATE_ISO = "2026-07-06"
 PRICE_DATE_LABEL = "6 July 2026"
+PRICE_PAGE_DATE_MODIFIED = "2026-07-29"
+PRICE_DATA_LICENSE_URL = f"https://urbanfresh.in/{PRICE_SLUG}#data-license-v1"
 SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
 IMAGE_SITEMAP_NAMESPACE = "http://www.google.com/schemas/sitemap-image/1.1"
 EXISTING_LASTMODS: dict[str, str] = {}
@@ -753,7 +755,7 @@ def render_price_page() -> None:
                 "description": "Indicative UrbanFresh wholesale and export rice prices from Karnal, with variety, processing type, crop year, grain length, INR ex-mill and USD FOB rates.",
                 "url": f"https://urbanfresh.in/{PRICE_SLUG}",
                 "datePublished": "2026-07-15",
-                "dateModified": "2026-07-15",
+                "dateModified": PRICE_PAGE_DATE_MODIFIED,
             },
             {
                 "@type": "Dataset",
@@ -761,9 +763,15 @@ def render_price_page() -> None:
                 "description": "Indicative rice mill price list covering Basmati, 1121, 1718, 1509, Taj, Sugandha, 1401, Pusa, RH-10, Sharbati and PR-14 rice.",
                 "url": f"https://urbanfresh.in/{PRICE_SLUG}",
                 "creator": {"@type": "Organization", "name": "UrbanFresh Rice Mills"},
-                "dateModified": "2026-07-15",
+                "dateModified": PRICE_PAGE_DATE_MODIFIED,
                 "temporalCoverage": PRICE_DATE_ISO,
                 "spatialCoverage": {"@type": "Place", "name": "Karnal, Haryana, India"},
+                "license": {
+                    "@type": "CreativeWork",
+                    "name": "UrbanFresh Rice Price Data Use Terms, version 1",
+                    "url": PRICE_DATA_LICENSE_URL,
+                },
+                "isAccessibleForFree": True,
                 "variableMeasured": ["Rice variety", "Processing type", "Crop year", "Average grain length", "INR per metric ton", "USD per metric ton"],
                 "distribution": {
                     "@type": "DataDownload",
@@ -809,10 +817,13 @@ def render_price_page() -> None:
 
         <figure class="price-source-image"><a href="pricelist.jpeg" target="_blank" rel="noopener"><img src="pricelist.jpeg" alt="UrbanFresh wholesale rice price list dated 6 July 2026" loading="lazy" width="1179" height="761"></a><figcaption>Original UrbanFresh rate sheet dated {PRICE_DATE_LABEL}. Open the image to review the source document.</figcaption></figure>
 
+        <h2 id="data-license-v1">Price-list data-use terms</h2>
+        <p>The dated price-list dataset on this page may be accessed without payment for buyer evaluation. You may cite it with attribution to UrbanFresh Rice Mills and a link to this page. Reproduction, modification, commercial reuse or redistribution requires written permission from UrbanFresh Rice Mills. The published figures remain indicative rates, not binding offers.</p>
+
         <h2 id="price-questions">Questions about the rice price list</h2>
         <div class="faq-list">{faq_html}</div>
       </article>
-      <aside class="article-aside"><div><p class="section-label">On this page</p><nav aria-label="Price page contents"><a href="#current-rates">Current rates</a><a href="#how-to-read">How to read the table</a><a href="#why-prices-change">Why prices change</a><a href="#price-questions">Price questions</a></nav></div><div class="article-quote"><p class="section-label">Rate date</p><h2>{PRICE_DATE_LABEL}</h2><p>Send your exact order details for a confirmed current quotation.</p><a class="button button-arrow" href="contact.html#quote">Request Current Price</a></div></aside>
+      <aside class="article-aside"><div><p class="section-label">On this page</p><nav aria-label="Price page contents"><a href="#current-rates">Current rates</a><a href="#how-to-read">How to read the table</a><a href="#why-prices-change">Why prices change</a><a href="#data-license-v1">Data-use terms</a><a href="#price-questions">Price questions</a></nav></div><div class="article-quote"><p class="section-label">Rate date</p><h2>{PRICE_DATE_LABEL}</h2><p>Send your exact order details for a confirmed current quotation.</p><a class="button button-arrow" href="contact.html#quote">Request Current Price</a></div></aside>
       </div></section>
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Need a confirmed rice price?</h2><p>Send variety, type, quantity, pack, destination and timeline in one message.</p></div><a class="button button-arrow" href="contact.html#quote">Get a Current Quote</a></div></section>
     """)
