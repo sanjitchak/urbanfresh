@@ -36,6 +36,10 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   markup that omits a license.
 - Rebuilt all 29 pages; the expanded SEO audit, all 37 tests, dry-run sitemap
   and IndexNow checks, and `git diff --check` passed.
+- Published commit `4868feb`; Pages run `30443878938`, SEO quality run
+  `30443879649` and Search Console/IndexNow run `30443879615` succeeded. The
+  live price page matched the repository byte-for-byte and exposed the
+  versioned license object and visible terms.
 
 ### 2026-07-29 — Domestic quote form connected to Hostinger SMTP
 
