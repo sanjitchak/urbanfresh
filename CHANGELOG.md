@@ -26,6 +26,24 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Change history
 
+### 2026-08-03 — Monthly SEO review held for insufficient evidence
+
+- Google Search Console's complete 2026-07-04 to 2026-07-31 period contained
+  21 impressions and 0 clicks across reported query/page rows, while the
+  preceding 28-day comparison contained no rows. The prior contact-page change
+  remains unevaluable and was kept; the rice-price experiment is not due for
+  review until 2026-08-12.
+- The exact `urbanfresh.in` Ubersuggest project estimated 0 of 18 India-desktop
+  tracked keywords in the top 100 and retained a 100/100 audit across 29
+  successful pages. These estimates were kept separate from Search Console.
+- Recorded one `No change - insufficient evidence` row in
+  `seo/monthly-log.csv`. No page content, URL, navigation, form, sitemap or
+  IndexNow file changed, so no discovery resubmission is warranted. Reviewed
+  production deployment `72b40eabd1020cc1a8f202541cf95daadea710a1`.
+- Rebuilt the 29-page site and passed the SEO audit, all 37 tests and
+  `git diff --check`. Continue collecting data until a full comparable period
+  and meaningful page/query sample exist.
+
 ### 2026-07-29 — Dataset license warning corrected
 
 - Added a versioned, visible UrbanFresh data-use notice to the dated rice-price
