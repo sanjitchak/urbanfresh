@@ -29,7 +29,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 ### 2026-08-03 — Monthly SEO review held for insufficient evidence
 
 - Google Search Console's complete 2026-07-04 to 2026-07-31 period contained
-  21 impressions and 0 clicks across reported query/page rows, while the
+  23 impressions and 0 clicks across reported query/page rows, while the
   preceding 28-day comparison contained no rows. The prior contact-page change
   remains unevaluable and was kept; the rice-price experiment is not due for
   review until 2026-08-12.
