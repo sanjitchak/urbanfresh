@@ -33,6 +33,20 @@ def page_links(path: Path) -> list[dict[str, str | None]]:
 
 
 class PerformanceHeadTests(unittest.TestCase):
+    def test_internal_home_links_use_the_canonical_root(self) -> None:
+        for page in sorted(ROOT.glob("*.html")):
+            html = page.read_text(encoding="utf-8")
+            self.assertNotIn('href="index.html"', html, page.name)
+
+        homepage = (ROOT / "index.html").read_text(encoding="utf-8")
+        for target in (
+            "infrastructure.html#mill-photos",
+            "contact.html#quote",
+            "sugandha-rice.html",
+            "pesticide-residue-free-raw-rice.html",
+        ):
+            self.assertIn(f'href="{target}"', homepage, target)
+
     def test_fonts_load_directly_in_every_page_head_without_css_import(self) -> None:
         css = (ROOT / "assets" / "css" / "site.css").read_text(encoding="utf-8")
         self.assertNotIn("@import", css)

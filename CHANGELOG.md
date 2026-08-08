@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages passing the expanded local audit as of 2026-07-29
+- SEO audit baseline: 29 HTML pages and 38 tests passing the expanded local audit as of 2026-08-08
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -23,8 +23,29 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   period before allowing the monthly loop to test any page change.
 - Search Console must recrawl `rice-price-india.html` before its non-critical
   Dataset `license` warning can be confirmed as cleared.
+- URL Inspection on 2026-08-08 reported 24 of 28 canonical sitemap pages as
+  indexed. `infrastructure.html`, `contact.html`, `sugandha-rice.html` and
+  `pesticide-residue-free-raw-rice.html` remain pending Google recrawl after
+  the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-08-08 — Canonical discovery signals repaired
+
+- Audited all 28 canonical sitemap URLs through the Search Console URL
+  Inspection API. Twenty-four were submitted and indexed with matching Google
+  and user canonicals; four were discovered or unknown to Google, with no
+  robots, fetch or conflicting-canonical block reported.
+- Replaced every generated and static internal home link to `index.html` with
+  the canonical `/` URL, including the noindex thank-you page, so navigation
+  no longer creates an unnecessary alternative-homepage signal.
+- Added direct homepage context links to the pending Sugandha and
+  residue-controlled Raw Rice pages while retaining the existing prominent
+  Infrastructure and Quote links.
+- Extended the SEO audit and regression suite to reject future internal
+  `index.html` home links. The generator, 29-page audit, all 38 tests and
+  `git diff --check` pass. Publication and Search Console recrawl submission
+  remain pending.
 
 ### 2026-08-03 — Monthly SEO review held for insufficient evidence
 
