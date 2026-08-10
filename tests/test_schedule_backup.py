@@ -16,7 +16,6 @@ class ScheduleBackupTests(unittest.TestCase):
             {
                 "domestic-github-quality",
                 "export-github-quality",
-                "com.urbanfresh.seo-improver",
                 "urbanfresh-weekly-seo-monitor",
                 "urbanfresh-monthly-seo-loop",
             }.issubset(ids)
@@ -28,6 +27,5 @@ class ScheduleBackupTests(unittest.TestCase):
             self.assertIn("${RICE_BUSINESS_ROOT}", text)
             self.assertNotIn("/Users/Administrator/", text)
             self.assertNotIn("private_key", text)
-
 if __name__ == "__main__":
     unittest.main()

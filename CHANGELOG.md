@@ -8,14 +8,14 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 38 tests passing the expanded local audit as of 2026-08-08
+- SEO audit baseline: 29 HTML pages and 38 tests passing the expanded local audit as of 2026-08-10
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
   then notify IndexNow
-- Monitoring: weekly GitHub quality checks and a Monday 09:30 AM IST read-only
-  dual-domain monitor; the evidence-gated monthly optimizer remains active on
-  the first Monday at 10:00 AM IST
+- Monitoring: weekly GitHub quality checks and a combined Monday 09:00 AM IST
+  Search Console collector/read-only dual-domain monitor; the evidence-gated
+  monthly optimizer remains active on the first Monday at 10:00 AM IST
 
 ## Open items
 
@@ -23,12 +23,26 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   period before allowing the monthly loop to test any page change.
 - Search Console must recrawl `rice-price-india.html` before its non-critical
   Dataset `license` warning can be confirmed as cleared.
-- URL Inspection on 2026-08-08 reported 24 of 28 canonical sitemap pages as
-  indexed. `infrastructure.html`, `contact.html`, `sugandha-rice.html` and
-  `pesticide-residue-free-raw-rice.html` remain pending Google recrawl after
-  the internal-home-link and discovery-signal repair.
+- URL Inspection on 2026-08-10 reported 27 of 28 canonical sitemap pages as
+  indexed. Only `pesticide-residue-free-raw-rice.html` remains pending Google
+  recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-08-10 — Weekly collection consolidated into Codex
+
+- Diagnosed the Monday LaunchAgent's repeated failure. macOS System Policy
+  first denied `xpcproxy` access to its log and then denied `zsh` access to the
+  repository itself because the project is under the protected `Downloads`
+  folder.
+- Consolidated the Search Console collectors into the existing read-only Codex
+  monitor and moved it to Monday 09:00. It now regenerates both dated reports
+  before monitoring, so it no longer depends on a background process that
+  cannot read the workspace. Disabled the superseded LaunchAgent and updated
+  both mirrored recovery packs.
+- The same read-only weekly monitor found 27 of 28 domestic sitemap URLs now
+  indexed with no canonical or crawler regression. Only the residue-controlled
+  Raw Rice page remains discovered but not indexed.
 
 ### 2026-08-08 — Canonical discovery signals repaired
 

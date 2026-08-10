@@ -81,7 +81,16 @@ python3 scripts/seo_improver.py \
 
 See `seo/input/README.md` for accepted columns.
 
-## Install the free weekly schedule on macOS
+## Weekly schedule
+
+The active `UrbanFresh Weekly SEO Monitor` Codex automation runs every Monday
+at 09:00 local time and collects both Search Console reports before performing
+the read-only monitor. This combined job is used for projects stored under
+macOS-protected folders such as `Downloads`, where a background LaunchAgent
+cannot read the repositories without a manual Full Disk Access grant.
+
+The legacy LaunchAgent installer below is retained only for clones stored in an
+unprotected folder:
 
 ```bash
 chmod +x scripts/run_weekly_seo.sh scripts/install_local_seo_schedule.sh
@@ -94,7 +103,8 @@ It runs every Monday at 09:00 local time. Run it immediately with:
 launchctl kickstart -k gui/$UID/com.urbanfresh.seo-improver
 ```
 
-Logs are written to `seo/scheduler.log` and `seo/scheduler-error.log`; both are gitignored.
+Logs are written to `seo/scheduler.log` and `seo/scheduler-error.log`; both are
+gitignored.
 
 ## Unattended monthly improvement loop
 
