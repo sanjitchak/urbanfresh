@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 39 tests passing the expanded local audit as of 2026-08-11
+- SEO audit baseline: 29 HTML pages and 40 tests passing the expanded local audit as of 2026-08-11
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -28,6 +28,19 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-08-11 — Full responsive UI audit and linked-checklist repair
+
+- Audited every one of the 29 domestic and 11 international HTML pages at
+  390px mobile and 1440px desktop widths. All pages retained one visible H1,
+  valid images, working responsive navigation and no document-level horizontal
+  overflow; the two wide domestic data tables remain intentionally scrollable.
+- Repaired linked checklist sentences on the domestic homepage. The former
+  two-column grid treated every inline link as a new grid item, splitting one
+  sentence into narrow fragments; the check marker is now positioned
+  independently so text and links wrap as one readable line flow.
+- Added regression coverage for linked checklist copy and bumped the shared CSS
+  cache key so the repaired layout replaces cached production styles.
 
 ### 2026-08-11 — Secondary direct email added to domestic contact details
 

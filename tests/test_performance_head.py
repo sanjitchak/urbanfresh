@@ -33,6 +33,14 @@ def page_links(path: Path) -> list[dict[str, str | None]]:
 
 
 class PerformanceHeadTests(unittest.TestCase):
+    def test_checklist_links_stay_inline_inside_sentences(self) -> None:
+        css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+        homepage = (ROOT / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn(".check-list li { position: relative;", css)
+        self.assertIn(".check-list li a { display: inline;", css)
+        self.assertIn('Review <a href="sugandha-rice.html">Sugandha Rice</a> and ', homepage)
+
     def test_internal_home_links_use_the_canonical_root(self) -> None:
         for page in sorted(ROOT.glob("*.html")):
             html = page.read_text(encoding="utf-8")
