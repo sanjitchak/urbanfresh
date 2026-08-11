@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 40 tests passing the expanded local audit as of 2026-08-11
+- SEO audit baseline: 29 HTML pages and 41 tests passing the expanded local audit as of 2026-08-11
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -28,6 +28,23 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-08-11 — Sitewide contrast and interaction repair
+
+- Applied the repository's Impeccable interface-design guidance, preserving the
+  Mill Sample Book identity while repairing verified accessibility defects.
+- Replaced low-contrast WhatsApp, gold-number and dark-panel text colors with
+  accessible OKLCH roles; added a dual-color keyboard focus indicator.
+- Raised shared navigation, breadcrumb, text, footer and compact-button targets
+  to 44 px, and replaced the article callout's prohibited 5 px side stripe with
+  a full border and restrained top rule.
+- Audited all 29 domestic and 11 international pages at 320, 390, 768, 1070 and
+  1440 px. Across 200 page/viewport cases there were no contrast failures,
+  document overflow, clipped content, broken eager images, H1 errors or
+  container-alignment drift; only intentionally hidden anti-spam fields were
+  excluded from visible target/position checks.
+- Rebuilt the generated pages, bumped the stylesheet cache key, added regression
+  assertions and passed all 41 domestic tests plus `git diff --check`.
 
 ### 2026-08-11 — Direct-email subject standardized
 

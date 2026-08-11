@@ -19,6 +19,19 @@ class WhatsAppFloatTests(unittest.TestCase):
     def test_mobile_layout_hides_the_float(self) -> None:
         self.assertIn(".whatsapp-float { display: none; }", CSS)
 
+    def test_shared_controls_use_accessible_colors_and_target_sizes(self) -> None:
+        self.assertIn("--gold-ink: oklch(46% 0.095 78);", CSS)
+        self.assertIn("--whatsapp: oklch(46% 0.13 150);", CSS)
+        self.assertIn("background: var(--whatsapp);", CSS)
+        self.assertIn(".topbar a { min-height: 44px;", CSS)
+        self.assertIn(".main-nav a:not(.button) { min-width: 44px; min-height: 44px;", CSS)
+        self.assertIn(".button-sm, .button-small { min-height: 44px;", CSS)
+        self.assertIn(".breadcrumbs a { min-width: 44px; min-height: 44px;", CSS)
+        self.assertIn(".footer-links a { min-height: 44px;", CSS)
+        self.assertIn(".info-panel .product-price-link { color: var(--gold);", CSS)
+        self.assertIn(".address-panel .section-label { color: var(--gold);", CSS)
+        self.assertNotIn("border-left: 5px solid var(--gold-deep)", CSS)
+
 
 if __name__ == "__main__":
     unittest.main()
