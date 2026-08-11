@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PHONE = "+91 94335 69217"
 PHONE_LINK = "+919433569217"
 CONTACT_EMAIL = "sanjit@urbanfreshrice.com"
-EMAIL_URL = "mailto:sanjit@urbanfreshrice.com?subject=Domestic%20rice%20quote"
+EMAIL_URL = "mailto:sanjit@urbanfreshrice.com?subject=Rice%20quote"
 ADDRESS = "119/6, Highway, Village Daha, Madanpur, Karnal 132001, Haryana, India"
 CSS_VERSION = "20260811-1"
 JS_VERSION = "20260714-2"

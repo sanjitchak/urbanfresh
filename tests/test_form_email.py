@@ -32,7 +32,9 @@ class FormEmailTests(unittest.TestCase):
 
     def test_direct_email_is_secondary_to_form_and_whatsapp(self) -> None:
         self.assertIn('CONTACT_EMAIL = "sanjit@urbanfreshrice.com"', GENERATOR)
-        self.assertIn('EMAIL_URL = "mailto:sanjit@urbanfreshrice.com?subject=Domestic%20rice%20quote"', GENERATOR)
+        self.assertIn('EMAIL_URL = "mailto:sanjit@urbanfreshrice.com?subject=Rice%20quote"', GENERATOR)
+        self.assertNotIn("Domestic%20rice%20quote", GENERATOR)
+        self.assertNotIn("International%20rice%20RFQ", GENERATOR)
         self.assertIn('<small>Email the mill</small><strong>{CONTACT_EMAIL}</strong>', GENERATOR)
         self.assertIn('<a href="{quote_href}">Quote form</a><a href="{EMAIL_URL}">Email: {CONTACT_EMAIL}</a>', GENERATOR)
         self.assertIn('<div class="mobile-cta"><a class="button button-whatsapp"', GENERATOR)

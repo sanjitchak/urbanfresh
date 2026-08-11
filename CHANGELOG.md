@@ -29,6 +29,12 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Change history
 
+### 2026-08-11 — Direct-email subject standardized
+
+- Changed the prefilled subject on every direct email link to exactly
+  `Rice quote`, with no domestic or international qualifier.
+- Kept the form, WhatsApp actions, recipients and SMTP delivery unchanged.
+
 ### 2026-08-11 — Full responsive UI audit and linked-checklist repair
 
 - Audited every one of the 29 domestic and 11 international HTML pages at
