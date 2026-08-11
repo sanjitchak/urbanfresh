@@ -45,6 +45,10 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   excluded from visible target/position checks.
 - Rebuilt the generated pages, bumped the stylesheet cache key, added regression
   assertions and passed all 41 domestic tests plus `git diff --check`.
+- Published UI commit `095231b`; Pages run `31451485868`, SEO quality run
+  `31451486482` and Search Console/IndexNow run `31451486510` succeeded. The
+  cache-busted live homepage references `20260811-2`, and the production
+  stylesheet matches the repository byte-for-byte.
 
 ### 2026-08-11 — Direct-email subject standardized
 
