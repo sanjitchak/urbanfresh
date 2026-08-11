@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 38 tests passing the expanded local audit as of 2026-08-10
+- SEO audit baseline: 29 HTML pages and 39 tests passing the expanded local audit as of 2026-08-11
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -28,6 +28,14 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-08-11 — Secondary direct email added to domestic contact details
+
+- Added `sanjit@urbanfreshrice.com` to the contact-page details, sitewide
+  footer and Organization structured data.
+- Kept the quote form and WhatsApp in their existing primary desktop and
+  mobile positions. Form delivery, buyer confirmation, SMTP configuration and
+  the notification recipient were not changed.
 
 ### 2026-08-10 — Weekly collection consolidated into Codex
 
