@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 41 tests passing the expanded local audit as of 2026-08-11
+- SEO audit baseline: 29 HTML pages and 43 tests passing the expanded local audit as of 2026-08-27
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -28,6 +28,20 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-08-27 — Fully automated production facility claim added sitewide
+
+- Added the owner-confirmed statement `Our production facility is fully
+  automated.` to the shared footer so it appears on all 29 domestic HTML
+  pages, including the static thank-you page.
+- Reinforced the claim in the shared top bar and on the homepage, About,
+  Infrastructure and product-page facility copy without changing the site's
+  domestic-market positioning.
+- Rebuilt all generated pages and refreshed sitemap modification dates. Added
+  regression coverage that requires the exact statement on every HTML page.
+- Passed all 43 tests, the 29-page SEO audit and `git diff --check`. Browser QA
+  on the homepage and Infrastructure page at 320, 390 and 1440 px found no
+  horizontal overflow and confirmed the claim remained visible.
 
 ### 2026-08-11 — Sitewide contrast and interaction repair
 
