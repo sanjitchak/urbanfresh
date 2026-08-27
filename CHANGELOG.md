@@ -42,6 +42,10 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - Passed all 43 tests, the 29-page SEO audit and `git diff --check`. Browser QA
   on the homepage and Infrastructure page at 320, 390 and 1440 px found no
   horizontal overflow and confirmed the claim remained visible.
+- Published commit `6ba8aeb`; Pages run `33058960364`, SEO quality run
+  `33058961537` and Search Console/IndexNow run `33058961528` succeeded. A
+  cache-busted production check confirmed the exact claim on all 29 live HTML
+  routes.
 
 ### 2026-08-11 — Sitewide contrast and interaction repair
 
