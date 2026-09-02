@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 43 tests passing the expanded local audit as of 2026-08-27
+- SEO audit baseline: 29 HTML pages and 45 tests passing the expanded local audit as of 2026-09-02
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -28,6 +28,23 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-09-02 — Aggressive mill-advantage comparison added
+
+- Added a prominent homepage section led by `Don’t settle for a mill that
+  leaves your order to guesswork.` and a five-row UrbanFresh-versus-ordinary-
+  sourcing comparison covering automation, process control, buying discipline,
+  proof and accountability.
+- Kept the competitive language forceful without naming another mill or
+  publishing an unsupported universal competitor claim. The owner-confirmed
+  fully automated facility, connected production stages, first-party mill
+  photography and mill-side review remain the proof points.
+- Added a responsive desktop comparison table and mobile card treatment, bumped
+  the shared stylesheet cache key and rebuilt all generated pages.
+- Added regression coverage and passed all 45 tests, the 29-page SEO audit and
+  `git diff --check`. Browser QA at 320, 390, 768 and 1440 px confirmed five
+  comparison rows, full-width mobile CTA, 48 px target height and no horizontal
+  overflow.
 
 ### 2026-08-27 — Fully automated production facility claim added sitewide
 
