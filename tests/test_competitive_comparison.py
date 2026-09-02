@@ -14,7 +14,9 @@ class CompetitiveComparisonTests(unittest.TestCase):
         self.assertIn("Don’t settle for a mill that leaves your order to guesswork.", homepage)
         self.assertIn("The UrbanFresh advantage", homepage)
         self.assertIn("The ordinary sourcing risk", homepage)
-        self.assertEqual(homepage.count('class="advantage-row"'), 5)
+        self.assertIn("U.S. FDA registration is listed among our available mill records", homepage)
+        self.assertIn("Export-friendly buyer support", homepage)
+        self.assertEqual(homepage.count('class="advantage-row"'), 7)
 
     def test_comparison_is_responsive_and_source_owned(self) -> None:
         source = (ROOT / "scripts/rebuild_real_mill_site.py").read_text(encoding="utf-8")

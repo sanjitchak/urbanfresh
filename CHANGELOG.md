@@ -29,6 +29,17 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Change history
 
+### 2026-09-02 — U.S. FDA and export-friendly advantages added
+
+- Expanded the homepage mill comparison with explicit U.S. FDA registration
+  and export-friendly buyer-support rows on both the domestic and international
+  websites.
+- Described U.S. FDA registration as an available mill record subject to
+  current-copy and scope verification; did not use the misleading phrase
+  `FDA approved`.
+- Rebuilt all generated pages and passed the 29-page SEO audit, all 45 tests
+  and `git diff --check`.
+
 ### 2026-09-02 — Aggressive mill-advantage comparison added
 
 - Added a prominent homepage section led by `Don’t settle for a mill that
