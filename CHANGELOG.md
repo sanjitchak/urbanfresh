@@ -29,6 +29,29 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Change history
 
+### 2026-09-07 — Monthly SEO review retained existing pages
+
+- Decision: `No change - insufficient evidence`. Search Console final
+  August 8–September 4 versus July 11–August 7 reported 47 versus
+  47 query-visible impressions and zero clicks. No page/query sample
+  reached the 100-impression threshold; prior changes remain unevaluable.
+- Kept the contact and price-page experiments. Contact has no reported rows;
+  price-page impressions are 15 versus 3. India-mobile `basmati rice rates`
+  has only 4 versus 1 impressions (positions 43.5 versus 37), insufficient
+  for an attributable rollback.
+- Authenticated Ubersuggest API verified the exact domain project. India
+  desktop remains 0/18 top 100 (September 2); audit 100/100 on 28 pages.
+  US, UK and UAE are untracked in this project.
+- Appended one review row to `seo/monthly-log.csv`; saved first-party exact
+  dimensions, external API research and the decision in ignored
+  `reports/seo-improver/2026-09-07/`. No content or discovery file changed.
+- Generator, 29-page audit and all 45 tests passed with no generated drift.
+  Reviewed deployed SHA `f66bd3d963adebf5064ac6fe1111f18cb8d5db00`; its
+  Pages, quality and discovery workflows succeeded. This reporting change is
+  prepared for a separate `Monthly SEO:` commit; final push/live results are
+  recorded in the dated ignored `release-verification.md`. Unchanged sitemap
+  and IndexNow payloads are not resubmitted. Keep collecting comparable data.
+
 ### 2026-09-02 — U.S. FDA and export-friendly advantages added
 
 - Expanded the homepage mill comparison with explicit U.S. FDA registration
