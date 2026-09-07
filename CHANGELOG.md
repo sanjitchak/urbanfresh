@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 45 tests passing the expanded local audit as of 2026-09-02
+- SEO audit baseline: 29 HTML pages and 47 tests passing the expanded local audit as of 2026-09-07
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -28,6 +28,20 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-09-07 — Wistia mill video added to the homepage hero
+
+- Added owner-supplied Wistia media `lxjkrtdi02` as a muted, looping,
+  cover-fit background behind the domestic homepage hero copy.
+- Preserved the existing first-party mill photograph underneath the player so
+  it remains the fallback before load, after a video failure and for users who
+  prefer reduced motion. Loaded Wistia only on the homepage.
+- Strengthened the responsive gradient overlay and kept the headline, copy and
+  CTAs above the video. Real Chrome QA confirmed the player reached `playing`,
+  retained zero horizontal overflow at a true 390 px viewport and rendered
+  cleanly at 1440 px.
+- Rebuilt all pages, passed the 29-page SEO audit, all 47 tests and
+  `git diff --check`.
 
 ### 2026-09-07 — Monthly SEO review retained existing pages
 
