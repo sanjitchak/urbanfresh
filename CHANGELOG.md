@@ -42,6 +42,10 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - Passed the 29-page SEO audit, all 49 tests and `git diff --check`. Headless
   Chrome contact-page renders at 390 px confirmed the expanded address remains
   readable in the mobile contact layout.
+- Released website commit `3586d0a` to `main`. GitHub Pages, SEO quality and
+  discovery workflows succeeded; live homepage and contact-page bytes matched
+  the repository and exposed the exact legal name, visible address and
+  Organization structured data.
 
 ### 2026-09-07 — Wistia mill video added to the homepage hero
 
