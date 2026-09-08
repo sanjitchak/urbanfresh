@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 47 tests passing the expanded local audit as of 2026-09-07
+- SEO audit baseline: 29 HTML pages and 49 tests passing the expanded local audit as of 2026-09-08
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -28,6 +28,20 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-09-08 — Rajesh Industries legal name and complete mill address added
+
+- Identified Rajesh Industries as the legal name under which the mill operates,
+  while retaining UrbanFresh as the customer-facing brand.
+- Published the complete owner-supplied Karnal address in the shared footer,
+  contact page and homepage location panel, and added `legalName` plus the exact
+  address to Organization structured data on every indexable page.
+- Rebuilt all generated pages and added regression coverage for the sitewide
+  legal name, visible address and structured data. The separate noindex thank-you
+  page was updated explicitly so it does not retain the former address.
+- Passed the 29-page SEO audit, all 49 tests and `git diff --check`. Headless
+  Chrome contact-page renders at 390 px confirmed the expanded address remains
+  readable in the mobile contact layout.
 
 ### 2026-09-07 — Wistia mill video added to the homepage hero
 
