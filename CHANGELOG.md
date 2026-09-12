@@ -8,7 +8,7 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 - International site: `https://urbanfreshrice.com/` (live on GitHub Pages with HTTPS enforced)
 - Repository: `sanjitchak/urbanfresh`, default branch `main`
 - Local project: `/Users/Administrator/Downloads/RIce business/urbanfresh`
-- SEO audit baseline: 29 HTML pages and 49 tests passing the expanded local audit as of 2026-09-08
+- SEO audit baseline: 30 HTML pages and 52 tests passing the expanded local audit as of 2026-09-12
 - Search Console: service account has Full access; authenticated sitemap submission is working
 - Deployment automation: SEO-relevant pushes to `main` wait for the live
   sitemap and IndexNow key, submit and verify the sitemap in Search Console,
@@ -28,6 +28,20 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-09-12 — Factory and client-loading Wistia proof page
+
+- Added a dedicated `client-proof.html` page with the existing factory video
+  and owner-supplied 10 MT and 125 MT client-loading footage, all delivered as
+  Wistia embeds rather than repository-hosted MP4 files.
+- Linked the proof page from the homepage comparison and shared footer, added
+  it to the keyword map and XML sitemap, and built responsive portrait and
+  landscape player layouts.
+- Kept the evidence claims bounded to what the videos show; the page does not
+  infer buyer identity, product specification, destination, shipment route,
+  commercial terms or direct-versus-merchant export status.
+- Rebuilt all generated pages and passed the 30-page SEO audit, all 52 tests
+  and `git diff --check`.
 
 ### 2026-09-08 — Rajesh Industries legal name and complete mill address added
 

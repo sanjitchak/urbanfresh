@@ -22,7 +22,8 @@ STREET_ADDRESS = "119/6, Mile Stone, GT Road, Opp to Neelkanth Dhaba, Daha Madan
 ADDRESS = f"{STREET_ADDRESS}, Karnal, Haryana - 132001, India"
 AUTOMATION_CLAIM = "Our production facility is fully automated."
 WISTIA_MEDIA_ID = "lxjkrtdi02"
-CSS_VERSION = "20260907-1"
+CLIENT_PROOF_MEDIA_IDS = ("l82atxvvng", "8bg0co98z9")
+CSS_VERSION = "20260912-1"
 JS_VERSION = "20260714-2"
 CONTACT_JS_VERSION = "20260729-1"
 FONT_STYLESHEET = "https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;650;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
@@ -397,7 +398,7 @@ def footer(contact_page: bool = False) -> str:
     return dedent(f"""
       <footer class="site-footer"><div class="container footer-grid">
         <div class="footer-brand"><a class="brand" href="/"><img class="brand-mark" src="assets/images/urbanfresh-logo.webp" width="50" height="50" alt=""><span class="brand-copy"><span class="brand-name">UrbanFresh</span><span class="brand-tag">Rice Mills · Karnal</span></span></a><p>The mill is operated under the legal name {LEGAL_ENTITY}; UrbanFresh is the customer-facing brand. Established in 1978, we serve bulk buyers from Karnal. {AUTOMATION_CLAIM}</p></div>
-        <div><h2 class="footer-title">Mill</h2><div class="footer-links"><a href="about.html">About UrbanFresh</a><a href="infrastructure.html">Infrastructure</a><a href="quality.html">Quality Control</a><a href="certifications.html">Certifications</a><a href="private-label.html">Private Label</a><a href="basmati-rice-manufacturer-india.html">Basmati Manufacturer</a><a href="basmati-rice-exporter-india.html">Overseas Basmati Supply</a><a href="rice-manufacturer-for-merchant-exporters.html">Merchant Exporter Supply</a></div></div>
+        <div><h2 class="footer-title">Mill</h2><div class="footer-links"><a href="about.html">About UrbanFresh</a><a href="infrastructure.html">Infrastructure</a><a href="client-proof.html">Client Proof Videos</a><a href="quality.html">Quality Control</a><a href="certifications.html">Certifications</a><a href="private-label.html">Private Label</a><a href="basmati-rice-manufacturer-india.html">Basmati Manufacturer</a><a href="basmati-rice-exporter-india.html">Overseas Basmati Supply</a><a href="rice-manufacturer-for-merchant-exporters.html">Merchant Exporter Supply</a></div></div>
         <div><h2 class="footer-title">Rice range</h2><div class="footer-links"><a href="products.html">All Rice Products</a><a href="{PRICE_SLUG}">Latest Rice Prices</a><a href="{GUIDE_SLUG}">1121 vs 1509 vs 1401 Guide</a><a href="1121-basmati-rice.html">1121 Basmati</a><a href="pusa-basmati-rice.html">Pusa Basmati</a><a href="sugandha-rice.html">Sugandha Rice</a><a href="pr-11-rice.html">PR 11 Rice</a></div></div>
         <div><h2 class="footer-title">Contact</h2><div class="footer-links"><span>{LEGAL_ENTITY}</span><span>119/6, Mile Stone, GT Road</span><span>Opp to Neelkanth Dhaba</span><span>Daha Madanpur Village, Near Namastey Chowk</span><span>Karnal, Haryana - 132001, India</span><a href="tel:{PHONE_LINK}">{PHONE}</a><a href="{WA_URL}" target="_blank" rel="noopener">WhatsApp UrbanFresh</a><a href="{escape(GMB_URL, quote=True)}" target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href="{LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">Follow UrbanFresh on LinkedIn</a><a href="{quote_href}">Quote form</a><a href="{EMAIL_URL}">Email: {CONTACT_EMAIL}</a><a href="{EXPORT_URL}">Export enquiries: urbanfreshrice.com</a></div></div>
       </div><div class="container footer-bottom"><span>© <span data-year></span> UrbanFresh Rice Mills.</span><span>Availability, specifications, certificates and terms are confirmed per enquiry.</span></div></footer>
@@ -433,11 +434,20 @@ def render_page(
           <link rel="alternate" hreflang="en" href="{EXPORT_URL}about-mill-infrastructure.html">
         """).strip()
     wistia_head = ""
-    if filename == "index.html":
+    if filename in {"index.html", "client-proof.html"}:
+        media_ids = (
+            (WISTIA_MEDIA_ID,)
+            if filename == "index.html"
+            else (WISTIA_MEDIA_ID, *CLIENT_PROOF_MEDIA_IDS)
+        )
+        media_scripts = "\n".join(
+            f'<script src="https://fast.wistia.com/embed/{media_id}.js" async type="module"></script>'
+            for media_id in media_ids
+        )
         wistia_head = dedent(f"""
           <link rel="preconnect" href="https://fast.wistia.com" crossorigin>
           <script src="https://fast.wistia.com/player.js" async></script>
-          <script src="https://fast.wistia.com/embed/{WISTIA_MEDIA_ID}.js" async type="module"></script>
+          {media_scripts}
         """).strip()
     html = dedent(f"""\
     <!doctype html>
@@ -626,7 +636,7 @@ def render_home() -> None:
     body = dedent(f"""
       <section class="hero real-hero hero-with-video" style="--hero-image:url('/{image_path('mill-hero-1.webp')}')"><div class="hero-video" aria-hidden="true"><wistia-player media-id="{WISTIA_MEDIA_ID}" aspect="1.7777777777777777" autoplay muted silent-autoplay="allow" end-video-behavior="loop" fit-strategy="cover" swatch="false" transparent-letterbox="true" big-play-button="false" controls-visible-on-load="false" play-bar-control="false" play-pause-control="false" settings-control="false" fullscreen-control="false"></wistia-player></div><div class="container hero-inner"><div class="hero-content"><div class="hero-kicker">Rice manufacturer in Karnal, Haryana</div><h1>Rice milling in Karnal. <span>From paddy to packed rice.</span></h1><p>We are a family-operated rice mill at Village Daha Madanpur, Karnal. Since 1978, we have produced basmati and non-basmati rice for buyers in India and overseas. {AUTOMATION_CLAIM}</p><div class="hero-actions"><a class="button button-arrow" href="contact.html#quote">Request a Mill Quote</a><a class="button button-ghost" href="products.html">View All Rice Products</a></div><div class="hero-note"><span>Fully automated facility</span><span>230 MT daily capacity</span><span>3 production units</span><span>30+ country reach</span></div></div></div></section>
       <section class="fact-strip"><div class="container fact-grid"><div><strong>1978</strong><span>Mill established</span></div><div><strong>230 MT</strong><span>Daily production capacity</span></div><div><strong>3</strong><span>Production units</span></div><div><strong>30+</strong><span>Countries reached</span></div></div></section>
-      <section class="section advantage-section"><div class="container"><div class="advantage-intro"><div><p class="section-label">UrbanFresh versus ordinary sourcing</p><h2 class="section-title">Don’t settle for a mill that leaves your order to guesswork.</h2></div><div><p class="section-lede">Price means little when process, specification and accountability are unclear. UrbanFresh gives serious buyers a stronger production base and a clearer route from requirement to packed rice.</p><a class="button button-arrow" href="contact.html#quote">Choose a stronger mill</a></div></div><div class="advantage-grid" role="table" aria-label="UrbanFresh compared with ordinary rice sourcing risks"><div class="advantage-row advantage-head" role="row"><span role="columnheader">Decision point</span><strong role="columnheader">The UrbanFresh advantage</strong><span role="columnheader">The ordinary sourcing risk</span></div><div class="advantage-row" role="row"><span role="rowheader">Automation</span><strong role="cell">Fully automated production facility.</strong><span role="cell">More manual handling can create more opportunity for process variation.</span></div><div class="advantage-row" role="row"><span role="rowheader">U.S. FDA</span><strong role="cell">U.S. FDA registration is listed among our available mill records, with current copies open to buyer verification.</strong><span role="cell">No current registration or operating-entity record is shown for verification.</span></div><div class="advantage-row" role="row"><span role="rowheader">Export support</span><strong role="cell">Export-friendly buyer support for destination, quality-evidence, packing and document requirements.</strong><span role="cell">Limited export support can leave critical destination requirements unresolved.</span></div><div class="advantage-row" role="row"><span role="rowheader">Process control</span><strong role="cell">Connected preparation, processing, sorting and packing stages.</strong><span role="cell">Disconnected stages can make responsibility and visibility harder to track.</span></div><div class="advantage-row" role="row"><span role="rowheader">Buying discipline</span><strong role="cell">Product, quality, quantity and packing are defined before production.</strong><span role="cell">A price-first offer can leave critical order details unresolved.</span></div><div class="advantage-row" role="row"><span role="rowheader">Proof</span><strong role="cell">First-party mill photographs and order-relevant documents.</strong><span role="cell">Generic claims and unrelated paperwork do not prove the offered order.</span></div><div class="advantage-row" role="row"><span role="rowheader">Accountability</span><strong role="cell">Direct mill-side feasibility review.</strong><span role="cell">Extra handoffs can slow answers and blur ownership.</span></div></div></div></section>
+      <section class="section advantage-section"><div class="container"><div class="advantage-intro"><div><p class="section-label">UrbanFresh versus ordinary sourcing</p><h2 class="section-title">Don’t settle for a mill that leaves your order to guesswork.</h2></div><div><p class="section-lede">Price means little when process, specification and accountability are unclear. UrbanFresh gives serious buyers a stronger production base and a clearer route from requirement to packed rice.</p><a class="button button-arrow" href="contact.html#quote">Choose a stronger mill</a><p><a class="text-link" href="client-proof.html">Watch factory and client-loading proof</a></p></div></div><div class="advantage-grid" role="table" aria-label="UrbanFresh compared with ordinary rice sourcing risks"><div class="advantage-row advantage-head" role="row"><span role="columnheader">Decision point</span><strong role="columnheader">The UrbanFresh advantage</strong><span role="columnheader">The ordinary sourcing risk</span></div><div class="advantage-row" role="row"><span role="rowheader">Automation</span><strong role="cell">Fully automated production facility.</strong><span role="cell">More manual handling can create more opportunity for process variation.</span></div><div class="advantage-row" role="row"><span role="rowheader">U.S. FDA</span><strong role="cell">U.S. FDA registration is listed among our available mill records, with current copies open to buyer verification.</strong><span role="cell">No current registration or operating-entity record is shown for verification.</span></div><div class="advantage-row" role="row"><span role="rowheader">Export support</span><strong role="cell">Export-friendly buyer support for destination, quality-evidence, packing and document requirements.</strong><span role="cell">Limited export support can leave critical destination requirements unresolved.</span></div><div class="advantage-row" role="row"><span role="rowheader">Process control</span><strong role="cell">Connected preparation, processing, sorting and packing stages.</strong><span role="cell">Disconnected stages can make responsibility and visibility harder to track.</span></div><div class="advantage-row" role="row"><span role="rowheader">Buying discipline</span><strong role="cell">Product, quality, quantity and packing are defined before production.</strong><span role="cell">A price-first offer can leave critical order details unresolved.</span></div><div class="advantage-row" role="row"><span role="rowheader">Proof</span><strong role="cell">First-party mill photographs, factory video and client-loading footage.</strong><span role="cell">Generic claims and unrelated paperwork do not prove the offered order.</span></div><div class="advantage-row" role="row"><span role="rowheader">Accountability</span><strong role="cell">Direct mill-side feasibility review.</strong><span role="cell">Extra handoffs can slow answers and blur ownership.</span></div></div></div></section>
       <section class="section" id="mill-campus"><div class="container intro-grid"><div class="mill-photo-proof"><div class="photo-stack"><img src="{image_path('mill-campus-office.webp')}" alt="UrbanFresh Rice Mills office building at Village Daha Madanpur in Karnal" width="956" height="1280"><img src="{image_path('mill-campus-chimney.webp')}" alt="RI-marked chimney at the UrbanFresh rice mill campus in Karnal" loading="lazy" width="751" height="1280"></div><p class="photo-proof-note"><strong>At our Karnal mill:</strong> the office and production campus at Village Daha, Madanpur.</p></div><div><p class="section-label">UrbanFresh Rice Mills</p><h2 class="section-title">From paddy procurement to packed rice.</h2><p class="section-lede">{AUTOMATION_CLAIM} We handle paddy selection, drying, parboiling, cleaning, milling, sorting and packaging using connected production equipment.</p><ul class="check-list"><li><a href="basmati-rice-manufacturer-india.html">Family-operated basmati rice manufacturing in Karnal.</a></li><li>Review <a href="sugandha-rice.html">Sugandha Rice</a> and <a href="pesticide-residue-free-raw-rice.html">buyer-tested Raw Rice</a> from our non-basmati and residue-controlled ranges.</li><li><a href="basmati-rice-exporter-india.html">Overseas basmati supply enquiries.</a></li><li><a href="rice-manufacturer-for-merchant-exporters.html">Mill supply for merchant exporters.</a></li><li>Bulk supply and buyer-brand packaging.</li></ul><p><a class="button button-outline button-arrow" href="infrastructure.html#mill-photos">See Our Mill Infrastructure</a></p></div></div></section>
       <section class="section surface"><div class="container"><div class="section-head"><div><p class="section-label">Basmati rice range</p><h2 class="section-title">Six basmati varieties from our Karnal mill.</h2></div><p class="section-lede">Explore the processing formats we offer, then send your crop, specification, quantity, packaging and destination for current availability.</p></div><div class="catalog-grid">{featured}</div><p class="section-action"><a class="button button-arrow" href="products.html">Explore Complete Catalogue</a></p></div></section>
       <section class="section"><div class="container guide-feature"><div class="guide-feature-images"><img src="{image_path('category-1121.webp')}" alt="1121 Basmati rice grains" loading="lazy" width="700" height="520"><img src="{image_path('category-1509.webp')}" alt="1509 Basmati rice grains" loading="lazy" width="700" height="520"><img src="{image_path('category-1401.webp')}" alt="1401 Basmati rice grains" loading="lazy" width="700" height="520"></div><div><p class="section-label">Buyer guide</p><h2 class="section-title">1121, 1509 or 1401: what can the grain actually tell you?</h2><p class="section-lede">Compare like-for-like processing, inspect uniformity and chalkiness, then cook a controlled sample. Grain appearance is useful, but it should support a written specification rather than replace one.</p><a class="button button-outline button-arrow" href="{GUIDE_SLUG}">Read the Comparison Guide</a></div></div></section>
@@ -977,11 +987,52 @@ def render_buyer_guide() -> None:
     )
 
 
+def render_client_proof() -> None:
+    schema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            organization_schema(),
+            {
+                "@type": "WebPage",
+                "name": "UrbanFresh Factory and Client Loading Videos",
+                "url": "https://urbanfresh.in/client-proof.html",
+                "description": "First-party Wistia videos showing the UrbanFresh factory and 10 MT and 125 MT client-loading activity at the Rajesh Industries mill in Karnal.",
+            },
+        ],
+    }
+    crumbs = [("Home", "/"), ("Client Proof", None)]
+    body = page_hero(
+        "Client proof",
+        "See the factory. See real client-loading activity.",
+        "Three first-party Wistia videos show the Rajesh Industries production facility and loading activity for 10 MT and 125 MT client orders.",
+        "mill-processing-plant.webp",
+        crumbs,
+    ) + dedent(f"""
+      <section class="section"><div class="container proof-intro"><div><p class="section-label">The mill behind UrbanFresh</p><h2 class="section-title">A visible production base, not a catalogue-only promise.</h2></div><p class="section-lede">Start with the factory video, then review two examples of client-loading activity. The videos are hosted and delivered through Wistia; the website does not serve the uploaded MP4 files directly.</p></div></section>
+      <section class="section surface"><div class="container"><article class="proof-feature"><div class="proof-video proof-video-landscape"><wistia-player media-id="{WISTIA_MEDIA_ID}" aspect="1.7777777777777777"></wistia-player></div><div class="proof-copy"><p class="section-label">Factory video</p><h2>Inside the Rajesh Industries mill.</h2><p>See the Karnal production facility behind the UrbanFresh brand, including the physical processing base presented to buyers.</p><a class="button button-outline button-arrow" href="infrastructure.html">Review mill infrastructure</a></div></article></div></section>
+      <section class="section"><div class="container"><div class="section-head"><div><p class="section-label">Client loading proof</p><h2 class="section-title">Real loading activity from the mill.</h2></div><p class="section-lede">These clips document the quantities named in the supplied footage. Product specification, buyer identity, destination and commercial terms remain confidential and order-specific.</p></div><div class="proof-grid"><article class="proof-card proof-card-portrait"><div class="proof-video proof-video-portrait"><wistia-player media-id="{CLIENT_PROOF_MEDIA_IDS[0]}" aspect="0.5576470588"></wistia-player></div><div class="proof-copy"><p class="section-label">10 MT client order</p><h2>Loading 10 metric tons.</h2><p>First-party footage showing loading activity for a 10 MT client requirement.</p></div></article><article class="proof-card"><div class="proof-video proof-video-landscape"><wistia-player media-id="{CLIENT_PROOF_MEDIA_IDS[1]}" aspect="1.7777777778"></wistia-player></div><div class="proof-copy"><p class="section-label">125 MT client order</p><h2>Loading 125 metric tons.</h2><p>First-party footage showing loading activity for a 125 MT client requirement.</p></div></article></div><div class="availability-note proof-boundary"><strong>Evidence boundary:</strong> these videos demonstrate the factory and client-loading activity shown. They do not identify the buyer, rice specification, destination, shipment route, terms or whether any export movement was direct or through a merchant exporter.</div></div></section>
+      <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Ready to discuss your loading requirement?</h2><p>Send the rice, process, quantity, pack, destination and timeline for mill-side review.</p></div><a class="button button-arrow" href="contact.html#quote">Request a Mill Quote</a></div></section>
+    """)
+    render_page(
+        "client-proof.html",
+        "Factory and Client Loading Videos | UrbanFresh Rice Mills",
+        "Watch first-party Wistia videos of the UrbanFresh factory and 10 MT and 125 MT client-loading activity at the Rajesh Industries mill in Karnal.",
+        body,
+        "",
+        schema,
+        image_path("mill-processing-plant.webp"),
+        crumbs=crumbs,
+        body_class="client-proof-page",
+        hero_image=image_path("mill-processing-plant.webp"),
+    )
+
+
 def render_sitemap() -> None:
     pages = [
         ("", "weekly", "1.0"), ("products.html", "monthly", "0.9"), ("about.html", "monthly", "0.8"), ("infrastructure.html", "monthly", "0.8"), ("quality.html", "monthly", "0.8"), ("certifications.html", "monthly", "0.7"), ("contact.html", "monthly", "0.9"),
         (PRICE_SLUG, "weekly", "0.9"),
         (GUIDE_SLUG, "monthly", "0.9"),
+        ("client-proof.html", "monthly", "0.8"),
         ("basmati-rice-manufacturer-india.html", "monthly", "0.9"), ("basmati-rice-exporter-india.html", "monthly", "0.9"), ("rice-manufacturer-for-merchant-exporters.html", "monthly", "0.8"), ("private-label.html", "monthly", "0.8"),
     ] + [(item["slug"], "monthly", "0.9") for item in PRODUCTS]
     urls = "\n".join(
@@ -1015,6 +1066,7 @@ def main() -> None:
     render_landing_pages()
     render_price_page()
     render_buyer_guide()
+    render_client_proof()
     render_sitemap()
     print(f"Rebuilt UrbanFresh with {len(PRODUCTS)} product pages.")
 

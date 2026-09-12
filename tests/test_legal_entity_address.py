@@ -20,7 +20,7 @@ STREET_ADDRESS = ", ".join(ADDRESS_PARTS[:3])
 class LegalEntityAddressTests(unittest.TestCase):
     def test_legal_entity_and_address_are_visible_on_every_page(self) -> None:
         pages = sorted(ROOT.glob("*.html"))
-        self.assertEqual(len(pages), 29)
+        self.assertEqual(len(pages), 30)
         for page in pages:
             source = page.read_text(encoding="utf-8")
             self.assertIn(LEGAL_ENTITY, source, page.name)

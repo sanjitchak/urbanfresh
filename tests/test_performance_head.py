@@ -91,7 +91,7 @@ class PerformanceHeadTests(unittest.TestCase):
             entry.findtext("sm:loc", namespaces=namespace)
             for entry in sitemap.findall("sm:url", namespace)
         ]
-        self.assertEqual(len(page_urls), 28)
+        self.assertEqual(len(page_urls), 29)
 
         for page_url in page_urls:
             self.assertIsNotNone(page_url)

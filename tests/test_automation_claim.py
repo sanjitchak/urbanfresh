@@ -11,7 +11,7 @@ CLAIM = "Our production facility is fully automated."
 class AutomationClaimTests(unittest.TestCase):
     def test_claim_is_visible_on_every_html_page(self) -> None:
         pages = sorted(ROOT.glob("*.html"))
-        self.assertEqual(len(pages), 29)
+        self.assertEqual(len(pages), 30)
         for page in pages:
             self.assertIn(CLAIM, page.read_text(encoding="utf-8"), page.name)
 
