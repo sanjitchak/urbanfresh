@@ -23,7 +23,7 @@ ADDRESS = f"{STREET_ADDRESS}, Karnal, Haryana - 132001, India"
 AUTOMATION_CLAIM = "Our production facility is fully automated."
 WISTIA_MEDIA_ID = "lxjkrtdi02"
 CLIENT_PROOF_MEDIA_IDS = ("l82atxvvng", "8bg0co98z9")
-CSS_VERSION = "20260912-1"
+CSS_VERSION = "20260912-2"
 JS_VERSION = "20260714-2"
 CONTACT_JS_VERSION = "20260729-1"
 FONT_STYLESHEET = "https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;650;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
@@ -503,8 +503,9 @@ def page_hero(kicker: str, title: str, text: str, image: str, crumbs: list[tuple
         else f'<span>{escape(label)}</span>'
         for label, href in crumbs
     )
+    lede = f"<p>{escape(text)}</p>" if text else ""
     return dedent(f"""
-      <section class="page-hero custom-hero" style="--page-image:url('/{image_path(image)}')"><div class="container"><div class="breadcrumbs">{crumb_html}</div><div class="page-hero-content"><div class="hero-kicker">{escape(kicker)}</div><h1>{escape(title)}</h1><p>{escape(text)}</p></div></div></section>
+      <section class="page-hero custom-hero" style="--page-image:url('/{image_path(image)}')"><div class="container"><div class="breadcrumbs">{crumb_html}</div><div class="page-hero-content"><div class="hero-kicker">{escape(kicker)}</div><h1>{escape(title)}</h1>{lede}</div></div></section>
     """).strip()
 
 
@@ -1003,14 +1004,13 @@ def render_client_proof() -> None:
     crumbs = [("Home", "/"), ("Client Proof", None)]
     body = page_hero(
         "Client proof",
-        "See the factory. See real client-loading activity.",
-        "Three first-party Wistia videos show the Rajesh Industries production facility and loading activity for 10 MT and 125 MT client orders.",
+        "Factory and client loading videos.",
+        "",
         "mill-processing-plant.webp",
         crumbs,
     ) + dedent(f"""
-      <section class="section"><div class="container proof-intro"><div><p class="section-label">The mill behind UrbanFresh</p><h2 class="section-title">A visible production base, not a catalogue-only promise.</h2></div><p class="section-lede">Start with the factory video, then review two examples of client-loading activity. The videos are hosted and delivered through Wistia; the website does not serve the uploaded MP4 files directly.</p></div></section>
-      <section class="section surface"><div class="container"><article class="proof-feature"><div class="proof-video proof-video-landscape"><wistia-player media-id="{WISTIA_MEDIA_ID}" aspect="1.7777777777777777"></wistia-player></div><div class="proof-copy"><p class="section-label">Factory video</p><h2>Inside the Rajesh Industries mill.</h2><p>See the Karnal production facility behind the UrbanFresh brand, including the physical processing base presented to buyers.</p><a class="button button-outline button-arrow" href="infrastructure.html">Review mill infrastructure</a></div></article></div></section>
-      <section class="section"><div class="container"><div class="section-head"><div><p class="section-label">Client loading proof</p><h2 class="section-title">Real loading activity from the mill.</h2></div><p class="section-lede">These clips document the quantities named in the supplied footage. Product specification, buyer identity, destination and commercial terms remain confidential and order-specific.</p></div><div class="proof-grid"><article class="proof-card proof-card-portrait"><div class="proof-video proof-video-portrait"><wistia-player media-id="{CLIENT_PROOF_MEDIA_IDS[0]}" aspect="0.5576470588"></wistia-player></div><div class="proof-copy"><p class="section-label">10 MT client order</p><h2>Loading 10 metric tons.</h2><p>First-party footage showing loading activity for a 10 MT client requirement.</p></div></article><article class="proof-card"><div class="proof-video proof-video-landscape"><wistia-player media-id="{CLIENT_PROOF_MEDIA_IDS[1]}" aspect="1.7777777778"></wistia-player></div><div class="proof-copy"><p class="section-label">125 MT client order</p><h2>Loading 125 metric tons.</h2><p>First-party footage showing loading activity for a 125 MT client requirement.</p></div></article></div><div class="availability-note proof-boundary"><strong>Evidence boundary:</strong> these videos demonstrate the factory and client-loading activity shown. They do not identify the buyer, rice specification, destination, shipment route, terms or whether any export movement was direct or through a merchant exporter.</div></div></section>
+      <section class="section surface"><div class="container proof-gallery"><h2 class="section-title">Factory video</h2><div class="proof-video proof-video-landscape"><wistia-player media-id="{WISTIA_MEDIA_ID}" aspect="1.7777777777777777"></wistia-player></div></div></section>
+      <section class="section"><div class="container proof-gallery"><h2 class="section-title">Client loading videos</h2><div class="proof-grid"><article class="proof-card"><div class="proof-video proof-video-landscape"><wistia-player media-id="{CLIENT_PROOF_MEDIA_IDS[0]}" aspect="1.7777777777777777"></wistia-player></div><h3>10 MT client loading</h3></article><article class="proof-card"><div class="proof-video proof-video-landscape"><wistia-player media-id="{CLIENT_PROOF_MEDIA_IDS[1]}" aspect="1.7777777777777777"></wistia-player></div><h3>125 MT client loading</h3></article></div></div></section>
       <section class="section-sm quote-band"><div class="container quote-band-grid"><div><h2>Ready to discuss your loading requirement?</h2><p>Send the rice, process, quantity, pack, destination and timeline for mill-side review.</p></div><a class="button button-arrow" href="contact.html#quote">Request a Mill Quote</a></div></section>
     """)
     render_page(

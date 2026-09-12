@@ -29,6 +29,15 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Change history
 
+### 2026-09-12 — Client proof page simplified
+
+- Removed the explanatory intro, hosting note, confidentiality paragraph and
+  evidence-boundary copy from the client proof page.
+- Reduced the page to a short title, the factory video and two clearly labelled
+  client-loading videos.
+- Set both loading players to matching two-column 16:9 cards on desktop, with
+  the same single-column 16:9 treatment on mobile.
+
 ### 2026-09-12 — Factory and client-loading Wistia proof page
 
 - Added a dedicated `client-proof.html` page with the existing factory video
