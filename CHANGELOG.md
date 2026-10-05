@@ -19,6 +19,9 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Open items
 
+- Ubersuggest project is inactive (`user_inactivity`); October 5 API reads
+  returned stale September rankings. Account-owner review is needed to restore
+  fresh tracking; stored estimates cannot support an October content change.
 - Search Console evidence remains sparse. Wait for a full comparable data
   period before allowing the monthly loop to test any page change.
 - Search Console must recrawl `rice-price-india.html` before its non-critical
@@ -28,6 +31,23 @@ Read this file first when starting a new chat. Keep it concise and update it wit
   recrawl after the internal-home-link and discovery-signal repair.
 
 ## Change history
+
+### 2026-10-05 — Monthly SEO review retained existing pages
+
+- Decision: `No change - insufficient evidence`. GSC final September 5–October 2 versus August 8–September 4: 47/47 query-visible impressions, 1/0 clicks. Contact has no reported rows in either period; country/device baseline unavailable. Price page has 24/15 impressions, zero clicks. Exact basmati rice rates / rice-price-india.html / India MOBILE: 15/4 impressions, zero clicks, position 60.7333/43.5.
+- Keep prior contact and price experiments: weak samples and intervening site changes prevent attributable rollback despite price-query position worsening. Both full 28-day windows are available, but no page/query meets the 100-impression threshold. September 21 proof-page repair has only 12 days within the final-data window and no reported query rows, so its performance is not yet evaluable. Qualified leads/RFQs are unavailable, not zero.
+- Stored India bucket 0/18 top 100 through September 23 with 14 unstable rows; audit 100/100 on 29 pages. Ubersuggest API reads succeeded, but projects are inactive due to user inactivity and rankings are stale; do not claim October refresh. Restore project freshness through account-owner review; this run
+  did not reactivate projects, change settings or trigger audits.
+- Appended exactly one domain/date row to `seo/monthly-log.csv` and saved
+  separate first-party dimensions, monthly review and `external-research.md`
+  under ignored `reports/seo-improver/2026-10-05/`.
+- Reviewed deployed SHA `3ce75adc099d7282b59527e7d8cc81d61309e154`. No page, claim, layout,
+  navigation, form, URL or discovery payload changed. Generator, 30-page
+  audit, all 52 tests and `git diff --check` passed without generated drift.
+  A separate `Monthly SEO:` reporting commit is prepared for publication.
+  Final validation, push, workflow and live results are recorded in the dated
+  ignored `release-verification.md`; unchanged discovery files are verified
+  without resubmission. Next monthly review: 2026-11-02.
 
 ### 2026-09-21 — Proof-page content repair
 
