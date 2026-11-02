@@ -32,6 +32,13 @@ Read this file first when starting a new chat. Keep it concise and update it wit
 
 ## Change history
 
+### 2026-11-02 — Monthly SEO review
+
+- No change - insufficient evidence. Final GSC October 3–30 vs September 5–October 2: 21 vs 47 query-visible impressions, 0 vs 1 clicks. Contact and client-proof have no reported query rows. On rice-price-india.html, basmati rice rates / India mobile: 6 vs 15 impressions, zero clicks, average position 59.17 vs 60.73. Keep contact and price experiments; the sample cannot establish attributable improvement or harm. No page/query reached 100 impressions. Qualified leads unavailable. Reviewed deployed SHA 9e2b882b8131072ffd157c40f9c264dd97ab5b7f.
+- Ubersuggest: India 0/18 in stored top-100 bucket; US, UK and UAE untracked. Project remains inactive; no fresh ranking or audit verified. Continue collecting first-party evidence.
+- Reporting only: one monthly log row; detailed evidence and release status in ignored reports/seo-improver/2026-11-02/. No page or discovery payload changed. Generator, SEO audit, unit tests and diff check passed. Prepared for separate publication; workflow, live and submission results are recorded in the dated release-verification.md.
+
+
 ### 2026-10-05 — Monthly SEO review retained existing pages
 
 - Decision: `No change - insufficient evidence`. GSC final September 5–October 2 versus August 8–September 4: 47/47 query-visible impressions, 1/0 clicks. Contact has no reported rows in either period; country/device baseline unavailable. Price page has 24/15 impressions, zero clicks. Exact basmati rice rates / rice-price-india.html / India MOBILE: 15/4 impressions, zero clicks, position 60.7333/43.5.
